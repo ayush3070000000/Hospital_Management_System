@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS - Add Treatment    
+{% endblock %}
+
+{% block content %}
+
+    <div class="d-flex justify-content-between align-items-center ">
+        <h2 align = 'center' class="display-5 fw-medium">
+            <p class="text-primary-emphasis">Patient Information</p>
+        </h2>
+        <a href = "{{url_for('treatment_history', id = patient.id)}}" class="btn btn-info">History</a>
+    </div>
+    <hr>
+
+    <table name = "info" class="table" border>
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th></th>
+            </tr>
+            <body>
+                <tr>
+                    <td><strong>Patient ID</strong> : {{patient.id}} </td>
+                    <td><strong>Patient Name</strong> : {{patient.name}} </td>
+                </tr>
+            </body>
+        </thead>
+    </table>
+
+    <h2 class="display-5">Diagnos</h2>
+
+    <form action="" class="my-form" method = "post">
+        <div class = "form-group">
+            <label for="username" class = "form-label">Diagnosis</label>
+            <input type="text" name="diagnosis" class = "form-control">
+            <p>
+        </div>
+        <div class = "form-group">
+            <label for="password" class = "form-label">Treatment</label>
+            <input type="text" name="treatment" class = "form-control">
+            <p>
+        </div>
+
+        <div class = "form-group">
+            <label for="password" class = "form-label">Instruction</label>
+            <input type="text" name="instruction" class = "form-control">
+            <p>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Submit Treatment" class ="btn btn-primary">
+        </div>
+    </form>
+
+
+
+{% endblock %}

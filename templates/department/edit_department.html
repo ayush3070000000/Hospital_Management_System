@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2 class="display-5 fw-medium">
+        <p class="text-info-emphasis">Edit Department</p>
+    </h2>
+
+    <form action="" method="post" class="my-form">
+        <div class="form-group">
+            <label for ="name" class = "form-label">Department Name</label>
+            <input type="text" value = "{{department.name}}" name = "name" required class = "form-control">
+        </div>
+
+        <div class="form-group">
+            <label for ="description" class = "form-label">Description</label>
+            <input type="text" value = "{{department.description}}" name = "description" required class = "form-control">
+        </div><p>
+
+        <div class="form-group">
+            <button type = "submit" class="btn btn-success">
+                Update
+            </button>
+        </div>
+    </form>
+{% endblock %}

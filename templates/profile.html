@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+
+    <h2 align = 'center' class="display-5 fw-medium">
+        <p class="text-primary-emphasis">Profile of {{role}}</p>
+    </h2>
+
+    <table name = "info" class="table" border>
+         <thead>
+            <tr>
+                <th>Details</th>
+                <th></th>
+            </tr>
+            <body>
+                {% if session['role'] == role or session['role'] == 'admin'%}
+                    <tr>
+                        <td><strong>ID</strong> : {{user.id}}</td>
+                        <td><strong>Username</strong> : {{user.username}}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td><strong>Name</strong> : {{user.name}}</td>
+
+                    {% if session['role'] == role or session['role'] == 'admin'%}
+                        <td><strong>Contact : </strong>{{user.contact}}</td>
+                </tr>
+                <tr>
+                        <td><strong>Address </strong> : {{user.address}}</td>
+                    {% endif %}
+                    <td></td>
+                </tr>
+                {% if role == 'doctor' %}
+                    <tr>
+                        <td><strong>Department</strong> : {{user.department.name}} </td>
+                        <td><strong>Description</strong> : {{user.description}} </td>
+                    </tr>
+                {% endif %}
+            </body>
+         </thead>
+    </table>
+
+
+    {% if session['role'] == role or session['role'] == 'admin'%}
+            <a href="{{url_for('edit_profile', id = user.id, role = role)}}" class="btn btn-warning">Edit Profile</a>
+    {% endif %}
+    
+{% endblock %}

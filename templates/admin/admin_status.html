@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <h2 align = 'center' class="display-5 fw-medium">
+        <p class="text-primary-emphasis"> Status Change of Administrator</p>
+    </h2>
+    <hr>
+
+    <table name = "info" class="table" border>
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th></th>
+            </tr>
+            <body>
+                <tr>
+                    <td><strong>Admin Name</strong> : {{admin.name}} </td>
+                    <td><strong>Admin ID</strong> : {{admin.id}} </td>
+                </tr>
+            </body>
+        </thead>
+    </table>
+    
+    {% if admin.status == 'Active' %}
+        <h3 align = 'center' class="display-6">The admin's status is ACTIVE. Do you want to change status to INACTIVE?</h3>
+    {% else %}
+        <h3 align = 'center' class="display-6">The admin's status is INACTIVE. Do you want to change status to ACTIVE?</h3>
+    {% endif %}
+    
+    <div class = "d-flex justify-content-around mt-4">
+        <form action="" method="post" class="my-form">
+            <div class="form-group">
+                <button type = "submit" class = "btn btn-danger">
+                    Change Status
+                </button>
+            </div>
+        </form>
+        <a href="{{url_for('admin_dashboard')}}" class="btn btn-secondary">Cancel</a>
+    </div>
+
+{% endblock %}

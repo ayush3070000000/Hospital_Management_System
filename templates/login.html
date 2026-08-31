@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS - Login 
+{% endblock %}
+
+{% block content %}
+    <h2 align = 'center'class="display-5 fw-medium">
+        <p class="text-primary-emphasis">Login</h2></p>
+    </h2>
+        <form action="" class="my-form" method = "post">
+            <div class = "form-group">
+                <label for="username" class = "form-label"><strong>Username / E-mail</strong></label>
+                <input type="text" name="username" class = "form-control">
+            </div>
+            <div class = "form-group">
+                <label for="password" class = "form-label"><strong>Password</strong></label>
+                <input type="password" name="password" class = "form-control">
+                <br>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class ="btn btn-primary">
+            </div>
+        </form>
+{% endblock %}

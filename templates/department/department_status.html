@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2 align = 'center' class="display-5 fw-medium">
+        <p class="text-primary-emphasis"> Status Change of Department</p>
+    </h2>
+
+    <hr>
+
+    <table name = "info" class="table" border>
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th></th>
+            </tr>
+            <body>
+                <tr>
+                    <td><strong>Department ID</strong> : {{department.id}} </td>
+                    <td><strong>Number of Doctors</strong> : {{department.doctors|length}} </td>
+                </tr>
+                <tr>
+                    <td><strong>Department Name</strong> : {{department.name}} </td>
+                    <td><strong>Description</strong> : {{department.description}} </td>
+                </tr>
+            </body>
+        </thead>
+    </table>
+    
+    {% if department.status == 'Active' %}
+        <h3 align = 'center' class="display-6">The department's status is ACTIVE. Do you want to change status to INACTIVE?</h3>
+    {% else %}
+        <h3 align = 'center' class="display-6">The department's status is INACTIVE. Do you want to change status to ACTIVE?</h3>
+    {% endif %}
+    
+    <div class = "d-flex justify-content-around mt-4">
+        <form action="" method="post" class="my-form">
+            <div class="form-group">
+                <button type = "submit" class = "btn btn-danger">
+                    Change Status
+                </button>
+            </div>
+        </form>
+        <a href="{{url_for('admin_dashboard')}}" class="btn btn-secondary">Cancel</a>
+    </div>
+{% endblock %}

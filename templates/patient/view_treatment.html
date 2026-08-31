@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS = Treatment Details
+{% endblock %}
+
+{% block content %}
+    <h2 align = 'center' class="display-5 fw-medium">
+        <p class="text-primary-emphasis"> Prescription</p>
+    </h2>
+    <hr>
+
+    <table name = "info" class="table" border>
+         <thead>
+            <tr>
+                <th>Appointment Details</th>
+                <th></th>
+            </tr>
+            <body>
+                <tr>
+                    <td><strong>Patient ID</strong> : {{patient.id}}</td>
+                    <td><strong>Patient Name</strong> : {{patient.name}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Doctor Name</strong> : Dr. {{appointment.doctor.name}}</td>
+                    <td><strong>Department</strong> : {{appointment.doctor.department.name}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Appointment ID</strong> : {{appointment.id}}</td>
+                    <td><strong>Date</strong> : {{appointment.date}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Slot</strong> : Slot {{appointment.slot}}</td>
+                </tr>
+            </body>
+         </thead>
+    </table>
+
+    <table name = "info" class="table" border>
+         <thead>
+            <tr>
+                <th>Treatment Details</th>
+            </tr>
+            <body>
+                <tr>
+                    <td><strong>Diagnosis</strong> : {{treatment.diagnosis}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Treatment</strong> : {{treatment.treatment}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Instruction</strong> : {{treatment.instruction}}</td>
+                </tr>
+
+            </body>
+         </thead>
+    </table>
+{% endblock %}

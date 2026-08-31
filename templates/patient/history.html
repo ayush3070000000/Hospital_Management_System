@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS - Patient History
+{% endblock %}
+
+{% block content %}
+        <h2 align = 'center' class="display-5 fw-medium">
+            <p class="text-primary-emphasis">Patient History</p>
+        </h2> 
+    <table name = "history" class="table" border = "Danger">
+         <thead>
+            <tr>
+                <th>Date</th>
+                <th>Slot</th>
+                <th>Doctor Name</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for treatment in treatments  %}
+                    <tr>
+                        <td>{{treatment.appointment.date}}</td>
+                        <td>Slot {{treatment.appointment.slot}}</td>
+                        <td>{{treatment.appointment.doctor.name}}</td>
+                        <td>{{treatment.appointment.doctor.department.name}}</td>
+                        <td>
+                            <a href = "{{url_for('view_treatment', id = treatment.id)}}" class="btn btn-info">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+{% endblock %}

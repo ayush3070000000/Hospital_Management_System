@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class ='display-5 fw-semibold'>
+            <p class="text-primary-emphasis">Welcome, Dr. {{ doctor.name }} </p>
+        </h2>
+        <a href="{{url_for('doctor_availability', id = doctor.id)}}" class="btn btn-success">Availability</a>
+    </div>
+    <hr>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="display-5 fw-medium">
+            <p class="text-info-emphasis">Upcoming Appointments</p>
+        </h2>
+        <a href="{{url_for('appointments', id = session['user_id'], role = 'doctor')}}" class="btn btn-success">View All Appointments</a>
+    </div>
+    <table name = "appointment" class="table" border = "Danger">
+         <thead>
+            <tr>
+                <th>Appointment ID</th>
+                <th>Patient Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td>{{appointment.id}}</td>
+                        <td>{{appointment.patient.name}}</td>
+                        <td>{{appointment.date}}</td>
+                        <td>Slot {{appointment.slot}}</td>
+                        <td>
+                            <a href = "{{url_for('treatment_history', id = appointment.patient_id)}}" class="btn btn-info">History</a>
+                            <a href = "{{url_for('add_treatment', appointment_id = appointment.id)}}" class="btn btn-success">Diagnos</a>
+                            <a href = "{{url_for('cancel_appointment', id = appointment.id)}}" class="btn btn-info">Cancel</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+ 
+    <h2 class="display-5 fw-medium">
+        <p class="text-info-emphasis">Assigned Patients</p>
+    </h2>
+    <table name = "patients" class="table" border = "Danger">
+         <thead>
+            <tr>
+                <th>Patient ID</th>
+                <th>Patient Name</th>
+                <th>Patient History</th>
+            </tr>
+            <body>
+                {% for treated_patient in treated_patients %}
+                    <tr>
+                        <td>{{treated_patient.id}}</td>
+                        <td>{{treated_patient.name}}</td>
+                        <td><a href = "{{url_for('treatment_history', id = treated_patient.id)}}" class="btn btn-info">History</a></td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+{% endblock %}

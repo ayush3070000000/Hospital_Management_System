@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS - Admins
+{% endblock %}
+
+{% block content %}
+    <h2 align = 'center' class ='display-5 fw-semibold'>
+        <p class="text-primary-emphasis">Administrators at HMS </p>
+    </h2>
+
+    <table name = "department" class="table" border>
+         <thead>
+            <tr>
+                <th>Admin ID</th>
+                <th>Admin Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for admin in admins %}
+                    <tr>
+                        <td>{{admin.id}}</td>
+                        <td>{{admin.name}}</td>
+                        <td>{{admin.status}}</td>
+                        <td>
+                            <a href = "{{url_for('profile', id = admin.id, role = 'admin')}}" class="btn btn-info"> Details </a>
+                            <a href = "{{url_for('change_admin_status', id = admin.id)}}" class="btn btn-danger">Change Status</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+{% endblock %}

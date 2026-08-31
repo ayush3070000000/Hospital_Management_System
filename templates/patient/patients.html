@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS - Patients
+{% endblock %}
+
+{% block content %}
+    <h2 align = 'center' class="display-5 fw-medium">
+        <p class="text-primary-emphasis"> Patients at HMS</p>
+    </h2>
+
+    <table name = "patients" class="table" border>
+         <thead>
+            <tr>
+                <th>Patient ID</th>
+                <th>Patient Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for patient in patients %}
+                    <tr>
+                        <td>{{patient.id}}</td>
+                        <td>{{patient.name}}</td>
+                        <td>{{patient.status}}</td>
+                        <td>
+                            <a href = "{{url_for('profile', id = patient.id, role = 'patient')}}" class="btn btn-info"> Details </a>
+                            {% if session['role'] == 'admin' %}
+                                <a href = "{{url_for('change_patient_status', id = patient.id)}}" class="btn btn-danger"> Change Status </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+{% endblock %}

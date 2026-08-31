@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Home Pages
+{% endblock %}
+
+{% block content %}
+    <h2 align = 'center' class ='display-5'>Welcome to HMS - Royal</h2>
+    <hr>
+    {% if 'user_id' not in session %}
+        <h2 align = 'center' class ='display-6'>
+            <p class="text-danger">Please Login to access your dashboard</p>
+
+            <div >
+                <a class="btn btn-secondary" href="{{ url_for('login', role='patient') }}">Patient</a>
+                <a class="btn btn-secondary" href="{{ url_for('login', role='doctor') }}">Doctor</a>
+                <a class="btn btn-secondary" href="{{ url_for('login', role='admin') }}">Admin</a>
+            </div>
+        </h2>
+    {% else %}
+        <h2 align = 'center' class ='display-6'>
+            <p class="text-success">You are logged in. Open your dashboard to proceed.</p>
+            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </h2>
+    {% endif %}
+{% endblock %}

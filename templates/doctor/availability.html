@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS - Doctor Availability
+{% endblock %}
+
+{% block content %}
+    <h2 align = 'center' class ='display-5 fw-semibold'>
+        <p class="text-primary-emphasis">Doctor Availability</p>
+    </h2>
+    <hr>
+    
+    <div class = 'd-flex justify-content-around align-items-center mb-2'>
+        <div>
+            <h2 class="display-7">Date</h2>
+        </div>
+        <div>
+            <h2 class="display-7">Slot 1</h2>
+        </div>
+        <div>
+            <h2 class="display-7">Slot 2</h2>
+        </div>
+    </div>
+    <form action="" method="post">
+        {% for schedule in schedules %}
+            <div class = 'd-flex justify-content-around align-items-center mb-2'>
+                {{schedule.date}}
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="{{schedule.id}}" id="slot1-{{schedule.id}}" name="slot1-{{schedule.id}}" {% if schedule.slot_1 %} checked {% endif %}>
+                    <label class="form-check-label" for="slot1-{{schedule.id}}">
+                        08:00 AM - 12:00 PM
+                    </label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="checkbox" value="{{schedule.id}}" id="slot2-{{schedule.id}}" name="slot2-{{schedule.id}}" {% if schedule.slot_2 %} checked {% endif %}>
+                    <label class="form-check-label" for="slot2-{{schedule.id}}">
+                        01:00 PM - 05:00 PM
+                    </label>
+                </div>
+            </div>
+            
+        {% endfor %}
+        
+        {% if session['role'] == 'doctor' %}
+            <div class = "d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary mt-3">Update Availability</button>
+            </div>    
+        {% endif %}
+        
+    </form>
+
+    
+
+{% endblock %}

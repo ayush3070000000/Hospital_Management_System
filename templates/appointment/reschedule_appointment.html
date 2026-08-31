@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+
+{% block content%}
+    <h2 align = 'center' class="display-5 fw-medium">
+        <p class="text-primary-emphasis"> Book Appointment</p>
+    </h2>
+    
+    <table name = "info" class="table" border>
+        <thead>
+            <tr>
+                <th>Details</th>
+                <th></th>
+            </tr>
+            <body>
+                <tr>
+                    <td><strong>Doctor ID</strong> : {{appointment.doctor.id}} </td>
+                    <td><strong>Department</strong> : {{appointment.doctor.department.name}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Doctor Name</strong> : {{appointment.doctor.name}} </td>
+                    <td><strong>Description</strong> : {{appointment.doctor.description}} </td>
+                </tr>
+                <tr>
+                    <td><strong>Patient Name</strong> : {{appointment.patient.name}} </td>
+                    <td><strong>Visity Type</strong> : {{appointment.visit_type}} </td>
+                </tr>
+            </body>
+        </thead>
+    </table>
+
+    <form action ="" method="post" class="my-form">
+
+        <div class="form-group mt-4">
+            <table class="table table-bordered text-center align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Slot 1<br></th>
+                        <th>Slot 2<br></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for schedule in schedules %}
+                    <tr>
+                        <td>{{ schedule.date }}</td>
+                        <td>
+                            <input class="form-check-input" type="radio" name="selected_slot" value="{{schedule.id}}_1" id="slot1-{{schedule.id}}"  {% if not schedule.slot_1 %} disabled {% endif %}>
+                            <label class="form-check-label" for="slot1-{{schedule.id}}">
+                                08:00 AM - 12:00 PM
+                            </label>
+                        </td>
+
+                        <td>
+                            <input class="form-check-input" type="radio" name="selected_slot" value="{{schedule.id}}_2" id="slot2-{{schedule.id}}"  {% if not schedule.slot_2 %} disabled {% endif %}>
+                            <label class="form-check-label" for="slot2-{{schedule.id}}">
+                                01:00 PM - 05:00 PM
+                            </label>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group text-center mt-3">
+            <input type="submit" value="Submit" class="btn btn-primary px-5">
+        </div>
+    </form>
+
+{% endblock %}

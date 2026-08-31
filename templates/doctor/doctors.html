@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    HMS - Doctors
+{% endblock %}
+
+{% block content %}
+    <h2 align = 'center' class="display-5 fw-medium">
+        <p class="text-primary-emphasis">Doctors at HMS</p>
+    </h2>
+
+    <table name = "department" class="table" border>
+         <thead>
+            <tr>
+                <th>Doctor ID</th>
+                <th>Doctor Name</th>
+                <th>Department Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for doctor in doctors %}
+                    <tr>
+                        <td>{{doctor.id}}</td>
+                        <td>{{doctor.name}}</td>
+                        <td>{{doctor.department.name}}</td>
+                        <td>{{doctor.status}}</td>
+                        <td>
+                            <a href = "{{url_for('profile', id = doctor.id, role = 'doctor')}}" class="btn btn-info"> Details </a>
+
+                            {% if session['role'] == 'admin' or session['role'] == 'patient' %}
+                                <a href = "{{url_for('book_appointment', doctor_id = doctor.id)}}" class="btn btn-success">Book Appointment</a>
+                            {% endif %}
+
+                            {% if session['role'] == 'admin' %}
+                                <a href="{{url_for('appointments', id = doctor.id, role = 'doctor')}}" class="btn btn-secondary">Appointments</a>
+                                <a href = "{{url_for('change_doctor_status', id = doctor.id)}}" class="btn btn-danger">Change Status</a>
+                            {% endif %}
+                            
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+{% endblock %}

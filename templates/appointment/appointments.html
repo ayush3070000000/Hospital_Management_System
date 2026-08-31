@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+This is the view appointments page.
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class ="display-5">All Appointments</h2>    
+        <div>
+            <form action = "{{url_for('appointments', role = role, id = id)}}" class="d-flex" role="search">                                
+                <div class="form-group">
+                    <div class="d-flex ms-2">
+                        <input class="form-control me-2" name = "date" type="date">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </div>
+                </div>                
+            </form>
+        </div>
+    </div>
+    
+    <table name = "appointments" class="table" border>
+         <thead>
+            <tr>
+                <th>Department</th>
+                <th>Doctor Name</th>
+                <th>Patient Name</th>
+                <th>Date</th>
+                <th>Slot</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td>{{appointment.doctor.department.name}}</td>
+                        <td>{{appointment.doctor.name}}</td>
+                        <td>{{appointment.patient.name}}</td>
+                        <td>{{appointment.date}}</td>
+                        <td>Slot {{appointment.slot}}</td>
+                        <td>{{appointment.status}}</td>
+                        <td>
+                            {% if role == 'doctor' %}
+                                {% if appointment.status == 'Booked' %}
+                                    <a href = "{{url_for('add_treatment', appointment_id = appointment.id)}}" class="btn btn-success">Diagnos</a>    
+                                {% endif %}
+                                {% if appointment.status == 'Completed' %}
+                                    <a href = "{{url_for('view_treatment', id = appointment.treatment[0].id)}}" class="btn btn-info">View Treatment</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if appointment.status == 'Booked' %}
+                                <a href = "{{url_for('reschedule_appointment', id = appointment.id)}}" class="btn btn-warning">Reschedule</a>
+                                <a href = "{{url_for('cancel_appointment', id = appointment.id)}}" class="btn btn-danger">Cancel</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+{% endblock %}

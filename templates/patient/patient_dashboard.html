@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 align = 'center' class ='display-5 fw-semibold'>
+            <p class="text-primary-emphasis">Welcome {{ patient.name }} </p>
+        </h2>
+
+        <div>
+            <a href="{{url_for('appointments', id = session['user_id'], role = 'patient')}}" class="btn btn-info">Appointments</a>
+            <a href = "{{url_for('treatment_history', id = session['user_id'])}}" class="btn btn-info">Treatment History</a>
+        </div>
+    </div>
+    <hr>
+
+    
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="display-5 fw-medium">
+            <p class="text-info-emphasis">Upcoming Appointments</p>
+        </h2>
+        <a href="{{url_for('departments')}}" class="btn btn-success">Book Appointment</a>
+    </div>
+    <table name = "appointment" class="table" border = "Danger">
+         <thead>
+            <tr>
+                <th>Appointment ID</th>
+                <th>Doctor Name</th>
+                <th>Date</th>
+                <th>Slot</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td>{{appointment.id}}</td>
+                        <td>{{appointment.doctor.name}}</td>
+                        <td>{{appointment.date}}</td>
+                        <td>Slot {{appointment.slot}}</td>
+                        <td>
+                            <a href = "{{url_for('reschedule_appointment', id = appointment.id)}}" class="btn btn-warning">Reschedule</a>
+                            <a href = "{{url_for('cancel_appointment', id = appointment.id)}}" class="btn btn-danger">Cancel</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="display-5 fw-medium">
+            <p class="text-info-emphasis">Departments</p>
+        </h2>
+        
+        <div>
+            <a href="{{url_for('departments')}}" class="btn btn-info">View All Departments</a>
+        </div>
+    </div>
+    <table name = "department" class="table" border = True>
+         <thead>
+            <tr>
+                <th>Department ID</th>
+                <th>Department Name</th>
+                <th>Number of Doctors</th>
+                <th>Actions</th>
+            </tr>
+            <body>
+                {% for department in departments %}
+                    <tr>
+                        <td>{{department.id}}</td>
+                        <td>{{department.name}}</td>
+                        <td>{{department.doctors|length}}</td>
+                        <td>
+                            <a href = "{{url_for('view_department', id = department.id)}}" class="btn btn-info"> View </a>                            
+                        </td>
+                    </tr>
+                {% endfor %}
+            </body>
+         </thead>
+    </table>
+{% endblock %}
