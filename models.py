@@ -96,6 +96,8 @@ with app.app_context():
     # db.drop_all()
     db.create_all()
 
+    db.session.execute(db.text('ALTER TABLE "Admins" ALTER COLUMN passhash TYPE VARCHAR(256)'))
+    db.session.commit()
     # Create a new admin programmatically if none exists
     admin = Admin.query.first()
     if not admin:
