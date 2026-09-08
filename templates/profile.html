@@ -1,52 +1,387 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Profile
+    HMS Royal | Profile
+{% endblock %}
+
+{% block style %}
+
+<style>
+
+    body {
+        background: #f5f8fc;
+    }
+    .profile-page {
+        min-height: calc(100vh - 72px);
+        padding: 50px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient( circle at 10% 20%, rgba(37, 99, 235, 0.07), transparent 30%),
+            radial-gradient( circle at 90% 80%, rgba(14, 165, 233, 0.07), transparent 30%);
+    }
+    .profile-container {
+        width: 100%;
+        max-width: 950px;
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(15, 23, 42, 0.10);
+    }
+    .profile-cover {
+        position: relative;
+        height: 190px;
+        padding: 35px 45px;
+        display: flex;
+        align-items: flex-start;
+        background: linear-gradient(135deg, #2563eb, #0ea5e9);
+        overflow: hidden;
+    }
+    .profile-cover::before {
+        content: "";
+        position: absolute;
+        width: 330px;
+        height: 330px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        top: -190px;
+        right: -80px;
+    }
+    .profile-cover::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+        bottom: -150px;
+        left: -70px;
+    }
+    .cover-title {
+        position: relative;
+        z-index: 2;
+        color: white;
+    }
+    .cover-title h1 {
+        margin: 0 0 6px;
+        font-size: 30px;
+        font-weight: 800;
+    }
+    .cover-title p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(255,255,255,0.78);
+    }
+    .profile-body {
+        position: relative;
+        padding: 0 45px 45px;
+    }
+    .profile-avatar-wrapper {
+        margin-top: -55px;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 5;
+    }
+    .profile-avatar {
+        width: 110px;
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 30px;
+        background: white;
+        border: 7px solid white;
+        box-shadow: 0 12px 30px rgba(15,23,42,0.12);
+        font-size: 50px;
+    }
+    .profile-identity {
+        margin-bottom: 35px;
+    }
+    .profile-name {
+        margin: 0 0 6px;
+        font-size: 28px;
+        font-weight: 800;
+        color: #102a43;
+    }
+    .profile-role {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 50px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .information-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    .information-item {
+        padding: 20px;
+        border: 1px solid #e8eef5;
+        border-radius: 16px;
+        background: #f8fafc;
+        transition: all 0.25s ease;
+    }
+    .information-item:hover {
+        background: white;
+        border-color: #dbeafe;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(15,23,42,0.05);
+    }
+
+    .information-label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 8px;
+        color: #94a3b8;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .information-value {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .profile-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 25px;
+        border-top: 1px solid #eef2f7;
+    }
+
+    .edit-profile-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 22px;
+        border-radius: 12px;
+        background: linear-gradient(135deg,#2563eb, #0ea5e9);
+        color: white !important;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow:0 8px 18px rgba(37,99,235,0.20);
+        transition: all 0.25s ease;
+    }
+    .edit-profile-btn:hover {
+        transform: translateY(-2px);
+        box-shadow:
+            0 13px 25px rgba(37,99,235,0.26);
+    }
+
+    @media (max-width: 700px) {
+        .profile-page {
+            padding: 25px 12px;
+        }
+        .profile-cover {
+            height: 170px;
+            padding: 30px 25px;
+        }
+        .profile-body {
+            padding: 0 25px 30px;
+        }
+        .profile-avatar {
+            width: 95px;
+            height: 95px;
+            font-size: 42px;
+        }
+        .profile-avatar-wrapper {
+            margin-top: -48px;
+        }
+        .profile-name {
+            font-size: 24px;
+        }
+        .information-grid {
+            grid-template-columns: 1fr;
+        }
+        .profile-actions {
+            justify-content: stretch;
+        }
+        .edit-profile-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
 {% endblock %}
 
 {% block content %}
 
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis">Profile of {{role}}</p>
-    </h2>
+<div class="profile-page">
 
-    <table name = "info" class="table" border>
-         <thead>
-            <tr>
-                <th>Details</th>
-                <th></th>
-            </tr>
-            <body>
-                {% if session['role'] == role or session['role'] == 'admin'%}
-                    <tr>
-                        <td><strong>ID</strong> : {{user.id}}</td>
-                        <td><strong>Username</strong> : {{user.username}}</td>
-                    </tr>
+    <div class="profile-container">
+
+        <div class="profile-cover">
+            <div class="cover-title">
+                {% if session['role'] == 'patient' %}
+                    <h1>
+                        Doctor Profile
+                    </h1>
+                    <p>
+                        View doctor details and department information
+                    </p>
+                {% else %}
+                    <h1>
+                        My Profile
+                    </h1>
+                    <p>
+                        Manage your HMS Royal account information
+                    </p>
                 {% endif %}
-                <tr>
-                    <td><strong>Name</strong> : {{user.name}}</td>
+            </div>
+        </div>
 
-                    {% if session['role'] == role or session['role'] == 'admin'%}
-                        <td><strong>Contact : </strong>{{user.contact}}</td>
-                </tr>
-                <tr>
-                        <td><strong>Address </strong> : {{user.address}}</td>
+
+        <div class="profile-body">
+
+            <div class="profile-avatar-wrapper">
+                <div class="profile-avatar">
+                    {% if session['role'] == 'doctor' %}
+                        🩺
+                    {% elif session['role'] == 'admin' %}
+                        🔐
+                    {% elif session['role'] == 'patient' %}
+                        🩺
+                    {% else %}
+                        👤
                     {% endif %}
-                    <td></td>
-                </tr>
-                {% if role == 'doctor' %}
-                    <tr>
-                        <td><strong>Department</strong> : {{user.department.name}} </td>
-                        <td><strong>Description</strong> : {{user.description}} </td>
-                    </tr>
+                </div>
+            </div>
+
+            <div class="profile-identity">
+                <h2 class="profile-name">
+                    {% if session['role'] == 'patient' %}
+                        Dr. {{ user.name }}
+                    {% else %}
+                        {{ user.name }}
+                    {% endif %}
+                </h2>
+
+                <div class="profile-role">
+                    {% if session['role'] == 'doctor' %}
+                        🩺 Doctor
+                    {% elif session['role'] == 'admin' %}
+                        🔐 Administrator
+                    {% elif session['role'] == 'patient' %}
+                        🩺 Doctor
+                    {% else %}
+                        👤 Patient
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="information-grid">
+                {% if session['role'] == 'patient' %}
+
+                    <div class="information-item">
+                        <div class="information-label">
+                            👤
+                            Doctor Name
+                        </div>
+                        <div class="information-value">
+                            Dr. {{ user.name }}
+                        </div>
+                    </div>
+
+                    <div class="information-item">
+                        <div class="information-label">
+                            🏢
+                            Department
+                        </div>
+                        <div class="information-value">
+                            {{ user.department.name }}
+                        </div>
+                    </div>
+
+                    <div class="information-item">
+                        <div class="information-label">
+                            📞
+                            Contact Number
+                        </div>
+                        <div class="information-value">
+                            {{ user.contact }}
+                        </div>
+                    </div>
+
+                {% else %}
+
+                    <div class="information-item">
+                        <div class="information-label">
+                            ✉️
+                            Username / Email
+                        </div>
+                        <div class="information-value">
+                            {{ user.username }}
+                        </div>
+                    </div>
+
+                    <div class="information-item">
+                        <div class="information-label">
+                            📱
+                            Contact Number
+                        </div>
+                        <div class="information-value">
+                            {{ user.contact }}
+                        </div>
+                    </div>
+
+
+                    <div class="information-item">
+                        <div class="information-label">
+                            📍
+                            Address
+                        </div>
+                        <div class="information-value">
+                            {{ user.address }}
+                        </div>
+                    </div>
+
+                    <div class="information-item">
+                        <div class="information-label">
+                            🛡️
+                            Account Type
+                        </div>
+
+                        <div class="information-value">
+                            {% if session['role'] == 'doctor' %}
+                                Doctor Account
+                            {% elif session['role'] == 'admin' %}
+                                Administrator Account
+                            {% else %}
+                                Patient Account
+                            {% endif %}
+                        </div>
+                    </div>
                 {% endif %}
-            </body>
-         </thead>
-    </table>
+
+            </div>
 
 
-    {% if session['role'] == role or session['role'] == 'admin'%}
-            <a href="{{url_for('edit_profile', id = user.id, role = role)}}" class="btn btn-warning">Edit Profile</a>
-    {% endif %}
-    
+            {% if session['role'] != 'patient' %}
+                <div class="profile-actions">
+                    <a href="{{ url_for('edit_profile', id=session['user_id'], role=session['role']) }}" class="edit-profile-btn">
+                        ✏️
+                        Edit Profile →
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,159 +1,1609 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    HMS Royal | Administrator Dashboard
+{% endblock %}
+{% block style %}
+<style>
+.admin-dashboard {
+    padding: 38px 28px 65px;
+    max-width: 1500px;
+    margin: auto;
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(124,58,237,.05),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 95% 20%,
+            rgba(37,99,235,.05),
+            transparent 25%
+        );
+}
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding: 30px 34px;
+    border-radius: 22px;
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #f8fbff
+        );
+    border: 1px solid #e5edf5;
+    box-shadow:
+        0 12px 35px rgba(15,23,42,.06);
+}
+.dashboard-title-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.admin-dashboard-icon {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #4f46e5
+        );
+    color: white;
+    font-size: 29px;
+    box-shadow:
+        0 10px 25px rgba(124,58,237,.20);
+}
+.dashboard-title {
+    margin: 0 0 5px;
+    color: #102a43;
+    font-size: 28px;
+    font-weight: 800;
+}
+.dashboard-subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+.dashboard-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.dashboard-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 16px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all .25s ease;
+}
+.dashboard-btn:hover {
+    transform: translateY(-2px);
+}
+.btn-view {
+    color: #2563eb !important;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+}
+.btn-add {
+    color: white !important;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+    box-shadow:
+        0 7px 17px rgba(37,99,235,.17);
+}
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 35px;
+}
+.overview-card {
+    position: relative;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e5edf5;
+    border-radius: 18px;
+    box-shadow:
+        0 9px 28px rgba(15,23,42,.05);
+    overflow: hidden;
+    transition: all .25s ease;
+}
+.overview-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 15px 35px rgba(15,23,42,.09);
+}
+.overview-card::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    right: -35px;
+    bottom: -45px;
+    background: rgba(37,99,235,.05);
+}
+.overview-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+.overview-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    font-size: 21px;
+}
+.overview-label {
+    margin: 0 0 5px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+}
+.overview-number {
+    margin: 0;
+    color: #102a43;
+    font-size: 28px;
+    font-weight: 800;
+}
+.overview-description {
+    margin: 7px 0 0;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+}
+.overview-patient .overview-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.overview-doctor .overview-icon {
+    background: #ecfdf5;
+    color: #059669;
+}
+.overview-appointment .overview-icon {
+    background: #fff7ed;
+    color: #ea580c;
+}
+.overview-department .overview-icon {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+.dashboard-section {
+    margin-bottom: 35px;
+    animation: sectionAppear .45s ease;
+}
+@keyframes sectionAppear {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+.section-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    font-size: 19px;
+}
+.section-heading h2 {
+    margin: 0;
+    color: #172b4d;
+    font-size: 20px;
+    font-weight: 800;
+}
+.section-heading p {
+    margin: 3px 0 0;
+    color: #94a3b8;
+    font-size: 11px;
+}
+.department-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.doctor-icon {
+    background: #ecfdf5;
+    color: #10b981;
+}
+.patient-icon {
+    background: #fdf4ff;
+    color: #a855f7;
+}
+.appointment-icon {
+    background: #fff7ed;
+    color: #f97316;
+}
+.table-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 18px;
+    box-shadow:
+        0 9px 28px rgba(15,23,42,.05);
+}
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+.royal-table {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+    margin: 0;
+}
+.royal-table thead {
+    background: #f8fafc;
+}
+.royal-table th {
+    padding: 15px 18px;
+    border-bottom: 1px solid #e8eef5;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+.royal-table td {
+    padding: 15px 18px;
+    border-bottom: 1px solid #eef2f7;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 500;
+    vertical-align: middle;
+}
+.royal-table tbody tr {
+    transition: background .2s ease;
+}
+.royal-table tbody tr:hover {
+    background: #f8fbff;
+}
+.royal-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.id-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    padding: 5px 8px;
+    border-radius: 7px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 10px;
+    font-weight: 800;
+}
+.table-name {
+    color: #172b4d;
+    font-weight: 700;
+}
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    border-radius: 50px;
+    background: #ecfdf5;
+    color: #059669;
+    font-size: 10px;
+    font-weight: 700;
+}
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+}
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    border-radius: 8px;
+    text-decoration: none !important;
+    font-size: 10px;
+    font-weight: 700;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+.action-blue {
+    color: #2563eb !important;
+    background: #eff6ff;
+}
+.action-green {
+    color: #059669 !important;
+    background: #ecfdf5;
+}
+.action-purple {
+    color: #7c3aed !important;
+    background: #f5f3ff;
+}
+.action-orange {
+    color: #ea580c !important;
+    background: #fff7ed;
+}
+.action-red {
+    color: #dc2626 !important;
+    background: #fef2f2;
+}
+.action-gray {
+    color: #475569 !important;
+    background: #f1f5f9;
+}
+.empty-row {
+    text-align: center;
+    padding: 35px !important;
+    color: #94a3b8 !important;
+    font-size: 12px !important;
+}
+.appointment-date {
+    color: #2563eb;
+    font-weight: 700;
+}
+.slot-badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 10px;
+    font-weight: 700;
+}
+.today-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 35px;
+}
+.today-card {
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e5edf5;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(15,23,42,.045);
+    transition: all .25s ease;
+}
+.today-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 13px 30px rgba(15,23,42,.08);
+}
+.today-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.today-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    font-size: 18px;
+}
+.today-label {
+    margin: 0 0 5px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+}
+.today-number {
+    margin: 0;
+    color: #172b4d;
+    font-size: 25px;
+    font-weight: 800;
+}
+.today-description {
+    margin: 6px 0 0;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 600;
+}
+.today-appointment .today-icon {
+    background: #eff6ff;
+}
+.today-completed .today-icon {
+    background: #ecfdf5;
+}
+.today-cancelled .today-icon {
+    background: #fef2f2;
+}
+.today-doctors .today-icon {
+    background: #f5f3ff;
+}
+@media (max-width: 1000px) {
+    .today-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    .today-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.recent-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+.recent-card {
+    background: #ffffff;
+    border: 1px solid #e5edf5;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow:
+        0 9px 28px rgba(15,23,42,.05);
+    transition: all .25s ease;
+}
+.recent-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 14px 32px rgba(15,23,42,.08);
+}
+.recent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.recent-title {
+    margin: 0;
+    color: #172b4d;
+    font-size: 17px;
+    font-weight: 800;
+}
+.recent-subtitle {
+    margin: 4px 0 0;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+}
+.recent-header-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    font-size: 18px;
+}
+.appointment-recent-icon {
+    background: #fff7ed;
+    color: #ea580c;
+}
+.registration-recent-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.recent-list {
+    display: flex;
+    flex-direction: column;
+}
+.recent-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid #eef2f7;
+}
+.recent-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.recent-item:first-child {
+    padding-top: 3px;
+}
+.recent-avatar {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #f8fafc;
+    font-size: 17px;
+}
+.recent-info {
+    min-width: 0;
+    flex: 1;
+}
+.recent-info h3 {
+    margin: 0 0 3px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 750;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.recent-info p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+}
+.recent-meta {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+}
+.recent-date {
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 700;
+}
+.recent-status {
+    padding: 4px 8px;
+    border-radius: 50px;
+    background: #ecfdf5;
+    color: #059669;
+    font-size: 9px;
+    font-weight: 700;
+}
+.user-type {
+    padding: 4px 8px;
+    border-radius: 50px;
+    font-size: 9px;
+    font-weight: 700;
+}
+.patient-type {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.doctor-type {
+    background: #ecfdf5;
+    color: #059669;
+}
+@media (max-width: 1000px) {
+    .overview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 900px) {
+    .admin-dashboard {
+        padding: 25px 15px 50px;
+    }
+    .dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 25px;
+    }
+    .dashboard-actions {
+        width: 100%;
+    }
+    .dashboard-btn {
+        flex: 1;
+        justify-content: center;
+    }
+    .recent-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+    .overview-card {
+        padding: 20px;
+    }
+    .dashboard-title {
+        font-size: 23px;
+    }
+    .dashboard-subtitle {
+        font-size: 11px;
+    }
+    .admin-dashboard-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 25px;
+    }
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .section-heading h2 {
+        font-size: 18px;
+    }
+    .dashboard-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    .dashboard-btn {
+        width: 100%;
+    }
+}
+.analytics-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+.analytics-card {
+    background: #ffffff;
+    border: 1px solid #e5edf5;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 9px 28px rgba(15,23,42,.05);
+}
+.analytics-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.analytics-title {
+    margin: 0;
+    color: #172b4d;
+    font-size: 17px;
+    font-weight: 800;
+}
+.analytics-subtitle {
+    margin: 4px 0 0;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 600;
+}
+.analytics-badge {
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 700;
+}
+.chart-container {
+    position: relative;
+    height: 280px;
+}
+@media (max-width: 900px) {
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .analytics-card {
+        padding: 18px;
+    }
+    .chart-container {
+        height: 240px;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    
-    <div class="d-flex justify-content-between align-items-center mb-4">
-    	<h2 align = 'center' class ='display-5 fw-semibold'>
-        <p class="text-primary-emphasis">Welcome Administrator </p>
-    	</h2>
-        
-        <div>
-            <a href="{{url_for('admins')}}" class="btn btn-info">View All Admins</a>
-            <a href="{{url_for('add_admin')}}" class="btn btn-success">Add Administrator</a>
-        </div>
-    </div>
-    <hr>
-    
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="display-5 fw-semibold">
-            <p class="text-info-emphasis">Departments</p>
-        </h2>
-        
-        <div>
-            <a href="{{url_for('departments')}}" class="btn btn-info">View All Departments</a>
-            <a href="{{url_for('add_department')}}" class="btn btn-success">Add Department</a>
-        </div>
-    </div>
-    
-    <table name = "department" class="table" border = True>
-         <thead>
-            <tr>
-                <th>Department ID</th>
-                <th>Department Name</th>
-                <th>Number of Doctors</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for department in departments %}
-                    <tr>
-                        <td>{{department.id}}</td>
-                        <td>{{department.name}}</td>
-                        <td>{{department.doctors|length}}</td>
-                        <td>
-                            <a href = "{{url_for('view_department', id = department.id)}}" class="btn btn-info"> View </a>
-                            <a href = "{{url_for('add_doctor', id = department.id)}}" class="btn btn-success">Add Doctor</a>
-                            <a href = "{{url_for('edit_department', id = department.id)}}" class="btn btn-warning">Edit Department</a>
-                            <a href = "{{url_for('change_department_status', id = department.id)}}" class="btn btn-danger">Change Status</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="display-5 fw-semibold">
-            <p class="text-info-emphasis">Doctors</p>
-        </h2>
-            <div>
-                <a href="{{url_for('doctors')}}" class="btn btn-info">View All Doctors</a>
-                <a href="{{url_for('add_doctor', id = 0)}}" class="btn btn-success">Add Doctor</a>
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <div class="dashboard-title-area">
+            <div class="admin-dashboard-icon">
+                🔐
             </div>
-    </div>
-    
-    <table name = "doctor" class="table" border = "Danger">
-         <thead>
-            <tr>
-                <th>Doctor ID</th>
-                <th>Doctor Name</th>
-                <th>Department </th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for doctor in doctors %}
-                    <tr>
-                        <td>{{doctor.id}}</td>
-                        <td>{{doctor.name}}</td>
-                        <td>{{doctor.department.name}}</td>
-                        <td>
-                            <a href = "{{url_for('profile', id = doctor.id, role = 'doctor')}}" class="btn btn-info"> Profile</a>
-                            <a href = "{{url_for('doctor_availability', id = doctor.id)}}" class="btn btn-secondary">Availability</a>
-                            <a href="{{url_for('appointments', id = doctor.id, role = 'doctor')}}" class="btn btn-success">Appointments</a>
-                            <a href = "{{url_for('change_doctor_status', id = doctor.id)}}" class="btn btn-danger">Change Status</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="display-5 fw-semibold">
-            <p class="text-info-emphasis">Patients</p>
-        </h2>
-        <div>
-            <a href="{{url_for('patients')}}" class="btn btn-info">View All Patients</a>
-            <a href="{{url_for('register')}}" class="btn btn-success">Add Patient</a>
+            <div>
+                <h1 class="dashboard-title">
+                    Welcome, Administrator
+                </h1>
+                <p class="dashboard-subtitle">
+                    Manage HMS Royal users, departments and appointments
+                    from one central dashboard.
+                </p>
+            </div>
+        </div>
+        <div class="dashboard-actions">
+            <a
+                href="{{url_for('admins')}}"
+                class="dashboard-btn btn-view"
+            >
+                👥 View Admins
+            </a>
+            <a
+                href="{{url_for('add_admin')}}"
+                class="dashboard-btn btn-add"
+            >
+                + Add Administrator
+            </a>
         </div>
     </div>
-
-    <table name = "patient" class="table" border = "Danger">
-         <thead>
-            <tr>
-                <th>Patient ID</th>
-                <th>Patient Name</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for patient in patients %}
-                    <tr>
-                        <td>{{patient.id}}</td>
-                        <td>{{patient.name}}</td>
-                        <td>
-                            <a href = "{{url_for('profile', id = patient.id, role = 'patient')}}" class="btn btn-info">Profile</a>
-                            <a href = "{{url_for('edit_profile', id = patient.id, role = 'patient')}}" class="btn btn-warning">Edit</a>
-                            <a href="{{url_for('appointments', id = patient.id, role = 'patient')}}" class="btn btn-success">Appointments</a>
-                            <a href = "{{url_for('change_patient_status', id = patient.id)}}" class="btn btn-danger">Change Status</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="display-5 fw-semibold">
-            <p class="text-info-emphasis">Upcoming Appointments</p>
-        </h2>
-        <div>
-            <a href="{{url_for('appointments', role = 'admin', id = session['user_id'])}}" class="btn btn-info">View All Appointments</a>
-            <a href="{{url_for('departments')}}" class="btn btn-success">Book Appointment</a>
+    <div class="analytics-grid">
+        <div class="analytics-card">
+            <div class="analytics-header">
+                <div>
+                    <h2 class="analytics-title">
+                        Appointment Overview
+                    </h2>
+                    <p class="analytics-subtitle">
+                        Overview of hospital appointments
+                    </p>
+                </div>
+                <span class="analytics-badge">
+                    Overview
+                </span>
+            </div>
+            <div class="chart-container">
+                <canvas id="appointmentOverviewChart"></canvas>
+            </div>
+        </div>
+        <div class="analytics-card">
+            <div class="analytics-header">
+                <div>
+                    <h2 class="analytics-title">
+                        Appointment Status
+                    </h2>
+                    <p class="analytics-subtitle">
+                        Current appointment distribution
+                    </p>
+                </div>
+                <span class="analytics-badge">
+                    Status
+                </span>
+            </div>
+            <div class="chart-container">
+                <canvas id="appointmentStatusChart"></canvas>
+            </div>
         </div>
     </div>
-    <table name = "appointment" class="table" border = "Danger">
-         <thead>
-            <tr>
-                <th>Appointment ID</th>
-                <th>Patient Name</th>
-                <th>Doctor Name</th>
-                <th>Date</th>
-                <th>Slot</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for appointment in appointments %}
-                    <tr>
-                        <td>{{appointment.id}}</td>
-                        <td>{{appointment.patient.name}}</td>
-                        <td>{{appointment.doctor.name}}</td>
-                        <td>{{appointment.date}}</td>
-                        <td>Slot {{appointment.slot}}</td>
-                        <td>
-                            <a href = "{{url_for('cancel_appointment', id = appointment.id)}}" class="btn btn-danger">Cancel</a>
-                        </td>
-                    </tr>
+    <div class="overview-grid">
+        <div class="overview-card overview-patient">
+            <div class="overview-top">
+                <div class="overview-icon">
+                    👥
+                </div>
+            </div>
+            <p class="overview-label">
+                Total Patients
+            </p>
+            <h2 class="overview-number">
+                {{ total_patients }}
+            </h2>
+            <p class="overview-description">
+                Registered patients
+            </p>
+        </div>
+        <div class="overview-card overview-doctor">
+            <div class="overview-top">
+                <div class="overview-icon">
+                    🩺
+                </div>
+            </div>
+            <p class="overview-label">
+                Total Doctors
+            </p>
+            <h2 class="overview-number">
+                {{ total_doctors }}
+            </h2>
+            <p class="overview-description">
+                Registered doctors
+            </p>
+        </div>
+        <div class="overview-card overview-appointment">
+            <div class="overview-top">
+                <div class="overview-icon">
+                    📅
+                </div>
+            </div>
+            <p class="overview-label">
+                Appointments
+            </p>
+            <h2 class="overview-number">
+                {{ total_appointments }}
+            </h2>
+            <p class="overview-description">
+                Total appointments
+            </p>
+        </div>
+        <div class="overview-card overview-department">
+            <div class="overview-top">
+                <div class="overview-icon">
+                    🏥
+                </div>
+            </div>
+            <p class="overview-label">
+                Departments
+            </p>
+            <h2 class="overview-number">
+                {{ total_departments }}
+            </h2>
+            <p class="overview-description">
+                Hospital departments
+            </p>
+        </div>
+    </div>
+    <div class="today-grid">
+        <div class="today-card today-appointment">
+            <div class="today-top">
+                <div class="today-icon">
+                    📅
+                </div>
+            </div>
+            <p class="today-label">
+                Today's Appointments
+            </p>
+            <h2 class="today-number">
+                {{ today_appointments }}
+            </h2>
+            <p class="today-description">
+                Scheduled for today
+            </p>
+        </div>
+        <div class="today-card today-completed">
+            <div class="today-top">
+                <div class="today-icon">
+                    ✓
+                </div>
+            </div>
+            <p class="today-label">
+                Completed Today
+            </p>
+            <h2 class="today-number">
+                {{ today_completed }}
+            </h2>
+            <p class="today-description">
+                Successfully completed
+            </p>
+        </div>
+        <div class="today-card today-cancelled">
+            <div class="today-top">
+                <div class="today-icon">
+                    ✕
+                </div>
+            </div>
+            <p class="today-label">
+                Cancelled Today
+            </p>
+            <h2 class="today-number">
+                {{ today_cancelled }}
+            </h2>
+            <p class="today-description">
+                Cancelled appointments
+            </p>
+        </div>
+        <div class="today-card today-doctors">
+            <div class="today-top">
+                <div class="today-icon">
+                    🩺
+                </div>
+            </div>
+            <p class="today-label">
+                Active Doctors
+            </p>
+            <h2 class="today-number">
+                {{ active_doctors }}
+            </h2>
+            <p class="today-description">
+                Currently active doctors
+            </p>
+        </div>
+    </div>
+    <div class="recent-grid">
+        <div class="recent-card">
+            <div class="recent-header">
+                <div>
+                    <h2 class="recent-title">
+                        Recent Appointments
+                    </h2>
+                    <p class="recent-subtitle">
+                        Latest scheduled appointments
+                    </p>
+                </div>
+                <div class="recent-header-icon appointment-recent-icon">
+                    📅
+                </div>
+            </div>
+            <div class="recent-list">
+                {% for appointment in recent_appointments %}
+                <div class="recent-item">
+                    <div class="recent-avatar">
+                        👤
+                    </div>
+                    <div class="recent-info">
+                        <h3>
+                            {{ appointment.patient.name }}
+                        </h3>
+                        <p>
+                            Dr. {{ appointment.doctor.name }}
+                        </p>
+                    </div>
+                    <div class="recent-meta">
+                        <span class="recent-date">
+                            {{ appointment.date }}
+                        </span>
+                        <span class="recent-status">
+                            {{ appointment.status }}
+                        </span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="recent-item">
+                    <div class="recent-info">
+                        <h3>
+                            No appointments yet
+                        </h3>
+                        <p>
+                            There are no appointments to display.
+                        </p>
+                    </div>
+                </div>
                 {% endfor %}
-            </body>
-         </thead>
-    </table>
+            </div>
+        </div>
+        <div class="recent-card">
+            <div class="recent-header">
+                <div>
+                    <h2 class="recent-title">
+                        Recent Registrations
+                    </h2>
+                    <p class="recent-subtitle">
+                        Recently registered users
+                    </p>
+                </div>
+                <div class="recent-header-icon registration-recent-icon">
+                    👥
+                </div>
+            </div>
+            <div class="recent-list">
+                {% for patient in recent_patients %}
+                <div class="recent-item">
+                    <div class="recent-avatar">
+                        👤
+                    </div>
+                    <div class="recent-info">
+                        <h3>
+                            {{ patient.name }}
+                        </h3>
+                        <p>
+                            Patient
+                        </p>
+                    </div>
+                    <div class="recent-meta">
+                        <span class="recent-date">
+                            #{{ patient.id }}
+                        </span>
+                        <span class="user-type patient-type">
+                            Patient
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+                {% for doctor in recent_doctors %}
+                <div class="recent-item">
+                    <div class="recent-avatar">
+                        🩺
+                    </div>
+                    <div class="recent-info">
+                        <h3>
+                            Dr. {{ doctor.name }}
+                        </h3>
+                        <p>
+                            Doctor
+                        </p>
+                    </div>
+                    <div class="recent-meta">
+                        <span class="recent-date">
+                            #{{ doctor.id }}
+                        </span>
+                        <span class="user-type doctor-type">
+                            Doctor
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <section class="dashboard-section">
+        <div class="section-header">
+            <div class="section-heading">
+                <div class="section-icon department-icon">
+                    🏢
+                </div>
+                <div>
+                    <h2>
+                        Departments
+                    </h2>
+                    <p>
+                        Manage hospital departments and doctors
+                    </p>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                <a
+                    href="{{url_for('departments')}}"
+                    class="dashboard-btn btn-view"
+                >
+                    View All
+                </a>
+                <a
+                    href="{{url_for('add_department')}}"
+                    class="dashboard-btn btn-add"
+                >
+                    + Add Department
+                </a>
+            </div>
+        </div>
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table class="royal-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Department ID
+                            </th>
+                            <th>
+                                Department Name
+                            </th>
+                            <th>
+                                Doctors
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for department in departments %}
+                        <tr>
+                            <td>
+                                <span class="id-badge">
+                                    #{{department.id}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="table-name">
+                                    {{department.name}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge">
+                                    <span class="status-dot"></span>
+                                    {{department.doctors|length}}
+                                    Doctors
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a
+                                        href="{{url_for('view_department', id=department.id)}}"
+                                        class="action-btn action-blue"
+                                    >
+                                        View
+                                    </a>
+                                    <a
+                                        href="{{url_for('add_doctor', id=department.id)}}"
+                                        class="action-btn action-green"
+                                    >
+                                        + Doctor
+                                    </a>
+                                    <a
+                                        href="{{url_for('edit_department', id=department.id)}}"
+                                        class="action-btn action-orange"
+                                    >
+                                        Edit
+                                    </a>
+                                    <a
+                                        href="{{url_for('change_department_status', id=department.id)}}"
+                                        class="action-btn action-red"
+                                    >
+                                        Status
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td
+                                colspan="4"
+                                class="empty-row"
+                            >
+                                No departments available.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <div class="section-header">
+            <div class="section-heading">
+                <div class="section-icon doctor-icon">
+                    🩺
+                </div>
+                <div>
+                    <h2>
+                        Doctors
+                    </h2>
+                    <p>
+                        Manage doctors and their availability
+                    </p>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                <a
+                    href="{{url_for('doctors')}}"
+                    class="dashboard-btn btn-view"
+                >
+                    View All
+                </a>
+                <a
+                    href="{{url_for('add_doctor', id=0)}}"
+                    class="dashboard-btn btn-add"
+                >
+                    + Add Doctor
+                </a>
+            </div>
+        </div>
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table class="royal-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Doctor ID
+                            </th>
+                            <th>
+                                Doctor Name
+                            </th>
+                            <th>
+                                Department
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doctor in doctors %}
+                        <tr>
+                            <td>
+                                <span class="id-badge">
+                                    #{{doctor.id}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="table-name">
+                                    {{doctor.name}}
+                                </span>
+                            </td>
+                            <td>
+                                {{doctor.department.name}}
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a
+                                        href="{{url_for('profile', id=doctor.id, role='doctor')}}"
+                                        class="action-btn action-blue"
+                                    >
+                                        Profile
+                                    </a>
+                                    <a
+                                        href="{{url_for('doctor_availability', id=doctor.id)}}"
+                                        class="action-btn action-gray"
+                                    >
+                                        Availability
+                                    </a>
+                                    <a
+                                        href="{{url_for('appointments', id=doctor.id, role='doctor')}}"
+                                        class="action-btn action-green"
+                                    >
+                                        Appointments
+                                    </a>
+                                    <a
+                                        href="{{url_for('change_doctor_status', id=doctor.id)}}"
+                                        class="action-btn action-red"
+                                    >
+                                        Status
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td
+                                colspan="4"
+                                class="empty-row"
+                            >
+                                No doctors available.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <div class="section-header">
+            <div class="section-heading">
+                <div class="section-icon patient-icon">
+                    👥
+                </div>
+                <div>
+                    <h2>
+                        Patients
+                    </h2>
+                    <p>
+                        View and manage registered patients
+                    </p>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                <a
+                    href="{{url_for('patients')}}"
+                    class="dashboard-btn btn-view"
+                >
+                    View All
+                </a>
+                <a
+                    href="{{url_for('register')}}"
+                    class="dashboard-btn btn-add"
+                >
+                    + Add Patient
+                </a>
+            </div>
+        </div>
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table class="royal-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Patient ID
+                            </th>
+                            <th>
+                                Patient Name
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <td>
+                                <span class="id-badge">
+                                    #{{patient.id}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="table-name">
+                                    {{patient.name}}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a
+                                        href="{{url_for('profile', id=patient.id, role='patient')}}"
+                                        class="action-btn action-blue"
+                                    >
+                                        Profile
+                                    </a>
+                                    <a
+                                        href="{{url_for('edit_profile', id=patient.id, role='patient')}}"
+                                        class="action-btn action-orange"
+                                    >
+                                        Edit
+                                    </a>
+                                    <a
+                                        href="{{url_for('appointments', id=patient.id, role='patient')}}"
+                                        class="action-btn action-green"
+                                    >
+                                        Appointments
+                                    </a>
+                                    <a
+                                        href="{{url_for('change_patient_status', id=patient.id)}}"
+                                        class="action-btn action-red"
+                                    >
+                                        Status
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td
+                                colspan="3"
+                                class="empty-row"
+                            >
+                                No patients registered yet.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard-section">
+        <div class="section-header">
+            <div class="section-heading">
+                <div class="section-icon appointment-icon">
+                    📅
+                </div>
+                <div>
+                    <h2>
+                        Upcoming Appointments
+                    </h2>
+                    <p>
+                        Monitor scheduled patient appointments
+                    </p>
+                </div>
+            </div>
+            <div class="dashboard-actions">
+                <a
+                    href="{{url_for('appointments', role='admin', id=session['user_id'])}}"
+                    class="dashboard-btn btn-view"
+                >
+                    View All
+                </a>
+            </div>
+        </div>
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table class="royal-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Appointment ID
+                            </th>
+                            <th>
+                                Patient
+                            </th>
+                            <th>
+                                Doctor
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Slot
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>
+                                <span class="id-badge">
+                                    #{{appointment.id}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="table-name">
+                                    {{appointment.patient.name}}
+                                </span>
+                            </td>
+                            <td>
+                                Dr. {{appointment.doctor.name}}
+                            </td>
+                            <td>
+                                <span class="appointment-date">
+                                    {{appointment.date}}
+                                </span>
+                            </td>
+                            <td>
+                                {% set slot_info = {
+                                    1:  ('Slot 1A',  '08:00 AM'),
+                                    2:  ('Slot 2A',  '08:30 AM'),
+                                    3:  ('Slot 3A',  '09:00 AM'),
+                                    4:  ('Slot 4A',  '09:30 AM'),
+                                    5:  ('Slot 5A',  '10:00 AM'),
+                                    6:  ('Slot 6A',  '10:30 AM'),
+                                    7:  ('Slot 7A',  '11:00 AM'),
+                                    8:  ('Slot 8A',  '11:30 AM'),
+                                    9:  ('Slot 9A',  '12:00 PM'),
+                                    10: ('Slot 10A', '12:30 PM'),
+                                    11: ('Slot 11A', '01:00 PM'),
+                                    12: ('Slot 12A', '01:30 PM'),
+                                    13: ('Slot 1B',  '04:00 PM'),
+                                    14: ('Slot 2B',  '04:30 PM'),
+                                    15: ('Slot 3B',  '05:00 PM'),
+                                    16: ('Slot 4B',  '05:30 PM'),
+                                    17: ('Slot 5B', '06:00 PM'),
+                                    18: ('Slot 6B', '06:30 PM'),
+                                    19: ('Slot 7B', '07:00 PM'),
+                                    20: ('Slot 8B', '07:30 PM')
+                                } %}
+                                <span class="slot-badge">
+                                    🕐
+                                    {{ slot_info[appointment.slot][0] }}
+                                    ·
+                                    {{ slot_info[appointment.slot][1] }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a
+                                        href="{{ url_for('reschedule_appointment', id=appointment.id) }}"
+                                        class="action-btn action-orange"
+                                    >
+                                        🔄 Reschedule
+                                    </a>
+                                    <a
+                                        href="{{ url_for('cancel_appointment', id=appointment.id) }}"
+                                        class="action-btn action-red"
+                                    >
+                                        ✕ Cancel
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td
+                                colspan="6"
+                                class="empty-row"
+                            >
+                                No upcoming appointments.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const overviewCanvas =
+        document.getElementById('appointmentOverviewChart');
+    if (overviewCanvas) {
+        new Chart(overviewCanvas, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Total',
+                    'Booked',
+                    'Completed',
+                    'Cancelled'
+                ],
+                datasets: [{
+                    label: 'Appointments',
+                    data: [
+                        Number("{{ total_appointments }}"),
+                        Number("{{ booked_appointments }}"),
+                        Number("{{ completed_appointments }}"),
+                        Number("{{ cancelled_appointments }}")
+                    ],
+                    backgroundColor: [
+                        undefined,
+                        '#facc15',
+                        '#22c55e',
+                        '#ef4444'
+                    ],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        },
+                        grid: {
+                            color: '#eef2f7'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+    const statusCanvas =
+        document.getElementById('appointmentStatusChart');
+    if (statusCanvas) {
+        new Chart(statusCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Booked',
+                    'Completed',
+                    'Cancelled'
+                ],
+                datasets: [{
+                    data: [
+                        Number("{{ booked_appointments }}"),
+                        Number("{{ completed_appointments }}"),
+                        Number("{{ cancelled_appointments }}")
+                    ],
+                    backgroundColor: [
+                        '#facc15',
+                        '#22c55e',
+                        '#ef4444'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 18,
+                            usePointStyle: true,
+                            font: {
+                                size: 11,
+                                weight: '600'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

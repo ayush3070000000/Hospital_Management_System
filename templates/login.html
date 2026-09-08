@@ -1,25 +1,343 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    HMS - Login 
+    HMS Royal | Login
 {% endblock %}
 
+
+{% block style %}
+
+<style>
+    body {
+        background: #f5f8fc;
+    }
+    .login-page {
+        min-height: calc(100vh - 72px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 20px;
+        background:
+            radial-gradient( circle at 10% 20%, rgba(37, 99, 235, 0.08), transparent 30% ),
+            radial-gradient( circle at 90% 80%, rgba(14, 165, 233, 0.08), transparent 30%);
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 950px;
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        background: white;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(15, 23, 42, 0.10);
+    }
+    .login-info {
+        position: relative;
+        padding: 55px 45px;
+        color: white;
+        background: linear-gradient( 145deg, #2563eb, #0ea5e9);
+        overflow: hidden;
+    }
+    .login-info::before {
+        content: "";
+        position: absolute;
+        width: 330px;
+        height: 330px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.09);
+        top: -140px;
+        right: -140px;
+    }
+    .login-info::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+        bottom: -120px;
+        left: -100px;
+    }
+    .login-info-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .login-hospital-icon {
+        width: 72px;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 21px;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.25);
+        backdrop-filter: blur(10px);
+        font-size: 35px;
+        margin-bottom: 30px;
+    }
+    .login-info-title {
+        font-size: 35px;
+        line-height: 1.2;
+        font-weight: 800;
+        margin-bottom: 18px;
+    }
+    .login-info-text {
+        font-size: 15px;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.82);
+        margin-bottom: 35px;
+    }
+    .security-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .security-icon {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.13);
+        font-size: 15px;
+    }
+    .login-form-section {
+        padding: 60px 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .login-heading {
+        margin-bottom: 32px;
+    }
+    .login-heading h1 {
+        margin: 0 0 8px;
+        font-size: 32px;
+        font-weight: 800;
+        color: #102a43;
+    }
+    .login-heading p {
+        margin: 0;
+        font-size: 14px;
+        color: #64748b;
+    }
+    .login-form {
+        width: 100%;
+    }
+    .login-form-group {
+        margin-bottom: 22px;
+    }
+    .login-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #334155;
+    }
+    .login-input-wrapper {
+        position: relative;
+    }
+
+    .login-input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 17px;
+        z-index: 2;
+    }
+
+    .login-input {
+        width: 100%;
+        height: 51px;
+        padding: 0 15px 0 45px;
+        box-sizing: border-box;
+        border: 1px solid #dbe3ec;
+        border-radius: 13px;
+        background: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.25s ease;
+    }
+    .login-input:focus {
+        background: white;
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
+    }
+    .login-input::placeholder {
+        color: #94a3b8;
+    }
+    .login-submit {
+        width: 100%;
+        height: 51px;
+        margin-top: 5px;
+        border: none;
+        border-radius: 13px;
+        background: linear-gradient( 135deg, #2563eb, #0ea5e9 );
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 9px 20px rgba(37,99,235,0.20);
+        transition: all 0.25s ease;
+    }
+    .login-submit:hover {
+        transform: translateY(-2px);
+        box-shadow:
+            0 14px 28px rgba(37,99,235,0.27);
+    }
+    .login-submit:active {
+        transform: translateY(0);
+    }
+    .login-note {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+    @media (max-width: 800px) {
+        .login-card {
+            grid-template-columns: 1fr;
+        }
+        .login-info {
+            padding: 40px 30px;
+        }
+        .login-form-section {
+            padding: 45px 30px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .login-page {
+            padding: 20px 10px;
+        }
+        .login-info {
+            padding: 35px 25px;
+        }
+        .login-form-section {
+            padding: 35px 22px;
+        }
+        .login-info-title {
+            font-size: 29px;
+        }
+        .login-heading h1 {
+            font-size: 27px;
+        }
+    }
+</style>
+
+{% endblock %}
 {% block content %}
-    <h2 align = 'center'class="display-5 fw-medium">
-        <p class="text-primary-emphasis">Login</h2></p>
-    </h2>
-        <form action="" class="my-form" method = "post">
-            <div class = "form-group">
-                <label for="username" class = "form-label"><strong>Username / E-mail</strong></label>
-                <input type="text" name="username" class = "form-control">
+
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-info">
+            <div class="login-info-content">
+                <div class="login-hospital-icon">
+                    🏥
+                </div>
+
+                <div class="login-info-title">
+                    Welcome Back to
+                    HMS Royal
+                </div>
+
+                <p class="login-info-text">
+                    Access your healthcare portal and manage
+                    everything you need from one secure platform.
+                </p>
+
+                <div class="security-item">
+                    <div class="security-icon">
+                        🔒
+                    </div>
+                    Secure & protected access
+                </div>
+
+                <div class="security-item">
+                    <div class="security-icon">
+                        ⚡
+                    </div>
+                    Fast & easy management
+                </div>
+
+                <div class="security-item">
+                    <div class="security-icon">
+                        ❤️
+                    </div>
+                    Designed for better healthcare
+                </div>
             </div>
-            <div class = "form-group">
-                <label for="password" class = "form-label"><strong>Password</strong></label>
-                <input type="password" name="password" class = "form-control">
-                <br>
+        </div>
+
+        <div class="login-form-section">
+            <div class="login-heading">
+                <h1>
+                    {% if role == 'patient' %}
+                        Sign In as Patient
+                    {% elif role == 'doctor' %}
+                        Sign In as Doctor
+                    {% elif role == 'admin' %}
+                        Sign In as Admin
+                    {% else %}
+                        Sign In
+                    {% endif %}
+                </h1>
+                <p>
+                    Enter your credentials to continue.
+                </p>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Submit" class ="btn btn-primary">
-            </div>
-        </form>
+
+            <form action="" class="login-form" method="post">
+
+                <div class="login-form-group">
+                    <label for="username" class="login-label">
+                        Username / E-mail
+                    </label>
+
+                    <div class="login-input-wrapper">
+                        <span class="login-input-icon">
+                            ✉️
+                        </span>
+                        <input type="text" name="username" id="username" class="login-input" placeholder="Enter your username or email" required>
+                    </div>
+                </div>
+
+                <div class="login-form-group">
+                    <label for="password" class="login-label">
+                        Password
+                    </label>
+                    <div class="login-input-wrapper">
+                        <span class="login-input-icon">
+                            🔒
+                        </span>
+                        <input type="password" name="password" id="password" class="login-input" placeholder="Enter your password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-submit">
+                    Sign In
+                    &nbsp; →
+                </button>
+
+                <div class="login-note">
+                    🔐 Your login information is securely handled by HMS Royal
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+    
+</div>
+
 {% endblock %}

@@ -1,76 +1,525 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('home') }}">HMS Royal</a>
+<nav class="royal-navbar">
 
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="royal-nav-container">
 
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
-                </li>
+        <a class="royal-brand" href="{{ url_for('home') }}">
+            <div class="brand-icon">
+                🏥
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">HMS Royal</span>
+                <span class="brand-subtitle">Healthcare Management</span>
+            </div>
+        </a>
 
-                {% if 'user_id' in session %}
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('dashboard') }}">Dashboard</a>
-                    </li>
+        <button class="mobile-menu-btn" type="button" onclick="toggleRoyalMenu()">
+            ☰
+        </button>
 
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('profile', id=session['user_id'], role=session['role']) }}">Profile</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('logout') }}">Logout</a>
-                    </li>
+        <div class="royal-nav-menu" id="royalNavMenu">
+            <div class="royal-nav-left">
+                {% if 'user_id' not in session %}
+                    <a class="royal-nav-link" href="{{ url_for('home') }}">
+                        <span>⌂</span>
+                        Home
+                    </a>
                 {% endif %}
-            </ul>
+                {% if 'user_id' in session %}
+                    <a class="royal-nav-link" href="{{ url_for(session['role'] + '_dashboard') }}">
+                        <span>▦</span>
+                        Dashboard
+                    </a>
+                    <a class="royal-nav-link" href="{{ url_for('profile', id=session['user_id'], role=session['role']) }}">
+                        <span>♙</span>
+                        Profile
+                    </a>
+                    <a class="royal-nav-link logout-link" href="{{ url_for('logout') }}">
+                        <span>↪</span>
+                        Logout
+                    </a>
+                {% endif %}
+            </div>
 
-            <ul class="navbar-nav ms-auto">
+            <div class="royal-nav-right">
                 {% if 'user_id' in session %}
                     {% if session['role'] == 'admin' or session['role'] == 'patient' %}
-                        <form action = "{{url_for('search')}}" class="d-flex" role="search">
-                            
-                            <div class="form-group">
-                                <select class = 'form-select me-2' name = "category">
-                                            <option value = "department"> Department </option>
-                                            <option value = "doctor"> Doctor </option>
-                                            {% if session['role'] == 'admin' %}
-                                                <option value = "patient"> Patient </option>
-                                                <option value = "admin"> Admin </option>
-                                            {% endif %}
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <div class="d-flex ms-2">
-                                    <input class="form-control me-2" name = "query" type="search" placeholder="Search" aria-label="Search"/>
-                                    <button class="btn btn-outline-success" type="submit">Search</button>
-                                </div>
-                            </div>
-                            
+                        <form action="{{ url_for('search') }}" class="royal-search" role="search">
+                            <select name="category"
+                                    class="royal-select">
+                                <option value="department">
+                                    Department
+                                </option>
+                                <option value="doctor">
+                                    Doctor
+                                </option>
+                                {% if session['role'] == 'admin' %}
+                                    <option value="patient">
+                                        Patient
+                                    </option>
+                                    <option value="admin">
+                                        Admin
+                                    </option>
+                                {% endif %}
+                            </select>
+
+                            <input class="royal-search-input" name="query" type="search" placeholder="Search..." aria-label="Search">
+
+                            <button class="royal-search-btn" type="submit">
+                                🔍
+                            </button>
+
                         </form>
                     {% endif %}
-
-                    <li class="nav-item">
-                        <button class="btn btn-secondary ms-3" onclick="history.back()">Go Back</button>
-                    </li>
+                    
+                    <button class="royal-back-btn" type="button" onclick="goBackSafely()">
+                        ← Back
+                    </button>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('register') }}">Register</a>
-                    </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <a class="royal-register"
+                       href="{{ url_for('register') }}">
+                        Register
+                    </a>
+
+                    <div class="royal-login-wrapper">
+
+                        <button class="royal-login-btn" onclick="toggleLoginMenu()">
                             Login
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('login', role='patient') }}">Patient</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('login', role='doctor') }}">Doctor</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('login', role='admin') }}">Admin</a></li>
-                        </ul>
-                    </li>
+                         <span>⌄</span>
+                        </button>
+
+                        <div class="royal-login-menu" id="royalLoginMenu">
+                            <a href="{{ url_for('login', role='patient') }}">
+                                <span class="login-icon patient-icon">
+                                    👤
+                                </span>
+                                <div>
+                                    <strong>Patient</strong>
+                                    <small>Patient portal</small>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('login', role='doctor') }}">
+                                <span class="login-icon doctor-icon">
+                                    🩺
+                                </span>
+                                <div>
+                                    <strong>Doctor</strong>
+                                    <small>Doctor portal</small>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('login', role='admin') }}">
+                                <span class="login-icon admin-icon">
+                                    🔐
+                                </span>
+                                <div>
+                                    <strong>Admin</strong>
+                                    <small>Administration</small>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+
                 {% endif %}
-            </ul>
-            
+
+            </div>
+
         </div>
+
     </div>
+
 </nav>
+
+<style>
+    .royal-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-bottom: 1px solid #e8eef5;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+    }
+    .royal-nav-container {
+        max-width: 1400px;
+        margin: auto;
+        min-height: 72px;
+        padding: 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .royal-brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        text-decoration: none !important;
+        color: #102a43;
+        flex-shrink: 0;
+    }
+    .brand-icon {
+        width: 43px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient( 135deg, #2563eb, #06b6d4);
+        border-radius: 13px;
+        font-size: 22px;
+        box-shadow: 0 7px 16px rgba(37, 99, 235, 0.22);
+    }
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+    }
+    .brand-name {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+        color: #102a43;
+    }
+    .brand-subtitle {
+        margin-top: 3px;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: #94a3b8;
+        text-transform: uppercase;
+    }
+    .royal-nav-menu {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-left: 55px;
+    }
+    .royal-nav-left, .royal-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .royal-nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 12px;
+        border-radius: 10px;
+        color: #64748b;
+        text-decoration: none !important;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+    .royal-nav-link span {
+        font-size: 17px;
+    }
+    .royal-nav-link:hover {
+        color: #2563eb;
+        background: #eff6ff;
+        transform: translateY(-1px);
+    }
+    .logout-link:hover {
+        color: #ef4444;
+        background: #fef2f2;
+    }
+    .royal-search {
+        display: flex;
+        align-items: center;
+        height: 42px;
+        padding: 4px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        transition: all 0.25s ease;
+    }
+    .royal-search:focus-within {
+        background: white;
+        border-color: #93c5fd;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+    .royal-select {
+        height: 32px;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 0 7px;
+        cursor: pointer;
+    }
+    .royal-search-input {
+        width: 150px;
+        height: 32px;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #334155;
+        font-size: 13px;
+    }
+    .royal-search-input::placeholder {
+        color: #94a3b8;
+    }
+    .royal-search-btn {
+        width: 34px;
+        height: 32px;
+        border: none;
+        border-radius: 9px;
+        background: #2563eb;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .royal-search-btn:hover {
+        background: #1d4ed8;
+        transform: scale(1.04);
+    }
+    .royal-register {
+        padding: 9px 15px;
+        border-radius: 10px;
+        color: #475569;
+        text-decoration: none !important;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+    .royal-register:hover {
+        color: #2563eb;
+        background: #eff6ff;
+    }
+    .royal-login-wrapper {
+        position: relative;
+    }
+    .royal-login-btn {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 17px;
+        border: none;
+        border-radius: 11px;
+        background: #2563eb;
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.20);
+        transition: all 0.25s ease;
+    }
+    .royal-login-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+    }
+    .royal-login-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        width: 235px;
+        padding: 8px;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.13);
+        display: none;
+    }
+    .royal-login-menu.show {
+        display: block;
+        animation: menuAppear 0.2s ease;
+    }
+
+    @keyframes menuAppear {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .royal-login-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px;
+        border-radius: 11px;
+        text-decoration: none !important;
+        color: #334155;
+        transition: background 0.2s ease;
+    }
+    .royal-login-menu a:hover {
+        background: #f8fafc;
+    }
+    .royal-login-menu strong {
+        display: block;
+        font-size: 13px;
+        color: #1e293b;
+    }
+    .royal-login-menu small {
+        display: block;
+        margin-top: 2px;
+        font-size: 10px;
+        color: #94a3b8;
+    }
+    .login-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        font-size: 18px;
+    }
+    .patient-icon {
+        background: #eff6ff;
+    }
+    .doctor-icon {
+        background: #ecfdf5;
+    }
+    .admin-icon {
+        background: #f5f3ff;
+    }
+    .royal-back-btn {
+        padding: 9px 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: white;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .royal-back-btn:hover {
+        border-color: #cbd5e1;
+        color: #334155;
+        transform: translateX(-2px);
+    }
+    .mobile-menu-btn {
+        display: none;
+        border: none;
+        background: #eff6ff;
+        color: #2563eb;
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    @media (max-width: 1050px) {
+        .royal-nav-container {
+            padding: 0 18px;
+        }
+        .royal-nav-menu {
+            margin-left: 25px;
+        }
+        .royal-search-input {
+            width: 100px;
+        }
+    }
+
+    @media (max-width: 850px) {
+        .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .royal-nav-menu {
+            position: absolute;
+            top: 72px;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+            display: none;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+        }
+        .royal-nav-menu.show {
+            display: flex;
+        }
+        .royal-nav-left, .royal-nav-right {
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+        }
+        .royal-search {
+            width: 100%;
+        }
+        .royal-search-input {
+            flex: 1;
+            width: auto;
+        }
+        .royal-login-wrapper {
+            width: 100%;
+        }
+        .royal-login-btn {
+            width: 100%;
+            justify-content: center;
+        }
+        .royal-login-menu {
+            position: static;
+            width: 100%;
+            margin-top: 8px;
+            box-shadow: none;
+            border: 1px solid #e2e8f0;
+        }
+        .royal-register, .royal-back-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<script>
+    function toggleLoginMenu() {
+        const menu = document.getElementById("royalLoginMenu");
+        menu.classList.toggle("show");
+    }
+
+    function toggleRoyalMenu() {
+        const menu = document.getElementById("royalNavMenu");
+        menu.classList.toggle("show");
+    }
+
+    function goBackSafely() {
+        const referrer = document.referrer;
+        const currentUrl = window.location.origin + window.location.pathname;
+        const homeUrl = window.location.origin + "/";
+        const loginUrls = [ window.location.origin + "/login/admin", window.location.origin + "/login/doctor", window.location.origin + "/login/patient"];
+        if ( referrer === homeUrl || referrer === window.location.origin + "/home" || loginUrls.includes(referrer)) {
+            return;
+        }
+        if ( !referrer || window.history.length <= 1) {
+            return;
+        }
+        try {
+            const referrerUrl = new URL(referrer);
+            if (referrerUrl.origin === window.location.origin &&
+                (referrerUrl.pathname === "/" || referrerUrl.pathname === "/home" || referrerUrl.pathname.startsWith("/login/"))
+            ) {
+                return;
+            }
+        } catch (error) {
+            return;
+        }
+        history.back();
+    }
+    document.addEventListener("click", function(event) {
+        const wrapper = document.querySelector(".royal-login-wrapper");
+        const menu =document.getElementById("royalLoginMenu");
+        if (wrapper && menu && !wrapper.contains(event.target)) {
+            menu.classList.remove("show");
+        }
+    });
+
+</script>

@@ -1,48 +1,463 @@
 {% extends 'layout.html' %}
-
 {% block title %}
-    HMS - Add Admin Page
+    HMS Royal | Add Administrator
 {% endblock %}
-
+{% block style %}
+<style>
+.add-admin-page {
+    min-height: calc(100vh - 72px);
+    padding: 45px 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(139, 92, 246, 0.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 85%,
+            rgba(37, 99, 235, 0.07),
+            transparent 30%
+        ),
+        #f5f8fc;
+}
+.admin-card {
+    width: 100%;
+    max-width: 1050px;
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+        0 25px 70px rgba(15, 23, 42, 0.11);
+}
+.admin-info {
+    position: relative;
+    padding: 55px 42px;
+    color: white;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            145deg,
+            #7c3aed,
+            #4f46e5
+        );
+}
+.admin-info::before {
+    content: "";
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    top: -150px;
+    right: -130px;
+}
+.admin-info::after {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    bottom: -130px;
+    left: -110px;
+}
+.admin-info-content {
+    position: relative;
+    z-index: 2;
+}
+.admin-icon {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 21px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    font-size: 34px;
+    margin-bottom: 28px;
+}
+.admin-info h1 {
+    margin: 0 0 16px;
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 800;
+}
+.admin-info-description {
+    margin: 0 0 35px;
+    color: rgba(255,255,255,0.80);
+    font-size: 14px;
+    line-height: 1.7;
+}
+.admin-benefit {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 17px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.admin-benefit-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.13);
+    font-size: 16px;
+}
+.admin-form-section {
+    padding: 50px 55px;
+}
+.admin-form-heading {
+    margin-bottom: 30px;
+}
+.admin-form-heading h2 {
+    margin: 0 0 7px;
+    color: #102a43;
+    font-size: 28px;
+    font-weight: 800;
+}
+.admin-form-heading p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+.admin-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+.admin-form-group {
+    margin: 0;
+}
+.admin-full-width {
+    grid-column: 1 / -1;
+}
+.admin-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+}
+.admin-input-wrapper {
+    position: relative;
+}
+.admin-input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    z-index: 2;
+}
+.admin-input {
+    width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 14px 0 43px;
+    border: 1px solid #dbe3ec;
+    border-radius: 12px;
+    outline: none;
+    background: #f8fafc;
+    color: #1e293b;
+    font-size: 13px;
+    transition: all .25s ease;
+}
+.admin-input:focus {
+    background: white;
+    border-color: #8b5cf6;
+    box-shadow:
+        0 0 0 4px rgba(139,92,246,0.09);
+}
+.admin-input::placeholder {
+    color: #94a3b8;
+}
+.admin-submit {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 50px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #4f46e5
+        );
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 9px 20px rgba(124,58,237,0.20);
+    transition: all .25s ease;
+}
+.admin-submit:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 14px 28px rgba(124,58,237,0.27);
+}
+.admin-submit:active {
+    transform: translateY(0);
+}
+.admin-security {
+    grid-column: 1 / -1;
+    margin-top: 3px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    color: #64748b;
+    text-align: center;
+    font-size: 11px;
+}
+@media (max-width: 850px) {
+    .admin-card {
+        grid-template-columns: 1fr;
+    }
+    .admin-info {
+        padding: 40px 30px;
+    }
+    .admin-form-section {
+        padding: 40px 30px;
+    }
+}
+@media (max-width: 600px) {
+    .add-admin-page {
+        padding: 20px 10px;
+    }
+    .admin-info {
+        padding: 35px 25px;
+    }
+    .admin-form-section {
+        padding: 35px 22px;
+    }
+    .admin-form {
+        grid-template-columns: 1fr;
+    }
+    .admin-full-width {
+        grid-column: auto;
+    }
+    .admin-submit,
+    .admin-security {
+        grid-column: auto;
+    }
+    .admin-info h1 {
+        font-size: 28px;
+    }
+    .admin-form-heading h2 {
+        font-size: 25px;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    <h2 align = 'center' class="display-5">Add New Administrator</h2>
-
-    <form action="" method="post" class="my-form">
-        <div class="form-group">
-            <label for ="username" class = "form-label">Username (E-mail)</label>
-            <input type="text" name = "username" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="password" class = "form-label">Password</label>
-            <input type="password" name = "password" required class = "form-control">
-        </div>
-
-        <div class = "form-group">
-            <label for="confirm_password" class = "form-label">Confirm Password</label>
-            <input type="password" name="confirm_password" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="name" class = "form-label">Name</label>
-            <input type="text" name = "name" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="address" class = "form-label">Address</label>
-            <input type="text" name = "address" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="contact" class = "form-label">Contact</label>
-            <input type="text" name = "contact" required class = "form-control">
-        </div><p>
-
-        <div class="form-group">
-            <button type = "submit" class = "btn btn-success">
-                Register
-            </button>
-            <!-- <input type = "submit" value = "Register" class="btn btn-primary"> -->
-        </div>
-    </form>
+<div class="add-admin-page">
+    <div class="admin-card">
+        <section class="admin-info">
+            <div class="admin-info-content">
+                <div class="admin-icon">
+                    🔐
+                </div>
+                <h1>
+                    Administrator
+                    Management
+                </h1>
+                <p class="admin-info-description">
+                    Create a secure administrator account
+                    to help manage hospital operations,
+                    users and the HMS Royal platform.
+                </p>
+                <div class="admin-benefit">
+                    <div class="admin-benefit-icon">
+                        🛡️
+                    </div>
+                    Secure administrator access
+                </div>
+                <div class="admin-benefit">
+                    <div class="admin-benefit-icon">
+                        👥
+                    </div>
+                    Manage hospital users
+                </div>
+                <div class="admin-benefit">
+                    <div class="admin-benefit-icon">
+                        ⚙️
+                    </div>
+                    Control system operations
+                </div>
+                <div class="admin-benefit">
+                    <div class="admin-benefit-icon">
+                        📊
+                    </div>
+                    Monitor hospital activities
+                </div>
+            </div>
+        </section>
+        <section class="admin-form-section">
+            <div class="admin-form-heading">
+                <h2>
+                    Add New Administrator
+                </h2>
+                <p>
+                    Enter the administrator's account details below.
+                </p>
+            </div>
+            <form
+                action=""
+                method="post"
+                class="admin-form"
+            >
+                <div class="admin-form-group admin-full-width">
+                    <label
+                        for="username"
+                        class="admin-label"
+                    >
+                        Username (E-mail)
+                    </label>
+                    <div class="admin-input-wrapper">
+                        <span class="admin-input-icon">
+                            ✉️
+                        </span>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            required
+                            class="admin-input"
+                            placeholder="Enter administrator email"
+                        >
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label
+                        for="password"
+                        class="admin-label"
+                    >
+                        Password
+                    </label>
+                    <div class="admin-input-wrapper">
+                        <span class="admin-input-icon">
+                            🔒
+                        </span>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            class="admin-input"
+                            placeholder="Create password"
+                        >
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label
+                        for="confirm_password"
+                        class="admin-label"
+                    >
+                        Confirm Password
+                    </label>
+                    <div class="admin-input-wrapper">
+                        <span class="admin-input-icon">
+                            🔐
+                        </span>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            required
+                            class="admin-input"
+                            placeholder="Confirm password"
+                        >
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label
+                        for="name"
+                        class="admin-label"
+                    >
+                        Full Name
+                    </label>
+                    <div class="admin-input-wrapper">
+                        <span class="admin-input-icon">
+                            👤
+                        </span>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            required
+                            class="admin-input"
+                            placeholder="Enter full name"
+                        >
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label
+                        for="contact"
+                        class="admin-label"
+                    >
+                        Contact Number
+                    </label>
+                    <div class="admin-input-wrapper">
+                        <span class="admin-input-icon">
+                            📱
+                        </span>
+                        <input
+                            type="text"
+                            id="contact"
+                            name="contact"
+                            required
+                            class="admin-input"
+                            placeholder="Enter contact number"
+                        >
+                    </div>
+                </div>
+                <div class="admin-form-group admin-full-width">
+                    <label
+                        for="address"
+                        class="admin-label"
+                    >
+                        Address
+                    </label>
+                    <div class="admin-input-wrapper">
+                        <span class="admin-input-icon">
+                            📍
+                        </span>
+                        <input
+                            type="text"
+                            id="address"
+                            name="address"
+                            required
+                            class="admin-input"
+                            placeholder="Enter administrator address"
+                        >
+                    </div>
+                </div>
+                <button
+                    type="submit"
+                    class="admin-submit"
+                >
+                    🔐
+                    Create Administrator Account
+                    →
+                </button>
+                <div class="admin-security">
+                    🛡️
+                    Administrator credentials should be kept secure.
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
 {% endblock %}

@@ -1,35 +1,421 @@
 {% extends 'layout.html' %}
-
 {% block title %}
-    HMS - Patient History
+    HMS Royal | Patient History
 {% endblock %}
-
+{% block style %}
+<style>
+.history-page {
+    min-height: calc(100vh - 72px);
+    padding: 40px 28px 65px;
+    max-width: 1250px;
+    margin: auto;
+    background:
+        radial-gradient(
+            circle at 5% 10%,
+            rgba(37,99,235,.06),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 95% 85%,
+            rgba(14,165,233,.06),
+            transparent 28%
+        );
+}
+.history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding: 28px 30px;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 22px;
+    box-shadow:
+        0 12px 35px rgba(15,23,42,.06);
+}
+.history-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.history-main-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+    color: white;
+    font-size: 28px;
+    box-shadow:
+        0 9px 22px rgba(37,99,235,.20);
+}
+.history-title {
+    margin: 0 0 5px;
+    color: #102a43;
+    font-size: 28px;
+    font-weight: 800;
+}
+.history-subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+.history-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 13px;
+    border-radius: 50px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+.history-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 22px;
+    box-shadow:
+        0 12px 35px rgba(15,23,42,.06);
+}
+.history-card-header {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 22px 28px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e8eef5;
+}
+.history-card-icon {
+    width: 41px;
+    height: 41px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #ecfdf5;
+    font-size: 18px;
+}
+.history-card-header h2 {
+    margin: 0 0 3px;
+    color: #172b4d;
+    font-size: 17px;
+    font-weight: 800;
+}
+.history-card-header p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 9px;
+}
+.history-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+.history-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    margin: 0;
+}
+.history-table th {
+    padding: 15px 20px;
+    background: white;
+    border-bottom: 1px solid #e8eef5;
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+.history-table td {
+    padding: 17px 20px;
+    border-bottom: 1px solid #eef2f7;
+    color: #475569;
+    font-size: 11px;
+    vertical-align: middle;
+}
+.history-table tbody tr {
+    transition: background .2s ease;
+}
+.history-table tbody tr:hover {
+    background: #fafcff;
+}
+.history-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.history-date {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #334155;
+    font-weight: 700;
+}
+.history-date-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #eff6ff;
+    font-size: 15px;
+}
+.history-slot {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 50px;
+    background: #f5f3ff;
+    color: #7c3aed;
+    font-size: 9px;
+    font-weight: 800;
+}
+.history-doctor {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #172b4d;
+    font-weight: 700;
+}
+.doctor-avatar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #ecfdf5;
+    font-size: 16px;
+}
+.history-department {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 50px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 9px;
+    font-weight: 800;
+}
+.view-treatment-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    background: #eff6ff;
+    color: #2563eb !important;
+    text-decoration: none !important;
+    font-size: 9px;
+    font-weight: 800;
+    transition: all .2s ease;
+}
+.view-treatment-btn:hover {
+    background: #dbeafe;
+    transform: translateY(-2px);
+}
+.history-empty {
+    padding: 70px 20px !important;
+    text-align: center;
+    color: #94a3b8;
+}
+.history-empty-icon {
+    margin-bottom: 12px;
+    font-size: 38px;
+}
+.history-empty-title {
+    margin-bottom: 5px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+}
+.history-empty-text {
+    color: #94a3b8;
+    font-size: 10px;
+    line-height: 1.5;
+}
+.history-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: #f8fafc;
+    border-top: 1px solid #e8eef5;
+    color: #94a3b8;
+    font-size: 9px;
+}
+@media (max-width: 700px) {
+    .history-page {
+        padding: 25px 14px 50px;
+    }
+    .history-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 23px;
+    }
+    .history-count {
+        width: 100%;
+        justify-content: center;
+    }
+    .history-title {
+        font-size: 23px;
+    }
+    .history-main-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+    }
+    .history-table {
+        min-width: 850px;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-        <h2 align = 'center' class="display-5 fw-medium">
-            <p class="text-primary-emphasis">Patient History</p>
-        </h2> 
-    <table name = "history" class="table" border = "Danger">
-         <thead>
-            <tr>
-                <th>Date</th>
-                <th>Slot</th>
-                <th>Doctor Name</th>
-                <th>Department</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for treatment in treatments  %}
+<div class="history-page">
+    <div class="history-header">
+        <div class="history-heading">
+            <div class="history-main-icon">
+                📋
+            </div>
+            <div>
+                <h1 class="history-title">
+                    Patient History
+                </h1>
+                <p class="history-subtitle">
+                    Review previous consultations and treatment records
+                </p>
+            </div>
+        </div>
+        <div class="history-count">
+            🩺
+            {{treatments|length}}
+            Treatment Records
+        </div>
+    </div>
+    <div class="history-card">
+        <div class="history-card-header">
+            <div class="history-card-icon">
+                🗂️
+            </div>
+            <div>
+                <h2>
+                    Treatment History
+                </h2>
+                <p>
+                    Your previous appointments and medical records
+                </p>
+            </div>
+        </div>
+        <div class="history-table-scroll">
+            <table class="history-table">
+                <thead>
                     <tr>
-                        <td>{{treatment.appointment.date}}</td>
-                        <td>Slot {{treatment.appointment.slot}}</td>
-                        <td>{{treatment.appointment.doctor.name}}</td>
-                        <td>{{treatment.appointment.doctor.department.name}}</td>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Slot
+                        </th>
+                        <th>
+                            Doctor
+                        </th>
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for treatment in treatments %}
+                    <tr>
                         <td>
-                            <a href = "{{url_for('view_treatment', id = treatment.id)}}" class="btn btn-info">View</a>
+                            <div class="history-date">
+                                <div class="history-date-icon">
+                                    📅
+                                </div>
+                                {{treatment.appointment.date}}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="history-slot">
+                                🕐
+                                Slot {{treatment.appointment.slot}}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="history-doctor">
+                                <div class="doctor-avatar">
+                                    🩺
+                                </div>
+                                Dr. {{treatment.appointment.doctor.name}}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="history-department">
+                                🏢
+                                {{treatment.appointment.doctor.department.name}}
+                            </span>
+                        </td>
+                        <td>
+                            <a
+                                href="{{url_for('view_treatment', id=treatment.id)}}"
+                                class="view-treatment-btn"
+                            >
+                                👁️
+                                View Treatment
+                                →
+                            </a>
                         </td>
                     </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
+                    {% else %}
+                    <tr>
+                        <td
+                            colspan="5"
+                            class="history-empty"
+                        >
+                            <div class="history-empty-icon">
+                                📋
+                            </div>
+                            <div class="history-empty-title">
+                                No treatment history found
+                            </div>
+                            <div class="history-empty-text">
+                                Your completed consultations and treatment
+                                records will appear here.
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="history-footer">
+            <span>
+                🔒 Medical records are securely managed by HMS Royal
+            </span>
+            <span>
+                {{treatments|length}} records
+            </span>
+        </div>
+    </div>
+</div>
 {% endblock %}

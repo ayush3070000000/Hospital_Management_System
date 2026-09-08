@@ -1,65 +1,551 @@
 {% extends 'layout.html' %}
-
 {% block title %}
-    HMS - Add Doctor
+    HMS Royal | Add Doctor
 {% endblock %}
-
+{% block style %}
+<style>
+.add-doctor-page {
+    min-height: calc(100vh - 72px);
+    padding: 40px 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 8% 12%,
+            rgba(37,99,235,.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 88%,
+            rgba(14,165,233,.07),
+            transparent 30%
+        ),
+        #f5f8fc;
+}
+.add-doctor-card {
+    width: 100%;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: .72fr 1.28fr;
+    overflow: hidden;
+    background: white;
+    border-radius: 28px;
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.11);
+    animation: doctorCardAppear .45s ease;
+}
+@keyframes doctorCardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.doctor-info-panel {
+    position: relative;
+    padding: 48px 38px;
+    color: white;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            145deg,
+            #2563eb,
+            #0ea5e9
+        );
+}
+.doctor-info-panel::before {
+    content: "";
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -170px;
+    right: -130px;
+}
+.doctor-info-panel::after {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: -140px;
+    left: -110px;
+}
+.doctor-info-content {
+    position: relative;
+    z-index: 2;
+}
+.doctor-large-icon {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    border-radius: 21px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    font-size: 34px;
+}
+.doctor-info-panel h1 {
+    margin: 0 0 15px;
+    font-size: 31px;
+    line-height: 1.2;
+    font-weight: 800;
+}
+.doctor-panel-description {
+    margin: 0 0 32px;
+    color: rgba(255,255,255,.80);
+    font-size: 13px;
+    line-height: 1.7;
+}
+.doctor-benefit {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.doctor-benefit-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: rgba(255,255,255,.13);
+    font-size: 15px;
+}
+.doctor-form-section {
+    padding: 45px 48px;
+}
+.doctor-form-header {
+    margin-bottom: 28px;
+}
+.doctor-form-header h2 {
+    margin: 0 0 6px;
+    color: #102a43;
+    font-size: 27px;
+    font-weight: 800;
+}
+.doctor-form-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+}
+.doctor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.doctor-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+}
+.doctor-form-group {
+    margin: 0;
+}
+.doctor-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #334155;
+    font-size: 11px;
+    font-weight: 700;
+}
+.doctor-input-wrapper {
+    position: relative;
+}
+.doctor-input-icon {
+    position: absolute;
+    left: 13px;
+    top: 15px;
+    z-index: 2;
+    font-size: 15px;
+}
+.doctor-input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 46px;
+    padding: 0 13px 0 40px;
+    border: 1px solid #dbe3ec;
+    border-radius: 11px;
+    outline: none;
+    background: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 12px;
+    transition: all .25s ease;
+}
+.doctor-input:focus {
+    background: white;
+    border-color: #60a5fa;
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.08);
+}
+.doctor-input::placeholder {
+    color: #94a3b8;
+}
+.doctor-select {
+    appearance: auto;
+    cursor: pointer;
+}
+.doctor-description-input {
+    min-height: 95px;
+    height: auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    resize: vertical;
+    line-height: 1.55;
+}
+.description-icon {
+    top: 13px;
+}
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 5px 0 -2px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+}
+.form-section-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e8eef5;
+}
+.add-doctor-btn {
+    width: 100%;
+    height: 49px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 9px 20px rgba(37,99,235,.20);
+    transition: all .25s ease;
+}
+.add-doctor-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 14px 28px rgba(37,99,235,.27);
+}
+.add-doctor-btn:active {
+    transform: translateY(0);
+}
+.doctor-form-note {
+    margin-top: 1px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    color: #64748b;
+    text-align: center;
+    font-size: 9px;
+    line-height: 1.5;
+}
+@media (max-width: 900px) {
+    .add-doctor-card {
+        grid-template-columns: 1fr;
+    }
+    .doctor-info-panel {
+        padding: 40px 30px;
+    }
+    .doctor-form-section {
+        padding: 40px 30px;
+    }
+}
+@media (max-width: 600px) {
+    .add-doctor-page {
+        padding: 20px 10px 40px;
+    }
+    .doctor-info-panel {
+        padding: 35px 25px;
+    }
+    .doctor-form-section {
+        padding: 35px 22px;
+    }
+    .doctor-info-panel h1 {
+        font-size: 27px;
+    }
+    .doctor-form-header h2 {
+        font-size: 24px;
+    }
+    .doctor-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    <h2 align = 'center' class ='display-5 fw-semibold'>
-        <p class="text-primary-emphasis">Add Doctor</p>
-    </h2>
-
-    <form action="" method="post" class="my-form">
-        
-        <div class="form-group">
-            <label for ="department" class = "form-label">Department</label>
-            <select name = "department_id" id = "department_id" class="form-control" required>
-                {% for department in departments %}
-
-                    {% if department.id == id %}
-                        <option selected value="{{department.id}}">{{department.name}}</option>    
-                    {% else %}
-                        <option value="{{department.id}}">{{department.name}}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        </div><p>
-
-        <div class="form-group">
-            <label for ="username" class = "form-label">Username (E-mail)</label>
-            <input type="text" name = "username" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="password" class = "form-label">Password</label>
-            <input type="password" name = "password" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="name" class = "form-label">Name</label>
-            <input type="text" name = "name" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="address" class = "form-label">Address</label>
-            <input type="text" name = "address" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="contact" class = "form-label">Contact</label>
-            <input type="text" name = "contact" required class = "form-control">
-        </div><p>
-        
-        <div class="form-group">
-            <label for ="description" class = "form-label">Description</label>
-            <input type="text" name = "description" required class = "form-control">
-        </div><p>
-        
-        <div class="form-group">
-            <button type = "submit" class = "btn btn-success">
-                Add
-            </button>
-            <!-- <input type = "submit" value = "Register" class="btn btn-primary"> -->
-        </div>
-    </form>
+<div class="add-doctor-page">
+    <div class="add-doctor-card">
+        <section class="doctor-info-panel">
+            <div class="doctor-info-content">
+                <div class="doctor-large-icon">
+                    🩺
+                </div>
+                <h1>
+                    Add New
+                    Doctor
+                </h1>
+                <p class="doctor-panel-description">
+                    Create a professional doctor profile and
+                    assign them to a hospital department in
+                    HMS Royal.
+                </p>
+                <div class="doctor-benefit">
+                    <div class="doctor-benefit-icon">
+                        🏢
+                    </div>
+                    Assign a department
+                </div>
+                <div class="doctor-benefit">
+                    <div class="doctor-benefit-icon">
+                        👤
+                    </div>
+                    Create secure login credentials
+                </div>
+                <div class="doctor-benefit">
+                    <div class="doctor-benefit-icon">
+                        📋
+                    </div>
+                    Add professional information
+                </div>
+                <div class="doctor-benefit">
+                    <div class="doctor-benefit-icon">
+                        📅
+                    </div>
+                    Enable appointment management
+                </div>
+            </div>
+        </section>
+        <section class="doctor-form-section">
+            <div class="doctor-form-header">
+                <h2>
+                    Doctor Information
+                </h2>
+                <p>
+                    Enter the doctor's account and professional
+                    details below.
+                </p>
+            </div>
+            <form
+                action=""
+                method="post"
+                class="doctor-form"
+            >
+                <div class="doctor-form-group">
+                    <label
+                        for="department_id"
+                        class="doctor-label"
+                    >
+                        Department
+                    </label>
+                    <div class="doctor-input-wrapper">
+                        <span class="doctor-input-icon">
+                            🏢
+                        </span>
+                        <select
+                            name="department_id"
+                            id="department_id"
+                            class="doctor-input doctor-select"
+                            required
+                        >
+                            {% for department in departments %}
+                                {% if department.id == id %}
+                                    <option
+                                        selected
+                                        value="{{department.id}}"
+                                    >
+                                        {{department.name}}
+                                    </option>
+                                {% else %}
+                                    <option
+                                        value="{{department.id}}"
+                                    >
+                                        {{department.name}}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-section-title">
+                    Account Details
+                </div>
+                <div class="doctor-form-grid">
+                    <div class="doctor-form-group">
+                        <label
+                            for="username"
+                            class="doctor-label"
+                        >
+                            Username (E-mail)
+                        </label>
+                        <div class="doctor-input-wrapper">
+                            <span class="doctor-input-icon">
+                                ✉️
+                            </span>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                required
+                                class="doctor-input"
+                                placeholder="doctor@example.com"
+                            >
+                        </div>
+                    </div>
+                    <div class="doctor-form-group">
+                        <label
+                            for="password"
+                            class="doctor-label"
+                        >
+                            Password
+                        </label>
+                        <div class="doctor-input-wrapper">
+                            <span class="doctor-input-icon">
+                                🔒
+                            </span>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class="doctor-input"
+                                placeholder="Enter password"
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section-title">
+                    Personal Details
+                </div>
+                <div class="doctor-form-grid">
+                    <div class="doctor-form-group">
+                        <label
+                            for="name"
+                            class="doctor-label"
+                        >
+                            Doctor Name
+                        </label>
+                        <div class="doctor-input-wrapper">
+                            <span class="doctor-input-icon">
+                                👤
+                            </span>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                required
+                                class="doctor-input"
+                                placeholder="Enter doctor's name"
+                            >
+                        </div>
+                    </div>
+                    <div class="doctor-form-group">
+                        <label
+                            for="contact"
+                            class="doctor-label"
+                        >
+                            Contact
+                        </label>
+                        <div class="doctor-input-wrapper">
+                            <span class="doctor-input-icon">
+                                📞
+                            </span>
+                            <input
+                                type="text"
+                                id="contact"
+                                name="contact"
+                                required
+                                class="doctor-input"
+                                placeholder="Enter contact number"
+                            >
+                        </div>
+                    </div>
+                    <div class="doctor-form-group">
+                        <label
+                            for="address"
+                            class="doctor-label"
+                        >
+                            Address
+                        </label>
+                        <div class="doctor-input-wrapper">
+                            <span class="doctor-input-icon">
+                                📍
+                            </span>
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                required
+                                class="doctor-input"
+                                placeholder="Enter address"
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section-title">
+                    Professional Details
+                </div>
+                <div class="doctor-form-group">
+                    <label
+                        for="description"
+                        class="doctor-label"
+                    >
+                        Description
+                    </label>
+                    <div class="doctor-input-wrapper">
+                        <span class="doctor-input-icon description-icon">
+                            📝
+                        </span>
+                        <textarea
+                            id="description"
+                            name="description"
+                            required
+                            class="doctor-input doctor-description-input"
+                            placeholder="Enter doctor's specialization, experience or professional description..."
+                        ></textarea>
+                    </div>
+                </div>
+                <button
+                    type="submit"
+                    class="add-doctor-btn"
+                >
+                    🩺
+                    Add Doctor
+                    →
+                </button>
+                <div class="doctor-form-note">
+                    🔒 Doctor account information should be
+                    entered carefully and kept secure.
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
 {% endblock %}

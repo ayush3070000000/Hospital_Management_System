@@ -1,81 +1,790 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    HMS Royal | Patient Dashboard
+{% endblock %}
+{% block style %}
+<style>
+.patient-dashboard-page {
+    min-height: calc(100vh - 72px);
+    padding: 35px 28px 60px;
+    max-width: 1350px;
+    margin: auto;
+    background:
+        radial-gradient(
+            circle at 5% 10%,
+            rgba(37,99,235,.06),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 95% 85%,
+            rgba(14,165,233,.06),
+            transparent 28%
+        );
+}
+.patient-welcome-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 25px;
+    padding: 30px 32px;
+    overflow: hidden;
+    border-radius: 24px;
+    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+    box-shadow:
+        0 18px 40px rgba(37,99,235,.18);
+}
+.patient-welcome-card::before {
+    content: "";
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -190px;
+    right: -100px;
+}
+.patient-welcome-card::after {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: -150px;
+    left: 28%;
+}
+.patient-welcome-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+.patient-avatar-large {
+    width: 68px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    font-size: 31px;
+}
+.patient-welcome-text h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+.patient-welcome-text p {
+    margin: 0;
+    color: rgba(255,255,255,.78);
+    font-size: 11px;
+    line-height: 1.5;
+}
+.patient-header-actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 8px;
+}
+.patient-header-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 43px;
+    padding: 0 13px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.22);
+    color: white !important;
+    text-decoration: none !important;
+    font-size: 10px;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    transition: all .2s ease;
+}
+.patient-header-btn:hover {
+    background: white;
+    color: #2563eb !important;
+    transform: translateY(-2px);
+}
+.patient-stats {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 28px;
+}
+.patient-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 19px;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 17px;
+    box-shadow:
+        0 8px 25px rgba(15,23,42,.05);
+    transition: all .2s ease;
+}
+.patient-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 13px 30px rgba(15,23,42,.08);
+}
+.patient-stat-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #eff6ff;
+    font-size: 19px;
+}
+.patient-stat-info span {
+    display: block;
+    margin-bottom: 3px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+.patient-stat-info strong {
+    color: #172b4d;
+    font-size: 20px;
+    font-weight: 800;
+}
+.patient-section {
+    margin-bottom: 30px;
+}
+.patient-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 14px;
+}
+.patient-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+.patient-section-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #eff6ff;
+    font-size: 19px;
+}
+.patient-section-heading h2 {
+    margin: 0 0 3px;
+    color: #172b4d;
+    font-size: 19px;
+    font-weight: 800;
+}
+.patient-section-heading p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 10px;
+}
+.patient-section-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 13px;
+    border-radius: 9px;
+    background: #eff6ff;
+    color: #2563eb !important;
+    text-decoration: none !important;
+    font-size: 10px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+.patient-section-btn:hover {
+    background: #dbeafe;
+    transform: translateY(-2px);
+}
+.book-appointment-btn {
+    background: #ecfdf5;
+    color: #059669 !important;
+}
+.book-appointment-btn:hover {
+    background: #d1fae5;
+}
+.patient-table-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 18px;
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.05);
+}
+.patient-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+.patient-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+    margin: 0;
+}
+.patient-table th {
+    padding: 15px 18px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e8eef5;
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+.patient-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #eef2f7;
+    color: #475569;
+    font-size: 11px;
+    vertical-align: middle;
+}
+.patient-table tbody tr {
+    transition: background .2s ease;
+}
+.patient-table tbody tr:hover {
+    background: #fafcff;
+}
+.patient-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.appointment-id {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 43px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 9px;
+    font-weight: 800;
+}
+.patient-doctor {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #172b4d;
+    font-weight: 700;
+}
+.doctor-avatar {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #ecfdf5;
+    font-size: 16px;
+}
+.appointment-date {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #475569;
+    font-weight: 600;
+}
+.appointment-slot {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    border-radius: 50px;
+    background: #f5f3ff;
+    color: #7c3aed;
+    font-size: 9px;
+    font-weight: 800;
+}
+.patient-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.patient-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    text-decoration: none !important;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all .2s ease;
+}
+.patient-action:hover {
+    transform: translateY(-2px);
+}
+.reschedule-action {
+    background: #fff7ed;
+    color: #ea580c !important;
+}
+.cancel-action {
+    background: #fef2f2;
+    color: #dc2626 !important;
+}
+.department-table {
+    min-width: 750px;
+}
+.department-id {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 9px;
+    font-weight: 800;
+}
+.department-name {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #172b4d;
+    font-weight: 700;
+}
+.department-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f5f3ff;
+    font-size: 16px;
+}
+.department-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    border-radius: 50px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 9px;
+    font-weight: 800;
+}
+.view-department-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 11px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #2563eb !important;
+    text-decoration: none !important;
+    font-size: 9px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+.view-department-btn:hover {
+    background: #dbeafe;
+    transform: translateY(-2px);
+}
+.patient-empty {
+    padding: 60px 20px !important;
+    text-align: center;
+}
+.patient-empty-icon {
+    margin-bottom: 9px;
+    font-size: 34px;
+}
+.patient-empty-title {
+    margin-bottom: 5px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+.patient-empty-text {
+    color: #94a3b8;
+    font-size: 10px;
+    line-height: 1.5;
+}
+@media (max-width: 800px) {
+    .patient-dashboard-page {
+        padding: 25px 14px 50px;
+    }
+    .patient-welcome-card {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 25px;
+    }
+    .patient-header-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+    .patient-header-btn {
+        width: 100%;
+    }
+    .patient-stats {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .patient-welcome-text h1 {
+        font-size: 23px;
+    }
+    .patient-avatar-large {
+        width: 56px;
+        height: 56px;
+        font-size: 25px;
+    }
+    .patient-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .patient-section-btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 align = 'center' class ='display-5 fw-semibold'>
-            <p class="text-primary-emphasis">Welcome {{ patient.name }} </p>
-        </h2>
-
-        <div>
-            <a href="{{url_for('appointments', id = session['user_id'], role = 'patient')}}" class="btn btn-info">Appointments</a>
-            <a href = "{{url_for('treatment_history', id = session['user_id'])}}" class="btn btn-info">Treatment History</a>
+<div class="patient-dashboard-page">
+    <div class="patient-welcome-card">
+        <div class="patient-welcome-content">
+            <div class="patient-avatar-large">
+                👤
+            </div>
+            <div class="patient-welcome-text">
+                <h1>
+                    Welcome, {{ patient.name }}
+                </h1>
+                <p>
+                    Manage your appointments, treatment history
+                    and healthcare services from HMS Royal.
+                </p>
+            </div>
+        </div>
+        <div class="patient-header-actions">
+            <a
+                href="{{url_for('appointments', id=session['user_id'], role='patient')}}"
+                class="patient-header-btn"
+            >
+                📅
+                Appointments
+            </a>
+            <a
+                href="{{url_for('treatment_history', id=session['user_id'])}}"
+                class="patient-header-btn"
+            >
+                📋
+                Treatment History
+            </a>
         </div>
     </div>
-    <hr>
-
-    
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="display-5 fw-medium">
-            <p class="text-info-emphasis">Upcoming Appointments</p>
-        </h2>
-        <a href="{{url_for('departments')}}" class="btn btn-success">Book Appointment</a>
-    </div>
-    <table name = "appointment" class="table" border = "Danger">
-         <thead>
-            <tr>
-                <th>Appointment ID</th>
-                <th>Doctor Name</th>
-                <th>Date</th>
-                <th>Slot</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for appointment in appointments %}
-                    <tr>
-                        <td>{{appointment.id}}</td>
-                        <td>{{appointment.doctor.name}}</td>
-                        <td>{{appointment.date}}</td>
-                        <td>Slot {{appointment.slot}}</td>
-                        <td>
-                            <a href = "{{url_for('reschedule_appointment', id = appointment.id)}}" class="btn btn-warning">Reschedule</a>
-                            <a href = "{{url_for('cancel_appointment', id = appointment.id)}}" class="btn btn-danger">Cancel</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="display-5 fw-medium">
-            <p class="text-info-emphasis">Departments</p>
-        </h2>
-        
-        <div>
-            <a href="{{url_for('departments')}}" class="btn btn-info">View All Departments</a>
+    <div class="patient-stats">
+        <div class="patient-stat-card">
+            <div class="patient-stat-icon">
+                📅
+            </div>
+            <div class="patient-stat-info">
+                <span>
+                    Upcoming Appointments
+                </span>
+                <strong>
+                    {{appointments|length}}
+                </strong>
+            </div>
+        </div>
+        <div class="patient-stat-card">
+            <div class="patient-stat-icon">
+                🏢
+            </div>
+            <div class="patient-stat-info">
+                <span>
+                    Departments
+                </span>
+                <strong>
+                    {{total_departments}}
+                </strong>
+            </div>
+        </div>
+        <div class="patient-stat-card">
+            <div class="patient-stat-icon">
+                🪪
+            </div>
+            <div class="patient-stat-info">
+                <span>
+                    Patient ID
+                </span>
+                <strong>
+                    #{{patient.id}}
+                </strong>
+            </div>
         </div>
     </div>
-    <table name = "department" class="table" border = True>
-         <thead>
-            <tr>
-                <th>Department ID</th>
-                <th>Department Name</th>
-                <th>Number of Doctors</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for department in departments %}
-                    <tr>
-                        <td>{{department.id}}</td>
-                        <td>{{department.name}}</td>
-                        <td>{{department.doctors|length}}</td>
-                        <td>
-                            <a href = "{{url_for('view_department', id = department.id)}}" class="btn btn-info"> View </a>                            
-                        </td>
-                    </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
+    <section class="patient-section">
+        <div class="patient-section-header">
+            <div class="patient-section-heading">
+                <div class="patient-section-icon">
+                    📅
+                </div>
+                <div>
+                    <h2>
+                        Upcoming Appointments
+                    </h2>
+                    <p>
+                        Your scheduled doctor consultations
+                    </p>
+                </div>
+            </div>
+            <a
+                href="{{url_for('departments')}}"
+                class="patient-section-btn book-appointment-btn"
+            >
+                ➕
+                Book Appointment
+            </a>
+        </div>
+        <div class="patient-table-card">
+            <div class="patient-table-scroll">
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Appointment ID
+                            </th>
+                            <th>
+                                Doctor
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Slot
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>
+                                <span class="appointment-id">
+                                    #{{appointment.id}}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="patient-doctor">
+                                    <div class="doctor-avatar">
+                                        🩺
+                                    </div>
+                                    Dr. {{appointment.doctor.name}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="appointment-date">
+                                    📅
+                                    {{appointment.date}}
+                                </div>
+                            </td>
+                            <td>
+                                {% set slot_info = {
+                                    1:  ('Slot 1A',  '08:00 AM'),
+                                    2:  ('Slot 2A',  '08:30 AM'),
+                                    3:  ('Slot 3A',  '09:00 AM'),
+                                    4:  ('Slot 4A',  '09:30 AM'),
+                                    5:  ('Slot 5A',  '10:00 AM'),
+                                    6:  ('Slot 6A',  '10:30 AM'),
+                                    7:  ('Slot 7A',  '11:00 AM'),
+                                    8:  ('Slot 8A',  '11:30 AM'),
+                                    9:  ('Slot 9A',  '12:00 PM'),
+                                    10: ('Slot 10A', '12:30 PM'),
+                                    11: ('Slot 11A', '01:00 PM'),
+                                    12: ('Slot 12A', '01:30 PM'),
+                                    13: ('Slot 1B',  '04:00 PM'),
+                                    14: ('Slot 2B',  '04:30 PM'),
+                                    15: ('Slot 3B',  '05:00 PM'),
+                                    16: ('Slot 4B',  '05:30 PM'),
+                                    17: ('Slot 5B',  '06:00 PM'),
+                                    18: ('Slot 6B',  '06:30 PM'),
+                                    19: ('Slot 7B',  '07:00 PM'),
+                                    20: ('Slot 8B',  '07:30 PM')
+                                } %}
+                                <span class="appointment-slot">
+                                    🕐
+                                    {{ slot_info[appointment.slot][0] }}
+                                    ·
+                                    {{ slot_info[appointment.slot][1] }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="patient-actions">
+                                    <a
+                                        href="{{url_for('reschedule_appointment', id=appointment.id)}}"
+                                        class="patient-action reschedule-action"
+                                    >
+                                        🔄
+                                        Reschedule
+                                    </a>
+                                    <a
+                                        href="{{url_for('cancel_appointment', id=appointment.id)}}"
+                                        class="patient-action cancel-action"
+                                    >
+                                        ✕
+                                        Cancel
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td
+                                colspan="5"
+                                class="patient-empty"
+                            >
+                                <div class="patient-empty-icon">
+                                    📅
+                                </div>
+                                <div class="patient-empty-title">
+                                    No upcoming appointments
+                                </div>
+                                <div class="patient-empty-text">
+                                    You don't have any upcoming appointments.
+                                    Book a consultation with a doctor to get started.
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="patient-section">
+        <div class="patient-section-header">
+            <div class="patient-section-heading">
+                <div class="patient-section-icon">
+                    🏢
+                </div>
+                <div>
+                    <h2>
+                        Departments
+                    </h2>
+                    <p>
+                        Explore hospital departments and available doctors
+                    </p>
+                </div>
+            </div>
+            <a
+                href="{{url_for('departments')}}"
+                class="patient-section-btn"
+            >
+                View All Departments
+                →
+            </a>
+        </div>
+        <div class="patient-table-card">
+            <div class="patient-table-scroll">
+                <table class="patient-table department-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Department ID
+                            </th>
+                            <th>
+                                Department Name
+                            </th>
+                            <th>
+                                Doctors
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for department in departments %}
+                        <tr>
+                            <td>
+                                <span class="department-id">
+                                    #{{department.id}}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="department-name">
+                                    <div class="department-icon">
+                                        🏢
+                                    </div>
+                                    {{department.name}}
+                                </div>
+                            </td>
+                            <td>
+                                <span class="department-count">
+                                    👨‍⚕️
+                                    {{department.doctors|length}}
+                                    Doctors
+                                </span>
+                            </td>
+                            <td>
+                                <a
+                                    href="{{url_for('view_department', id=department.id)}}"
+                                    class="view-department-btn"
+                                >
+                                    👁️
+                                    View Department
+                                    →
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td
+                                colspan="4"
+                                class="patient-empty"
+                            >
+                                <div class="patient-empty-icon">
+                                    🏢
+                                </div>
+                                <div class="patient-empty-title">
+                                    No departments available
+                                </div>
+                                <div class="patient-empty-text">
+                                    Hospital departments will appear here.
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}

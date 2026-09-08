@@ -1,43 +1,409 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    HMS Royal | Patient Status
+{% endblock %}
+{% block style %}
+<style>
+.patient-status-page {
+    min-height: calc(100vh - 72px);
+    padding: 50px 20px 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(37,99,235,.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 85%,
+            rgba(14,165,233,.07),
+            transparent 30%
+        ),
+        #f5f8fc;
+}
+.patient-status-card {
+    width: 100%;
+    max-width: 900px;
+    overflow: hidden;
+    background: white;
+    border-radius: 28px;
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.11);
+    animation: statusAppear .45s ease;
+}
+@keyframes statusAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.patient-status-header {
+    position: relative;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+}
+.patient-status-header::before {
+    content: "";
+    position: absolute;
+    width: 310px;
+    height: 310px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -170px;
+    right: -100px;
+}
+.patient-status-header::after {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: -140px;
+    left: -80px;
+}
+.patient-status-header-content {
+    position: relative;
+    z-index: 2;
+}
+.patient-status-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    font-size: 32px;
+}
+.patient-status-header h1 {
+    margin: 0 0 7px;
+    font-size: 28px;
+    font-weight: 800;
+}
+.patient-status-header p {
+    margin: 0;
+    color: rgba(255,255,255,.78);
+    font-size: 11px;
+}
+.patient-status-body {
+    padding: 40px;
+}
+.patient-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 27px;
+}
+.patient-info-item {
+    padding: 18px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    transition: all .2s ease;
+}
+.patient-info-item:hover {
+    background: white;
+    border-color: #dbeafe;
+    box-shadow:
+        0 7px 18px rgba(15,23,42,.05);
+}
+.patient-info-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.patient-info-value {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 700;
+}
+.patient-id {
+    color: #2563eb;
+}
+.patient-name {
+    color: #172b4d;
+    font-size: 15px;
+}
+.patient-current-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 24px;
+    padding: 17px 19px;
+    border: 1px solid #e5edf5;
+    border-radius: 14px;
+    background: white;
+}
+.current-status-label {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+}
+.patient-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+}
+.patient-status-pill.active {
+    color: #059669;
+    background: #ecfdf5;
+}
+.patient-status-pill.inactive {
+    color: #dc2626;
+    background: #fef2f2;
+}
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+.active .status-dot {
+    background: #10b981;
+}
+.inactive .status-dot {
+    background: #ef4444;
+}
+.patient-confirmation {
+    margin-bottom: 27px;
+    padding: 25px;
+    text-align: center;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+}
+.confirmation-icon {
+    margin-bottom: 9px;
+    font-size: 28px;
+}
+.patient-confirmation h2 {
+    margin: 0 0 8px;
+    color: #172b4d;
+    font-size: 19px;
+    font-weight: 800;
+}
+.patient-confirmation p {
+    max-width: 600px;
+    margin: auto;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.7;
+}
+.patient-status-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #eef2f7;
+}
+.change-patient-status-btn {
+    min-width: 190px;
+    height: 47px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 11px;
+    background:
+        linear-gradient(
+            135deg,
+            #dc2626,
+            #ef4444
+        );
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 8px 18px rgba(220,38,38,.18);
+    transition: all .25s ease;
+}
+.change-patient-status-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 13px 25px rgba(220,38,38,.24);
+}
+.cancel-patient-status-btn {
+    height: 47px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    border-radius: 11px;
+    background: #f1f5f9;
+    color: #475569 !important;
+    text-decoration: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+.cancel-patient-status-btn:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+}
+.patient-status-note {
+    margin-top: 18px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 10px;
+}
+@media (max-width: 650px) {
+    .patient-status-page {
+        padding: 25px 12px 50px;
+    }
+    .patient-status-header {
+        padding: 35px 22px;
+    }
+    .patient-status-body {
+        padding: 28px 20px;
+    }
+    .patient-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .patient-current-status {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .patient-status-actions {
+        flex-direction: column-reverse;
+    }
+    .change-patient-status-btn,
+    .cancel-patient-status-btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis"> Status Change of Patient</p>
-    </h2>
-
-    <hr>
-
-    <table name = "info" class="table" border>
-        <thead>
-            <tr>
-                <th>Details</th>
-                <th></th>
-            </tr>
-            <body>
-                <tr>
-                    <td><strong>Patient ID</strong> : {{patient.id}} </td>
-                    <td><strong>Patient Name</strong> : {{patient.name}} </td>
-                </tr>
-            </body>
-        </thead>
-    </table>
-    
-    {% if patient.status == 'Active' %}
-        <h3 align = 'center' class="display-6">The patient's status is ACTIVE. Do you want to change status to INACTIVE?</h3>
-    {% else %}
-        <h3 align = 'center' class="display-6">The patient's status is INACTIVE. Do you want to change status to ACTIVE?</h3>
-    {% endif %}
-    
-    <div class = "d-flex justify-content-around mt-4">
-        <form action="" method="post" class="my-form">
-            <div class="form-group">
-                <button type = "submit" class = "btn btn-danger">
-                    Change Status
-                </button>
+<div class="patient-status-page">
+    <div class="patient-status-card">
+        <div class="patient-status-header">
+            <div class="patient-status-header-content">
+                <div class="patient-status-icon">
+                    👤
+                </div>
+                <h1>
+                    Patient Status
+                </h1>
+                <p>
+                    Review patient information before changing account status
+                </p>
             </div>
-        </form>
-        <a href="{{url_for('admin_dashboard')}}" class="btn btn-secondary">Cancel</a>
+        </div>
+        <div class="patient-status-body">
+            <div class="patient-info-grid">
+                <div class="patient-info-item">
+                    <span class="patient-info-label">
+                        Patient ID
+                    </span>
+                    <span class="patient-info-value patient-id">
+                        #{{patient.id}}
+                    </span>
+                </div>
+                <div class="patient-info-item">
+                    <span class="patient-info-label">
+                        Patient Name
+                    </span>
+                    <span class="patient-info-value patient-name">
+                        {{patient.name}}
+                    </span>
+                </div>
+            </div>
+            <div class="patient-current-status">
+                <div class="current-status-label">
+                    ● &nbsp; Current Patient Status
+                </div>
+                {% if patient.status == 'Active' %}
+                    <span class="patient-status-pill active">
+                        <span class="status-dot"></span>
+                        ACTIVE
+                    </span>
+                {% else %}
+                    <span class="patient-status-pill inactive">
+                        <span class="status-dot"></span>
+                        INACTIVE
+                    </span>
+                {% endif %}
+            </div>
+            <div class="patient-confirmation">
+                <div class="confirmation-icon">
+                    ⚠️
+                </div>
+                {% if patient.status == 'Active' %}
+                    <h2>
+                        Deactivate Patient?
+                    </h2>
+                    <p>
+                        This patient's account is currently
+                        <strong>ACTIVE</strong>.
+                        Do you want to change the status to
+                        <strong>INACTIVE</strong>?
+                    </p>
+                {% else %}
+                    <h2>
+                        Activate Patient?
+                    </h2>
+                    <p>
+                        This patient's account is currently
+                        <strong>INACTIVE</strong>.
+                        Do you want to change the status to
+                        <strong>ACTIVE</strong>?
+                    </p>
+                {% endif %}
+            </div>
+            <div class="patient-status-actions">
+                <form
+                    action=""
+                    method="post"
+                >
+                    <button
+                        type="submit"
+                        class="change-patient-status-btn"
+                    >
+                        {% if patient.status == 'Active' %}
+                            Deactivate Patient →
+                        {% else %}
+                            Activate Patient →
+                        {% endif %}
+                    </button>
+                </form>
+                <a
+                    href="{{url_for('admin_dashboard')}}"
+                    class="cancel-patient-status-btn"
+                >
+                    ← Cancel
+                </a>
+            </div>
+            <div class="patient-status-note">
+                🔒 Please verify the patient details before
+                changing their account status.
+            </div>
+        </div>
     </div>
-
+</div>
 {% endblock %}

@@ -1,25 +1,416 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    HMS Royal | Edit Department
+{% endblock %}
+{% block style %}
+<style>
+.edit-department-page {
+    min-height: calc(100vh - 72px);
+    padding: 45px 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(37,99,235,.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 85%,
+            rgba(14,165,233,.07),
+            transparent 30%
+        ),
+        #f5f8fc;
+}
+.edit-department-card {
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    overflow: hidden;
+    background: white;
+    border-radius: 28px;
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.11);
+    animation: cardAppear .45s ease;
+}
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.edit-department-info {
+    position: relative;
+    padding: 50px 40px;
+    color: white;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            145deg,
+            #2563eb,
+            #0ea5e9
+        );
+}
+.edit-department-info::before {
+    content: "";
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -150px;
+    right: -130px;
+}
+.edit-department-info::after {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: -140px;
+    left: -110px;
+}
+.edit-department-info-content {
+    position: relative;
+    z-index: 2;
+}
+.edit-department-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    font-size: 32px;
+}
+.edit-department-info h1 {
+    margin: 0 0 15px;
+    font-size: 31px;
+    line-height: 1.2;
+    font-weight: 800;
+}
+.edit-department-description {
+    margin: 0 0 30px;
+    color: rgba(255,255,255,.80);
+    font-size: 13px;
+    line-height: 1.7;
+}
+.current-department-box {
+    padding: 17px;
+    margin-top: 25px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.18);
+}
+.current-label {
+    margin-bottom: 7px;
+    color: rgba(255,255,255,.65);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.current-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+}
+.current-id {
+    margin-top: 5px;
+    color: rgba(255,255,255,.65);
+    font-size: 10px;
+}
+.edit-benefit {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.edit-benefit-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(255,255,255,.13);
+    font-size: 15px;
+}
+.edit-department-form-section {
+    padding: 50px 55px;
+}
+.edit-form-header {
+    margin-bottom: 30px;
+}
+.edit-form-header h2 {
+    margin: 0 0 7px;
+    color: #102a43;
+    font-size: 27px;
+    font-weight: 800;
+}
+.edit-form-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+}
+.edit-department-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.edit-form-group {
+    margin: 0;
+}
+.edit-form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+}
+.edit-input-wrapper {
+    position: relative;
+}
+.edit-input-icon {
+    position: absolute;
+    left: 14px;
+    top: 17px;
+    font-size: 16px;
+    z-index: 2;
+}
+.edit-department-input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 49px;
+    padding: 12px 14px 12px 43px;
+    border: 1px solid #dbe3ec;
+    border-radius: 12px;
+    outline: none;
+    background: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 13px;
+    transition: all .25s ease;
+}
+.edit-department-input:focus {
+    background: white;
+    border-color: #60a5fa;
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.08);
+}
+.edit-department-input::placeholder {
+    color: #94a3b8;
+}
+.edit-description {
+    min-height: 135px;
+    resize: vertical;
+    line-height: 1.6;
+}
+.description-icon {
+    top: 15px;
+}
+.update-department-btn {
+    width: 100%;
+    height: 50px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 9px 20px rgba(37,99,235,.20);
+    transition: all .25s ease;
+}
+.update-department-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 14px 28px rgba(37,99,235,.27);
+}
+.update-department-btn:active {
+    transform: translateY(0);
+}
+.edit-department-note {
+    margin-top: 3px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    color: #64748b;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.5;
+}
+@media (max-width: 850px) {
+    .edit-department-card {
+        grid-template-columns: 1fr;
+    }
+    .edit-department-info {
+        padding: 40px 30px;
+    }
+    .edit-department-form-section {
+        padding: 40px 30px;
+    }
+}
+@media (max-width: 550px) {
+    .edit-department-page {
+        padding: 20px 10px 40px;
+    }
+    .edit-department-info {
+        padding: 35px 25px;
+    }
+    .edit-department-form-section {
+        padding: 35px 22px;
+    }
+    .edit-department-info h1 {
+        font-size: 27px;
+    }
+    .edit-form-header h2 {
+        font-size: 24px;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    <h2 class="display-5 fw-medium">
-        <p class="text-info-emphasis">Edit Department</p>
-    </h2>
-
-    <form action="" method="post" class="my-form">
-        <div class="form-group">
-            <label for ="name" class = "form-label">Department Name</label>
-            <input type="text" value = "{{department.name}}" name = "name" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="description" class = "form-label">Description</label>
-            <input type="text" value = "{{department.description}}" name = "description" required class = "form-control">
-        </div><p>
-
-        <div class="form-group">
-            <button type = "submit" class="btn btn-success">
-                Update
-            </button>
-        </div>
-    </form>
+<div class="edit-department-page">
+    <div class="edit-department-card">
+        <section class="edit-department-info">
+            <div class="edit-department-info-content">
+                <div class="edit-department-icon">
+                    ✏️
+                </div>
+                <h1>
+                    Update
+                    Department
+                </h1>
+                <p class="edit-department-description">
+                    Keep your hospital department information
+                    accurate and up to date for better
+                    healthcare management.
+                </p>
+                <div class="edit-benefit">
+                    <div class="edit-benefit-icon">
+                        🏢
+                    </div>
+                    Update department information
+                </div>
+                <div class="edit-benefit">
+                    <div class="edit-benefit-icon">
+                        📝
+                    </div>
+                    Maintain accurate descriptions
+                </div>
+                <div class="edit-benefit">
+                    <div class="edit-benefit-icon">
+                        ⚙️
+                    </div>
+                    Keep HMS Royal organized
+                </div>
+                <div class="current-department-box">
+                    <div class="current-label">
+                        Currently Editing
+                    </div>
+                    <div class="current-name">
+                        {{department.name}}
+                    </div>
+                    <div class="current-id">
+                        Department #{{department.id}}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="edit-department-form-section">
+            <div class="edit-form-header">
+                <h2>
+                    Edit Department
+                </h2>
+                <p>
+                    Modify the department details below
+                    and save your changes.
+                </p>
+            </div>
+            <form
+                action=""
+                method="post"
+                class="edit-department-form"
+            >
+                <div class="edit-form-group">
+                    <label
+                        for="name"
+                        class="edit-form-label"
+                    >
+                        Department Name
+                    </label>
+                    <div class="edit-input-wrapper">
+                        <span class="edit-input-icon">
+                            🏢
+                        </span>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{department.name}}"
+                            required
+                            class="edit-department-input"
+                            placeholder="Enter department name"
+                        >
+                    </div>
+                </div>
+                <div class="edit-form-group">
+                    <label
+                        for="description"
+                        class="edit-form-label"
+                    >
+                        Department Description
+                    </label>
+                    <div class="edit-input-wrapper">
+                        <span class="edit-input-icon description-icon">
+                            📝
+                        </span>
+                        <textarea
+                            id="description"
+                            name="description"
+                            required
+                            class="edit-department-input edit-description"
+                            placeholder="Describe the department and its services..."
+                        >{{department.description}}</textarea>
+                    </div>
+                </div>
+                <button
+                    type="submit"
+                    class="update-department-btn"
+                >
+                    💾
+                    Save Changes
+                    →
+                </button>
+                <div class="edit-department-note">
+                    💡 Review the updated information before
+                    saving your changes.
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
 {% endblock %}

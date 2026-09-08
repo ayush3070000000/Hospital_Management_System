@@ -1,53 +1,454 @@
 {% extends 'layout.html' %}
 
+{% block title %}
+    HMS Royal | Edit Profile
+{% endblock %}
+
+{% block style %}
+
+<style>
+
+    body {
+        background: #f5f8fc;
+    }
+    .edit-profile-page {
+        min-height: calc(100vh - 72px);
+        padding: 45px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: radial-gradient( circle at 10% 20%, rgba(37, 99, 235, 0.07), transparent 30%),
+            radial-gradient( circle at 90% 80%, rgba(14, 165, 233, 0.07), transparent 30%);
+    }
+    .profile-card {
+        width: 100%;
+        max-width: 900px;
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(15, 23, 42, 0.10);
+    }
+
+    .profile-header {
+        position: relative;
+        padding: 38px 45px;
+        background: linear-gradient(135deg, #2563eb, #0ea5e9);
+        color: white;
+        overflow: hidden;
+    }
+    .profile-header::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        top: -150px;
+        right: -80px;
+    }
+    .profile-header-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+    .profile-avatar {
+        width: 68px;
+        height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.25);
+        backdrop-filter: blur(10px);
+        font-size: 31px;
+    }
+    .profile-header h1 {
+        margin: 0 0 5px;
+        font-size: 29px;
+        font-weight: 800;
+    }
+    .profile-header p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(255,255,255,0.80);
+    }
+    .profile-form-area {
+        padding: 45px;
+    }
+    .section-title {
+        margin-bottom: 25px;
+    }
+    .section-title h2 {
+        margin: 0 0 6px;
+        font-size: 20px;
+        color: #102a43;
+        font-weight: 800;
+    }
+    .section-title p {
+        margin: 0;
+        font-size: 13px;
+        color: #94a3b8;
+    }
+    .profile-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .form-group {
+        margin: 0;
+    }
+    .full-width {
+        grid-column: 1 / -1;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #334155;
+    }
+    .input-wrapper {
+        position: relative;
+    }
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        z-index: 2;
+    }
+    .profile-input {
+        width: 100%;
+        height: 49px;
+        box-sizing: border-box;
+        padding: 0 15px 0 43px;
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+        background: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.25s ease;
+    }
+    .profile-input:focus {
+        background: white;
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
+    }
+    .profile-input::placeholder {
+        color: #94a3b8;
+    }
+    .password-section {
+        grid-column: 1 / -1;
+        margin-top: 15px;
+        padding-top: 30px;
+        border-top: 1px solid #eef2f7;
+    }
+    .password-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    .password-icon {
+        width: 43px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: #eef5ff;
+        font-size: 21px;
+    }
+    .password-title h2 {
+        margin: 0 0 4px;
+        color: #102a43;
+        font-size: 19px;
+        font-weight: 800;
+    }
+    .password-title p {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 12px;
+    }
+    .password-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    .password-input {
+        width: 100%;
+        height: 49px;
+        box-sizing: border-box;
+        padding: 0 15px 0 43px;
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+        background: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.25s ease;
+    }
+    .password-input:focus {
+        background: white;
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
+    }
+    .password-input::placeholder {
+        color: #94a3b8;
+    }
+    .password-help {
+        grid-column: 1 / -1;
+        margin-top: -4px;
+        padding: 11px 13px;
+        border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid #eef2f7;
+        color: #64748b;
+        font-size: 11px;
+    }
+    .form-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 10px;
+        padding-top: 25px;
+        border-top: 1px solid #eef2f7;
+    }
+    .btn-cancel {
+        padding: 12px 22px;
+        border: 1px solid #dbe3ec;
+        border-radius: 11px;
+        background: white;
+        color: #64748b;
+        text-decoration: none !important;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+    .btn-cancel:hover {
+        background: #f8fafc;
+        color: #334155;
+        border-color: #cbd5e1;
+    }
+    .btn-save {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 11px;
+        background:linear-gradient(135deg, #2563eb, #0ea5e9);
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 7px 17px rgba(37,99,235,0.20);
+        transition: all 0.25s ease;
+    }
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(37,99,235,0.25);
+    }
+    .security-note {
+        margin-top: 25px;
+        padding: 13px 15px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        background: #f8fafc;
+        border: 1px solid #eef2f7;
+        border-radius: 11px;
+        color: #64748b;
+        font-size: 11px;
+    }
+
+    @media (max-width: 700px) {
+        .edit-profile-page {
+            padding: 25px 12px;
+        }
+        .profile-header {
+            padding: 30px 25px;
+        }
+        .profile-form-area {
+            padding: 30px 25px;
+        }
+        .profile-form {
+            grid-template-columns: 1fr;
+        }
+        .full-width {
+            grid-column: auto;
+        }
+        .password-section {
+            grid-column: auto;
+        }
+        .password-grid {
+            grid-template-columns: 1fr;
+        }
+        .password-help {
+            grid-column: auto;
+        }
+
+        .form-actions {
+            grid-column: auto;
+            flex-direction: column-reverse;
+        }
+        .btn-save,.btn-cancel { width: 100%; text-align: center; box-sizing: border-box;
+        }
+    }
+</style>
+
+{% endblock %}
 {% block content %}
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis"> Edit Profile</p>
-    </h2>
-
-    <form action="" method="post" class="my-form">
-        <div class="form-group">
-            <label for = "username" class ="form-label">Username</label>
-            <input type = "text" name = "username" value = "{{user.username}}" required class = "form-control">
+<div class="edit-profile-page">
+    <div class="profile-card">
+   
+        <div class="profile-header">
+            <div class="profile-header-content">
+                <div class="profile-avatar">
+                    👤
+                </div>
+                <div>
+                    <h1>
+                        Edit Profile
+                    </h1>
+                    <p>
+                        Update your personal information and password
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for = "name" class ="form-label">Name</label>
-            <input type = "text" name = "name" value = "{{user.name}}" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for = "address" class ="form-label">Address</label>
-            <input type = "text" name = "address" value = "{{user.address}}" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="contact" class = "form-label">Contact</label>
-            <input type="text" name = "contact" value = "{{user.contact}}" required class = "form-control">
-        </div><br>
-        
-            {% if role == 'doctor' %}
-                <div class="form-group">
-                    <label for ="contact" class = "form-label" >Department</label>
-                        <select name = "department_id" id = "department_id" class="form-control" required {% if session['role'] !="admin" %} disabled {% endif %}>
-                            {% for department in departments %}
-                                {% if department.id == user.department.id %}
-                                    <option selected value="{{department.id}}">{{department.name}}</option>    
-                                {% else %}
-                                    <option value="{{department.id}}">{{department.name}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                </div><br>
+        <div class="profile-form-area">
+            <form method="POST" class="profile-form">
+                <div class="section-title full-width">
+                    <h2>
+                        Personal Information
+                    </h2>
+                    <p>
+                        Keep your profile details up to date.
+                    </p>
+                </div>
 
                 <div class="form-group">
-                    <label for ="description" class = "form-label">Description</label>
-                    <input type="text" name = "description" value = "{{user.description}}"required class = "form-control">
-                </div><br>
-            {% endif %}
+                    <label for="name" class="form-label">
+                        Full Name
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            👤
+                        </span>
+                        <input type="text" id="name" name="name" class="profile-input" value="{{ user.name }}" required>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <input type = "submit" value = "Submit" class="btn btn-primary">
+                <div class="form-group">
+                    <label for="contact" class="form-label">
+                        Contact Number
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            📱
+                        </span>
+                        <input type="text" id="contact" name="contact" class="profile-input" value="{{ user.contact }}"required>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="address" class="form-label">
+                        Address
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            📍
+                        </span>
+                        <input type="text" id="address" name="address" class="profile-input" value="{{ user.address }}" required>
+                    </div>
+                </div>
+
+                <div class="password-section">
+                    <div class="password-header">
+                        <div class="password-icon">
+                            🔐
+                        </div>
+                        <div class="password-title">
+                            <h2>
+                                Change Password
+                            </h2>
+                            <p>
+                                Update your password securely.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="password-grid">
+
+                        <div class="form-group">
+                            <label for="previous_password" class="form-label">
+                                Previous Password
+                            </label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    🔑
+                                </span>
+                                <input type="password" id="previous_password" name="previous_password" class="password-input" placeholder="Enter previous password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="new_password" class="form-label">
+                                New Password
+                            </label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    🔒
+                                </span>
+                                <input type="password" id="new_password" name="new_password" class="password-input" placeholder="Enter new password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirm_new_password" class="form-label">
+                                Confirm New Password
+                            </label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    🛡️
+                                </span>
+                                <input type="password" id="confirm_new_password" name="confirm_new_password" class="password-input" placeholder="Confirm new password">
+                            </div>
+                        </div>
+
+                        <div class="password-help">
+                            🔒 Leave all three password fields empty
+                            if you don't want to change your password.
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('profile', id=session['user_id'],role=session['role']) }}" class="btn-cancel">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn-save">
+                        Save Changes →
+                    </button>
+                </div>
+            </form>
+
+            <div class="security-note">
+                🔒
+                Your profile information and password
+                are securely handled by HMS Royal.
+            </div>
+
         </div>
-    </form>
+
+    </div>
+    
+</div>
+
 {% endblock %}

@@ -1,83 +1,924 @@
 {% extends 'layout.html' %}
+{% block title %}
+Book Appointment
+{% endblock %}
+{% block style %}
 
-{% block content%}
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis"> Book Appointment</p>
-    </h2>
-    
-    <table name = "info" class="table" border>
-        <thead>
-            <tr>
-                <th>Details</th>
-                <th></th>
-            </tr>
-            <body>
-                <tr>
-                    <td><strong>Doctor ID</strong> : {{doctor.id}} </td>
-                    <td><strong>Department</strong> : {{doctor.department.name}}</td>
-                </tr>
-                <tr>
-                    <td><strong>Doctor Name</strong> : {{doctor.name}} </td>
-                    <td><strong>Description</strong> : {{doctor.description}} </td>
-                </tr>
-            </body>
-        </thead>
-    </table>
+<style>
+    body {
+        background: #f5f7fb;
+    }
+    .booking-wrapper {
+        max-width: 1050px;
+        margin: 45px auto;
+        padding: 0 20px;
+    }
+    .booking-card {
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
+        overflow: hidden;
+    }
+    .booking-header {
+        padding: 32px 35px;
+        background: linear-gradient(135deg, #0d6efd, #4f8dfd);
+        color: white;
+    }
+    .booking-header h2 {
+        margin: 0;
+        font-weight: 700;
+    }
+    .booking-header p {
+        margin: 8px 0 0;
+        opacity: 0.9;
+    }
+    .booking-body {
+        padding: 35px;
+    }
+    .doctor-info {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 18px;
+        margin-bottom: 30px;
+    }
+    .doctor-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+        background: #e7f0ff;
+        color: #0d6efd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        font-weight: 700;
+    }
+    .doctor-info h4 {
+        margin: 0;
+        font-weight: 700;
+    }
+    .doctor-info p {
+        margin: 4px 0 0;
+        color: #64748b;
+    }
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #172033;
+    }
+    .date-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+    .date-btn {
+        border: 1px solid #dbe3ef;
+        background: white;
+        border-radius: 14px;
+        padding: 13px 18px;
+        cursor: pointer;
+        transition: 0.2s ease;
+        min-width: 145px;
+        text-align: center;
+    }
+    .date-btn:hover {
+        border-color: #0d6efd;
+        transform: translateY(-2px);
+    }
+    .date-btn.active {
+        background: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+        box-shadow: 0 8px 20px rgba(13, 110, 253, 0.20);
+    }
+    .date-day {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        opacity: 0.75;
+    }
+    .date-value {
+        display: block;
+        font-size: 16px;
+        font-weight: 700;
+        margin-top: 3px;
+    }
+    .slot-section {
+        display: none;
+        margin-top: 10px;
+    }
+    .slot-section.show {
+        display: block;
+    }
+    .shift-section {
+        margin-top: 24px;
+    }
+    .shift-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 13px;
+    }
+    .shift-title {
+        margin: 0;
+        color: #172033;
+        font-size: 15px;
+        font-weight: 800;
+    }
+    .shift-subtitle {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 500;
+    }
+    .shift-badge {
+        padding: 6px 10px;
+        border-radius: 50px;
+        background: #eff6ff;
+        color: #0d6efd;
+        font-size: 9px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+    .slot-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 13px;
+    }
+    .slot-btn {
+        position: relative;
+    }
+    .slot-btn input {
+        display: none;
+    }
+    .slot-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 16px 12px;
+        min-height: 58px;
+        text-align: center;
+        border: 1px solid #dbe3ef;
+        border-radius: 13px;
+        background: white;
+        color: #334155;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+    .slot-label:hover {
+        border-color: #0d6efd;
+        color: #0d6efd;
+        transform: translateY(-1px);
+    }
+    .slot-number {
+        color: #475569;
+        font-weight: 600;
+        padding-right: 14px;
+        border-right: 1px solid #dbe3ef;
+        white-space: nowrap;
+    }
+    .slot-time {
+        color: #172033;
+        font-weight: 750;
+        min-width: 82px;
+        white-space: nowrap;
+    }
+    .slot-btn input:checked + .slot-label .slot-number,
+    .slot-btn input:checked + .slot-label .slot-time {
+        color: white;
+    }
+    .slot-btn input:checked + .slot-label {
+        background: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+        box-shadow: 0 7px 18px rgba(13, 110, 253, 0.2);
+    }
+    .slot-btn.disabled {
+        display: none;
+    }
+    .shift-break {
+        margin: 28px 0;
+        padding: 17px 20px;
+        border-radius: 15px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        text-align: center;
+    }
+    .shift-break-title {
+        margin: 0;
+        color: #c2410c;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .3px;
+    }
+    .shift-break-time {
+        margin: 4px 0 0;
+        color: #9a3412;
+        font-size: 13px;
+        font-weight: 800;
+    }
+    .shift-break-note {
+        margin: 4px 0 0;
+        color: #c2410c;
+        font-size: 9px;
+    }
+    .no-slot-message {
+        display: none;
+        padding: 20px;
+        border-radius: 14px;
+        background: #fff7ed;
+        color: #9a3412;
+        text-align: center;
+        margin-top: 18px;
+        border: 1px solid #fed7aa;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .visit-section {
+        margin-top: 32px;
+    }
+    .visit-options {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    .visit-option {
+        flex: 1;
+        min-width: 180px;
+    }
+    .visit-option input {
+        display: none;
+    }
+    .visit-label {
+        display: block;
+        padding: 15px;
+        text-align: center;
+        border: 1px solid #dbe3ef;
+        border-radius: 13px;
+        cursor: pointer;
+        font-weight: 600;
+        background: white;
+        transition: 0.2s ease;
+    }
+    .visit-label:hover {
+        border-color: #0d6efd;
+    }
+    .visit-option input:checked + .visit-label {
+        background: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+    .booking-footer {
+        margin-top: 35px;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .book-btn {
+        border: none;
+        background: #0d6efd;
+        color: white;
+        padding: 14px 30px;
+        border-radius: 13px;
+        font-weight: 700;
+        font-size: 16px;
+        transition: 0.2s ease;
+    }
+    .book-btn:hover {
+        background: #0b5ed7;
+        transform: translateY(-1px);
+    }
+    .book-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    .no-dates {
+        text-align: center;
+        padding: 45px 20px;
+        color: #64748b;
+    }
+    .no-dates h4 {
+        color: #334155;
+        font-weight: 700;
+    }
+    @media (max-width: 768px) {
+        .booking-body {
+            padding: 22px;
+        }
+        .booking-header {
+            padding: 25px 22px;
+        }
+        .slot-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .date-container {
+            flex-direction: column;
+        }
+        .date-btn {
+            width: 100%;
+        }
+    }
+    @media (max-width: 480px) {
+        .slot-grid {
+            grid-template-columns: 1fr;
+        }
+        .slot-label {
+            justify-content: space-between;
+        }
+    }
+</style>
 
-    <form action ="" method="post" class="my-form">
-        <div class="form-group">
-            <label for = "name" class ="form-label">Patient ID</label>
-            {% if session['role'] == 'patient'%}
-                <input type = "text" name = "patient_id" value = "{{session['user_id']}}" required class = "form-control">    
+{% endblock %}
+{% block content %}
+<div class="booking-wrapper">
+    <div class="booking-card">
+
+        <div class="booking-header">
+            <h2>
+                Book Appointment
+            </h2>
+            <p>
+                Select an available date and time slot
+            </p>
+        </div>
+
+        <div class="booking-body">
+
+            <div class="doctor-info">
+                <div class="doctor-icon">
+                    Dr
+                </div>
+                <div>
+                    <h4>
+                        Dr. {{ doctor.name }}
+                    </h4>
+                    {% if doctor.department %}
+                        <p>
+                            {{ doctor.department.name }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <input type="hidden" name="patient_id" id="patient_id" value="{{ session['user_id'] }}">
+            {% if schedules %}
+            <div>
+                
+                <div class="section-title">
+                    1. Select Appointment Date
+                </div>
+                <div class="date-container">
+                    {% for schedule in schedules %}
+                    <button
+                        type="button"
+                        class="date-btn"
+                        data-schedule-id="{{ schedule.id }}"
+                        data-date="{{ schedule.date.strftime('%Y-%m-%d') }}"
+                        data-slot1="{{ 'true' if schedule.slot_1 else 'false' }}"
+                        data-slot2="{{ 'true' if schedule.slot_2 else 'false' }}"
+                        data-slot3="{{ 'true' if schedule.slot_3 else 'false' }}"
+                        data-slot4="{{ 'true' if schedule.slot_4 else 'false' }}"
+                        data-slot5="{{ 'true' if schedule.slot_5 else 'false' }}"
+                        data-slot6="{{ 'true' if schedule.slot_6 else 'false' }}"
+                        data-slot7="{{ 'true' if schedule.slot_7 else 'false' }}"
+                        data-slot8="{{ 'true' if schedule.slot_8 else 'false' }}"
+                        data-slot9="{{ 'true' if schedule.slot_9 else 'false' }}"
+                        data-slot10="{{ 'true' if schedule.slot_10 else 'false' }}"
+                        data-slot11="{{ 'true' if schedule.slot_11 else 'false' }}"
+                        data-slot12="{{ 'true' if schedule.slot_12 else 'false' }}"
+                        data-slot13="{{ 'true' if schedule.slot_13 else 'false' }}"
+                        data-slot14="{{ 'true' if schedule.slot_14 else 'false' }}"
+                        data-slot15="{{ 'true' if schedule.slot_15 else 'false' }}"
+                        data-slot16="{{ 'true' if schedule.slot_16 else 'false' }}"
+                        data-slot17="{{ 'true' if schedule.slot_17 else 'false' }}"
+                        data-slot18="{{ 'true' if schedule.slot_18 else 'false' }}"
+                        data-slot19="{{ 'true' if schedule.slot_19 else 'false' }}"
+                        data-slot20="{{ 'true' if schedule.slot_20 else 'false' }}"
+                    >
+                        <span class="date-day">
+                            {{ schedule.date.strftime('%A') }}
+                        </span>
+                        <span class="date-value">
+                            {{ schedule.date.strftime('%d %b %Y') }}
+                        </span>
+                    </button>
+
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="slot-section" id="slotSection">
+
+                <div class="section-title">
+                    2. Select Time Slot
+                </div>
+
+                <div class="shift-section">
+
+                    <div class="shift-header">
+                        <div>
+                            <h3 class="shift-title">
+                                Morning Shift · A
+                            </h3>
+                            <p class="shift-subtitle">
+                                08:00 AM – 02:00 PM
+                                · 30-minute slots
+                            </p>
+                        </div>
+                        <div class="shift-badge">
+                            12 SLOTS
+                        </div>
+                    </div>
+
+                    <div class="slot-grid">
+                        {% for number, time in [
+                            (1, '08:00 AM'),
+                            (2, '08:30 AM'),
+                            (3, '09:00 AM'),
+                            (4, '09:30 AM'),
+                            (5, '10:00 AM'),
+                            (6, '10:30 AM'),
+                            (7, '11:00 AM'),
+                            (8, '11:30 AM'),
+                            (9, '12:00 PM'),
+                            (10, '12:30 PM'),
+                            (11, '01:00 PM'),
+                            (12, '01:30 PM')
+                        ] %}
+
+                        <label class="slot-btn" data-slot-number="{{ number }}">
+                            <input type="radio" name="selected_slot" value="">
+                            <span class="slot-label">
+                                <span class="slot-number">
+                                    Slot {{ number }}A
+                                </span>
+                                <span class="slot-time">
+                                    {{ time }}
+                                </span>
+                            </span>
+                        </label>
+
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="shift-break">
+                    <p class="shift-break-title">
+                        ☕ BREAK
+                    </p>
+                    <p class="shift-break-time">
+                        02:00 PM – 04:00 PM
+                    </p>
+                    <p class="shift-break-note">
+                        No appointments can be booked during this period.
+                    </p>
+                </div>
+
+                <div class="shift-section">
+
+                    <div class="shift-header">
+                        <div>
+                            <h3 class="shift-title">
+                                Evening Shift · B
+                            </h3>
+                            <p class="shift-subtitle">
+                                04:00 PM – 08:00 PM
+                                · 30-minute slots
+                            </p>
+                        </div>
+                        <div class="shift-badge">
+                            8 SLOTS
+                        </div>
+                    </div>
+                    <div class="slot-grid">
+                        {% for number, time, db_slot in [
+                            (1, '04:00 PM', 13),
+                            (2, '04:30 PM', 14),
+                            (3, '05:00 PM', 15),
+                            (4, '05:30 PM', 16),
+                            (5, '06:00 PM', 17),
+                            (6, '06:30 PM', 18),
+                            (7, '07:00 PM', 19),
+                            (8, '07:30 PM', 20)
+                        ] %}
+                        <label class="slot-btn" data-slot-number="{{ db_slot }}">
+
+                            <input type="radio" name="selected_slot" value="">
+                            <span class="slot-label">
+                                <span class="slot-number">
+                                    Slot {{ number }}B
+                                </span>
+                                <span class="slot-time">
+                                    {{ time }}
+                                </span>
+                            </span>
+
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="no-slot-message" id="noSlotMessage">
+                    No slots are available for this date.
+                </div>
+            </div>
+
+            <div class="visit-section">
+                <div class="section-title">
+                    3. Select Visit Type
+                </div>
+
+                <div class="visit-options">
+                    <label class="visit-option">
+                        <input type="radio" name="visit_type" value="In-Person" required>
+                        <span class="visit-label">
+                            In-Person
+                        </span>
+                    </label>
+                    <label class="visit-option">
+                        <input type="radio" name="visit_type" value="Online" required>
+                        <span class="visit-label">
+                            Online
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="booking-footer">
+                <button type="button" class="book-btn" id="bookButton" disabled>
+                    Book Appointment
+                </button>
+            </div>
+
             {% else %}
-                <input type = "text" name = "patient_id" required class = "form-control">
+
+            <div class="no-dates">
+                <h4>
+                    No Availability Found
+                </h4>
+                <p>
+                    This doctor has not added any available
+                    appointment dates yet.
+                </p>
+            </div>
+
             {% endif %}
         </div>
+    </div>
+</div>
 
-        <div class="form-group">
-            <label for = "name" class ="form-label">Visit Type</label>
-            <select name = "visit_type" class = "form-control">
-                <option value="In-Person">In-Person</option>
-                <option value="Virtual">Virtual</option>
-            </select>
-        </div>
+<form method="POST" action="{{ url_for('book_appointment', doctor_id=doctor.id) }}" id="bookingForm">
+    <input type="hidden" name="patient_id" value="{{ session['user_id'] }}" id="formPatientId">
+    <input type="hidden" name="selected_slot" id="selectedSlotInput">
+    <input type="hidden" name="visit_type" id="visitTypeInput">
+</form>
 
-        <div class="form-group mt-4">
-            <table class="table table-bordered text-center align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Date</th>
-                        <th>Slot 1<br></th>
-                        <th>Slot 2<br></th>
-                    </tr>
-                </thead>
+<script>
 
-                <tbody>
-                {% for schedule in schedules %}
-                    <tr>
-                        <td>{{ schedule.date }}</td>
-                        <td>
-                            <input class="form-check-input" type="radio" name="selected_slot" value="{{schedule.id}}_1" id="slot1-{{schedule.id}}"  {% if not schedule.slot_1 %} disabled {% endif %}>
-                            <label class="form-check-label" for="slot1-{{schedule.id}}">
-                                08:00 AM - 12:00 PM
-                            </label>
-                        </td>
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+        const dateButtons = document.querySelectorAll('.date-btn');
+        const slotSection =document.getElementById('slotSection');
+        const slotButtons = document.querySelectorAll('.slot-btn');
+        const selectedSlotInput = document.getElementById( 'selectedSlotInput');
+        const visitTypeInput = document.getElementById('visitTypeInput');
+        const bookButton = document.getElementById('bookButton');
+        const bookingForm = document.getElementById('bookingForm');
+        const visitInputs = document.querySelectorAll('input[name="visit_type"]');
+        const noSlotMessage =document.getElementById('noSlotMessage');
+        let selectedScheduleId = null;
 
-                        <td>
-                            <input class="form-check-input" type="radio" name="selected_slot" value="{{schedule.id}}_2" id="slot2-{{schedule.id}}"  {% if not schedule.slot_2 %} disabled {% endif %}>
-                            <label class="form-check-label" for="slot2-{{schedule.id}}">
-                                01:00 PM - 05:00 PM
-                            </label>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        function getSlotTime(slotNumber) {
+            if (slotNumber >= 1 && slotNumber <= 12) {
+                const index = slotNumber - 1;
+                return {
+                    hour: 8 + Math.floor(index / 2),
+                    minute: index % 2 === 0? 0 : 30};
+            }
+            if (slotNumber >= 13 && slotNumber <= 20) {
+                const index = slotNumber - 13;
+                return {hour: 16 + Math.floor( index / 2),
+                    minute: index % 2 === 0 ? 0 : 30};
+            }
+            return null;
+        }
 
-        <div class="form-group text-center mt-3">
-            <input type="submit" value="Submit" class="btn btn-primary px-5">
-        </div>
-    </form>
-
+        function isSlotExpired( dateString,slotNumber) {
+            const now =new Date();
+            const todayString =now.getFullYear()+ '-'+ String(now.getMonth() + 1).padStart(2, '0')+ '-' + String(now.getDate()).padStart(2, '0');
+            if (dateString !== todayString) {
+                return false;
+            }
+            const slotTime = getSlotTime( slotNumber);
+            if (!slotTime) {
+                return true;
+            }
+            const slotDateTime =
+                new Date(
+                    now.getFullYear(),
+                    now.getMonth(),
+                    now.getDate(),
+                    slotTime.hour,
+                    slotTime.minute,
+                    0,
+                    0
+                );
+            return (
+                slotDateTime <= now
+            );
+        }
+        function updateSlots(
+            selectedDate,
+            activeDateButton
+        ) {
+            let availableSlots = 0;
+            slotButtons.forEach(
+                function (slotButton) {
+                    const slotNumber =
+                        parseInt(
+                            slotButton.dataset
+                                .slotNumber
+                        );
+                    const availability =
+                        activeDateButton.dataset[
+                            'slot' + slotNumber
+                        ];
+                    const radio =
+                        slotButton.querySelector(
+                            'input'
+                        );
+                    radio.value =
+                        selectedScheduleId
+                        + '_'
+                        + slotNumber;
+                    let available =
+                        availability ===
+                        'true';
+                    if (
+                        available &&
+                        isSlotExpired(
+                            selectedDate,
+                            slotNumber
+                        )
+                    ) {
+                        available = false;
+                    }
+                    if (available) {
+                        slotButton.classList.remove(
+                            'disabled'
+                        );
+                        availableSlots++;
+                    }
+                    else {
+                        if (
+                            radio.checked
+                        ) {
+                            radio.checked =
+                                false;
+                            selectedSlotInput.value =
+                                '';
+                        }
+                        slotButton.classList.add(
+                            'disabled'
+                        );
+                    }
+                }
+            );
+            if (
+                availableSlots === 0
+            ) {
+                noSlotMessage.style.display =
+                    'block';
+            }
+            else {
+                noSlotMessage.style.display =
+                    'none';
+            }
+        }
+        dateButtons.forEach(
+            function (button) {
+                button.addEventListener(
+                    'click',
+                    function () {
+                        dateButtons.forEach(
+                            function (btn) {
+                                btn.classList.remove(
+                                    'active'
+                                );
+                            }
+                        );
+                        button.classList.add(
+                            'active'
+                        );
+                        selectedScheduleId =
+                            button.dataset
+                                .scheduleId;
+                        const selectedDate =
+                            button.dataset.date;
+                        selectedSlotInput.value =
+                            '';
+                        slotButtons.forEach(
+                            function (slotButton) {
+                                const radio =
+                                    slotButton.querySelector(
+                                        'input'
+                                    );
+                                radio.checked =
+                                    false;
+                            }
+                        );
+                        updateSlots(
+                            selectedDate,
+                            button
+                        );
+                        slotSection.classList.add(
+                            'show'
+                        );
+                        updateBookButton();
+                    }
+                );
+            }
+        );
+        slotButtons.forEach(
+            function (slotButton) {
+                const radio =
+                    slotButton.querySelector(
+                        'input'
+                    );
+                radio.addEventListener(
+                    'change',
+                    function () {
+                        if (
+                            radio.checked &&
+                            !slotButton.classList.contains(
+                                'disabled'
+                            )
+                        ) {
+                            selectedSlotInput.value =
+                                radio.value;
+                        }
+                        updateBookButton();
+                    }
+                );
+            }
+        );
+        visitInputs.forEach(
+            function (input) {
+                input.addEventListener(
+                    'change',
+                    function () {
+                        if (
+                            input.checked
+                        ) {
+                            visitTypeInput.value =
+                                input.value;
+                        }
+                        updateBookButton();
+                    }
+                );
+            }
+        );
+        function updateBookButton() {
+            const hasDate =
+                selectedScheduleId !== null;
+            const hasSlot =
+                selectedSlotInput.value !== '';
+            const hasVisitType =
+                visitTypeInput.value !== '';
+            if (
+                hasDate &&
+                hasSlot &&
+                hasVisitType
+            ) {
+                bookButton.disabled =
+                    false;
+            }
+            else {
+                bookButton.disabled =
+                    true;
+            }
+        }
+        if (bookButton) {
+            bookButton.addEventListener(
+                'click',
+                function () {
+                    if (
+                        !selectedScheduleId
+                    ) {
+                        alert(
+                            'Please select an appointment date.'
+                        );
+                        return;
+                    }
+                    if (
+                        !selectedSlotInput.value
+                    ) {
+                        alert(
+                            'Please select a time slot.'
+                        );
+                        return;
+                    }
+                    if (
+                        !visitTypeInput.value
+                    ) {
+                        alert(
+                            'Please select a visit type.'
+                        );
+                        return;
+                    }
+                    const activeDate =
+                        document.querySelector(
+                            '.date-btn.active'
+                        );
+                    if (activeDate) {
+                        const selectedSlot =
+                            selectedSlotInput.value
+                                .split('_');
+                        const slotNumber =
+                            parseInt(
+                                selectedSlot[1]
+                            );
+                        if (
+                            isSlotExpired(
+                                activeDate.dataset.date,
+                                slotNumber
+                            )
+                        ) {
+                            alert(
+                                'This time slot has already passed. Please select another slot.'
+                            );
+                            selectedSlotInput.value =
+                                '';
+                            updateSlots(
+                                activeDate.dataset.date,
+                                activeDate
+                            );
+                            updateBookButton();
+                            return;
+                        }
+                    }
+                    bookingForm.submit();
+                }
+            );
+        }
+        setInterval(
+            function () {
+                const activeDate =
+                    document.querySelector(
+                        '.date-btn.active'
+                    );
+                if (!activeDate) {
+                    return;
+                }
+                const selectedDate =
+                    activeDate.dataset.date;
+                updateSlots(
+                    selectedDate,
+                    activeDate
+                );
+                if (
+                    selectedSlotInput.value
+                ) {
+                    const selectedSlot =
+                        selectedSlotInput.value
+                            .split('_');
+                    const slotNumber =
+                        parseInt(
+                            selectedSlot[1]
+                        );
+                    if (
+                        isSlotExpired(
+                            selectedDate,
+                            slotNumber
+                        )
+                    ) {
+                        selectedSlotInput.value =
+                            '';
+                        slotButtons.forEach(
+                            function (slotButton) {
+                                const radio =
+                                    slotButton.querySelector(
+                                        'input'
+                                    );
+                                radio.checked =
+                                    false;
+                            }
+                        );
+                    }
+                }
+                updateBookButton();
+            },
+            30000
+        );
+    }
+);
+</script>
 {% endblock %}

@@ -1,26 +1,964 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Home Pages
+    HMS Royal | Better Healthcare. Better Management.
+{% endblock %}
+
+
+{% block style %}
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+.home-page {
+    min-height: calc(100vh - 20px);
+    padding: 12px 28px 25px;
+    background:radial-gradient( circle at 10% 20%, rgba(37, 99, 235, 0.07), transparent 28%),
+        radial-gradient( circle at 90% 80%, rgba(14, 165, 233, 0.07), transparent 30%),
+        #f5f8fc;
+}
+.home-navbar {
+    max-width: 1480px;
+    margin: 0 auto 0;
+    min-height: 86px;
+    padding: 10px 18px 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #e5edf7;
+    border-radius: 25px;
+    box-shadow:0 12px 35px rgba(15, 23, 42, 0.08);
+    position: relative;
+    z-index: 20;
+}
+.home-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none !important;
+}
+.home-logo-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 17px;
+    background:linear-gradient( 135deg, #2563eb, #315bea);
+    box-shadow: 0 9px 20px rgba(37, 99, 235, .22);
+    font-size: 28px;
+}
+.home-logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+.home-logo-title {
+    color: #102a43;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+.home-logo-subtitle {
+    margin-top: 6px;
+    color: #7890aa;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+.home-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    margin-right: 35px;
+}
+.home-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 18px;
+    border-radius: 14px;
+    color: #172b4d !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+.home-nav-link:hover {
+    background: #eff6ff;
+    color: #2563eb !important;
+    transform: translateY(-1px);
+}
+.home-nav-link.active {
+    color: #2563eb !important;
+    background: #eff6ff;
+    box-shadow: 0 5px 15px rgba(37, 99, 235, .06);
+}
+.home-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.home-register-btn {
+    height: 46px;
+    padding: 0 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    border: 1px solid #d8e3f0;
+    background: white;
+    color: #172b4d !important;
+    text-decoration: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+.home-register-btn:hover {
+    border-color: #2563eb;
+    color: #2563eb !important;
+    transform: translateY(-2px);
+}
+.home-login-btn {
+    height: 46px;
+    padding: 0 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 13px;
+    background: linear-gradient( 135deg, #2563eb, #1769e8);
+    color: white !important;
+    text-decoration: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, .20);
+    transition: all .2s ease;
+}
+.home-login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(37, 99, 235, .28);
+}
+.home-hero {
+    max-width: 1480px;
+    min-height: 720px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    overflow: hidden;
+    border-radius: 28px;
+    background: white;
+    box-shadow:0 20px 60px rgba(15, 23, 42, .10);
+}
+.hero-left {
+    padding: 62px 55px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient( 135deg, #ffffff 0%, #ffffff 72%, #f8fbff 100%);
+}
+.hero-badge {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 25px;
+    padding: 11px 17px;
+    border-radius: 50px;
+    background: #edf5ff;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .4px;
+}
+.hero-badge-icon {
+    font-size: 14px;
+}
+.hero-title {
+    max-width: 750px;
+    margin: 0 0 22px;
+    color: #102a43;
+    font-size: clamp(48px, 4.1vw, 68px);
+    font-weight: 850;
+    line-height: 1.04;
+    letter-spacing: -2.5px;
+}
+.hero-title-blue {
+    display: block;
+    background: linear-gradient( 90deg, #2563eb, #1976e8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+.hero-description {
+    max-width: 680px;
+    margin: 0 0 31px;
+    color: #526b89;
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 500;
+}
+.portal-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 16px;
+}
+.portal-heading-icon {
+    color: #2563eb;
+    font-size: 20px;
+}
+.portal-heading-text {
+    color: #102a43;
+    font-size: 17px;
+    font-weight: 800;
+}
+.portal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 760px;
+}
+.portal-card {
+    position: relative;
+    min-height: 285px;
+    padding: 21px 19px 17px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #dfe8f3;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 9px 25px rgba(15, 23, 42, .05);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+.portal-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+}
+.portal-card.patient::before {
+    background: #2563eb;
+}
+.portal-card.doctor::before {
+    background: #10b981;
+}
+.portal-card.admin::before {
+    background: #7c3aed;
+}
+.portal-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 17px 35px rgba(15, 23, 42, .10);
+}
+.portal-card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+}
+.portal-card-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 15px;
+    font-size: 29px;
+}
+.patient .portal-card-icon {
+    background: #edf4ff;
+}
+.doctor .portal-card-icon {
+    background: #eafaf4;
+}
+.admin .portal-card-icon {
+    background: #f3efff;
+}
+.portal-card-info {
+    flex: 1;
+}
+.portal-card-title {
+    margin: 5px 0 5px;
+    color: #102a43;
+    font-size: 17px;
+    font-weight: 800;
+}
+.portal-card-line {
+    width: 26px;
+    height: 3px;
+    margin-bottom: 9px;
+    border-radius: 50px;
+}
+.patient .portal-card-line {
+    background: #2563eb;
+}
+.doctor .portal-card-line {
+    background: #10b981;
+}
+.admin .portal-card-line {
+    background: #7c3aed;
+}
+.portal-card-description {
+    margin: 0;
+    color: #536b87;
+    font-size: 11px;
+    line-height: 1.65;
+    font-weight: 500;
+}
+.portal-card-illustration {
+    height: 75px;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.portal-card-illustration::before {
+    content: "";
+    position: absolute;
+    width: 145px;
+    height: 48px;
+    bottom: -18px;
+    border-radius: 50% 50% 0 0;
+    opacity: .75;
+}
+.patient .portal-card-illustration::before {
+    background: #edf4ff;
+}
+.doctor .portal-card-illustration::before {
+    background: #eafaf4;
+}
+.admin .portal-card-illustration::before {
+    background: #f3efff;
+}
+.portal-illustration-icon {
+    position: relative;
+    z-index: 2;
+    font-size: 49px;
+}
+.portal-card-button {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 14px;
+    color: #2563eb !important;
+    text-decoration: none !important;
+    font-size: 11px;
+    font-weight: 800;
+}
+.doctor .portal-card-button {
+    color: #059669 !important;
+}
+.admin .portal-card-button {
+    color: #6d28d9 !important;
+}
+.portal-arrow {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    color: white;
+    background: #2563eb;
+    font-size: 18px;
+    position: relative;
+    left: 0;
+}
+.doctor .portal-arrow {
+    background: #10b981;
+}
+.admin .portal-arrow {
+    background: #7c3aed;
+}
+.portal-card:hover .portal-arrow {
+    transform: translateX(4px);
+}
+.hero-right {
+    position: relative;
+    min-height: 720px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 45px 35px;
+    color: white;
+    background: linear-gradient( 145deg, #2563eb 0%, #1586ec 55%, #08a9e6 100%);
+}
+.hero-right::before {
+    content: "";
+    position: absolute;
+    width: 430px;
+    height: 430px;
+    border-radius: 50%;
+    top: -235px;
+    left: -130px;
+    background: rgba(255,255,255,.09);
+}
+.hero-right::after {
+    content: "";
+    position: absolute;
+    width: 370px;
+    height: 370px;
+    border-radius: 50%;
+    bottom: -220px;
+    right: -90px;
+    background: rgba(255,255,255,.08);
+}
+.hero-dots {
+    position: absolute;
+    top: 35px;
+    right: 38px;
+    width: 85px;
+    height: 85px;
+    opacity: .4;
+    background-image: radial-gradient( white 2px, transparent 2px);
+    background-size: 18px 18px;
+}
+.hospital-visual {
+    position: relative;
+    width: min(440px, 90%);
+    height: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+.orbit {
+    position: absolute;
+    border: 1.5px solid rgba(255,255,255,.35);
+    border-radius: 50%;
+}
+.orbit-one {
+    width: 390px;
+    height: 390px;
+}
+.orbit-two {
+    width: 300px;
+    height: 300px;
+}
+.orbit-three {
+    width: 215px;
+    height: 215px;
+    border-color: rgba(255,255,255,.22);
+}
+.hospital-center {
+    position: relative;
+    width: 275px;
+    height: 275px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 60px;
+    background: linear-gradient( 145deg, rgba(255,255,255,.24), rgba(255,255,255,.10));
+    border: 1px solid rgba(255,255,255,.30);
+    box-shadow: 0 20px 50px rgba(0, 35, 100, .16);
+    backdrop-filter: blur(10px);
+}
+.hospital-building {
+    width: 190px;
+    height: 185px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 17px 17px 9px 9px;
+    background: linear-gradient( 180deg, #ffffff, #e7f1ff);
+    box-shadow: 0 20px 35px rgba(0, 35, 100, .16);
+}
+.hospital-building::before {
+    content: "";
+    position: absolute;
+    top: -21px;
+    left: 18px;
+    right: 18px;
+    height: 25px;
+    border-radius: 10px 10px 3px 3px;
+    background: #f8fbff;
+    box-shadow: 0 -4px 0 #d7e8ff;
+}
+.hospital-windows {
+    position: absolute;
+    left: 23px;
+    right: 23px;
+    top: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 13px;
+}
+.hospital-window {
+    height: 25px;
+    border-radius: 5px;
+    background: linear-gradient( 135deg, #0ea5e9, #2563eb);
+    box-shadow: inset 0 2px 4px rgba(255,255,255,.35);
+}
+.hospital-entrance {
+    position: absolute;
+    width: 57px;
+    height: 72px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 13px 13px 0 0;
+    background: linear-gradient( 180deg, #dbeafe, #93c5fd);
+}
+.hospital-entrance::before {
+    content: "+";
+    position: absolute;
+    top: -39px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 53px;
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: white;
+    color: #ef477f;
+    font-size: 37px;
+    font-weight: 800;
+    box-shadow: 0 7px 18px rgba(15,23,42,.12);
+}
+.floating-icon {
+    position: absolute;
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
+    color: #2563eb;
+    font-size: 33px;
+    box-shadow: 0 12px 25px rgba(0, 35, 100, .16);
+    z-index: 5;
+}
+.floating-shield {
+    top: 20px;
+    left: 12px;
+}
+.floating-bolt {
+    top: 60px;
+    right: 8px;
+}
+.floating-heart {
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ef477f;
+}
+
+.hero-features {
+    width: 100%;
+    max-width: 590px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    position: relative;
+    z-index: 5;
+}
+.hero-feature {
+    min-height: 112px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,.28);
+    background: rgba(255,255,255,.09);
+    backdrop-filter: blur(8px);
+}
+.feature-icon {
+    width: 47px;
+    height: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(255,255,255,.17);
+    font-size: 23px;
+}
+.feature-content h3 {
+    margin: 0 0 5px;
+    font-size: 14px;
+    font-weight: 800;
+}
+.feature-content p {
+    margin: 0;
+    color: rgba(255,255,255,.80);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.home-footer {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 18px 10px 5px;
+    text-align: center;
+    color: #7d91aa;
+    font-size: 10px;
+    font-weight: 500;
+}
+.footer-heart {
+    color: #2563eb;
+    font-size: 13px;
+}
+
+@media (max-width: 1150px) {
+    .home-navbar {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .home-nav-links {
+        margin-right: 12px;
+    }
+    .home-nav-link {
+        padding: 12px 10px;
+    }
+    .home-hero {
+        grid-template-columns: 1fr;
+
+    }
+    .hero-left {
+        padding: 55px 45px;
+    }
+    .hero-right {
+        min-height: 650px;
+    }
+    .portal-grid {
+        max-width: 100%;
+    }
+}
+
+
+@media (max-width: 760px) {
+    .home-page {
+        padding: 10px 10px 25px;
+    }
+    .home-navbar {
+        min-height: auto;
+        padding: 14px;
+        border-radius: 18px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    .home-logo {
+        width: 100%;
+    }
+    .home-logo-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        font-size: 23px;
+    }
+    .home-logo-title {
+        font-size: 20px;
+    }
+    .home-nav-links {
+        order: 3;
+        width: 100%;
+        margin: 0;
+        justify-content: center;
+        overflow-x: auto;
+    }
+    .home-nav-link {
+        padding: 9px 10px;
+        font-size: 10px;
+    }
+    .home-nav-actions {
+        position: absolute;
+        top: 15px;
+        right: 14px;
+    }
+    .home-register-btn {
+        display: none;
+    }
+    .home-login-btn {
+        height: 40px;
+        padding: 0 14px;
+        font-size: 10px;
+    }
+    .home-hero {
+        border-radius: 0 0 18px 18px;
+    }
+    .hero-left {
+        padding: 42px 22px 35px;
+    }
+    .hero-title {
+        font-size: 43px;
+        letter-spacing: -1.8px;
+    }
+    .hero-description {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+    .portal-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .portal-card {
+        min-height: 210px;
+    }
+    .hero-right {
+        min-height: 650px;
+        padding: 30px 15px;
+    }
+    .hospital-visual {
+        transform: scale(.78);
+        margin: -35px 0;
+    }
+    .hero-features {
+        grid-template-columns: 1fr;
+    }
+    .hero-feature {
+        min-height: 82px;
+    }
+}
+</style>
 {% endblock %}
 
 {% block content %}
-    <h2 align = 'center' class ='display-5'>Welcome to HMS - Royal</h2>
-    <hr>
-    {% if 'user_id' not in session %}
-        <h2 align = 'center' class ='display-6'>
-            <p class="text-danger">Please Login to access your dashboard</p>
+<div class="home-page">
+    <main class="home-hero">
+        <section class="hero-left">
 
-            <div >
-                <a class="btn btn-secondary" href="{{ url_for('login', role='patient') }}">Patient</a>
-                <a class="btn btn-secondary" href="{{ url_for('login', role='doctor') }}">Doctor</a>
-                <a class="btn btn-secondary" href="{{ url_for('login', role='admin') }}">Admin</a>
+            <div class="hero-badge">
+                <span class="hero-badge-icon">
+                    🏥
+                </span>
+                HMS ROYAL
             </div>
-        </h2>
-    {% else %}
-        <h2 align = 'center' class ='display-6'>
-            <p class="text-success">You are logged in. Open your dashboard to proceed.</p>
-            <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Dashboard</a>
-        </h2>
-    {% endif %}
+
+            <h1 class="hero-title">
+                Better Healthcare.
+                <span class="hero-title-blue">
+                    Better Management.
+                </span>
+            </h1>
+
+            <p class="hero-description">
+                A modern hospital management system designed to
+                connect patients, doctors and administrators through
+                one simple and secure platform.
+            </p>
+
+            <div class="portal-heading">
+                <span class="portal-heading-icon">
+                    ▦
+                </span>
+                <span class="portal-heading-text">
+                    Choose your portal to continue
+                </span>
+
+            </div>
+
+
+            <div class="portal-grid">
+                <div class="portal-card patient">
+
+                    <div class="portal-card-top">
+                        <div class="portal-card-icon">
+                            👤
+                        </div>
+                        <div class="portal-card-info">
+                            <h2 class="portal-card-title">
+                                Patient
+                            </h2>
+                            <div class="portal-card-line"></div>
+                            <p class="portal-card-description">
+                                Book appointments
+                                and manage your
+                                health easily.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="portal-card-illustration">
+                        <span class="portal-illustration-icon">
+                            📅
+                        </span>
+                    </div>
+
+                    <a href="{{ url_for('login', role='patient') }}" class="portal-card-button">
+                        <span class="portal-arrow">
+                            →
+                        </span>
+                        Go to Patient Portal
+                    </a>
+
+                </div>
+
+                <div class="portal-card doctor">
+
+                    <div class="portal-card-top">
+                        <div class="portal-card-icon">
+                            🩺
+                        </div>
+                        <div class="portal-card-info">
+                            <h2 class="portal-card-title">
+                                Doctor
+                            </h2>
+                            <div class="portal-card-line"></div>
+                            <p class="portal-card-description">
+                                Manage patients
+                                and appointments
+                                efficiently.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="portal-card-illustration">
+                        <span class="portal-illustration-icon">
+                            🧑‍⚕️
+                        </span>
+                    </div>
+
+                    <a href="{{ url_for('login', role='doctor') }}" class="portal-card-button">
+                        <span class="portal-arrow">
+                            →
+                        </span>
+                        Go to Doctor Portal
+                    </a>
+
+                </div>
+
+                <div class="portal-card admin">
+                    <div class="portal-card-top">
+                        <div class="portal-card-icon">
+                            🔐
+                        </div>
+                        <div class="portal-card-info">
+                            <h2 class="portal-card-title">
+                                Admin
+                            </h2>
+                            <div class="portal-card-line"></div>
+                            <p class="portal-card-description">
+                                Manage hospital
+                                operations and
+                                system settings.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="portal-card-illustration">
+                        <span class="portal-illustration-icon">
+                            🏢
+                        </span>
+                    </div>
+                    <a href="{{ url_for('login', role='admin') }}" class="portal-card-button">
+                        <span class="portal-arrow">
+                            →
+                        </span>
+                        Go to Admin Portal
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero-right">
+
+            <div class="hero-dots"></div>
+            <div class="hospital-visual">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="orbit orbit-three"></div>
+                <div class="floating-icon floating-shield">
+                    🛡️
+                </div>
+                <div class="floating-icon floating-bolt">
+                    ⚡
+                </div>
+                <div class="floating-icon floating-heart">
+                    ❤️
+                </div>
+
+                <div class="hospital-center">
+                    <div class="hospital-building">
+                        <div class="hospital-windows">
+                            <div class="hospital-window"></div>
+                            <div class="hospital-window"></div>
+                            <div class="hospital-window"></div>
+                            <div class="hospital-window"></div>
+                            <div class="hospital-window"></div>
+                            <div class="hospital-window"></div>
+                        </div>
+                        <div class="hospital-entrance"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-features" id="features">
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        🔒
+                    </div>
+                    <div class="feature-content">
+                        <h3>
+                            Secure
+                        </h3>
+                        <p>
+                            Your data is safe
+                            and protected.
+                        <p>
+                    </div>
+                </div>
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        ⚡
+                    </div>
+                    <div class="feature-content">
+                        <h3>
+                            Fast
+                        </h3>
+                        <p>
+                            Quick access to
+                            everything you need.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="hero-feature">
+                    <div class="feature-icon">
+                        ❤️
+                    </div>
+                    <div class="feature-content">
+                        <h3>
+                            Reliable
+                        </h3>
+                        <p>
+                            Trusted healthcare
+                            management.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="home-footer" id="contact">
+        © 2024 HMS Royal. All rights reserved.
+        <span style="margin: 0 10px;">
+            |
+        </span>
+        Better Healthcare. Better Management.
+        <span class="footer-heart">
+            ♥
+        </span>
+    </footer>
+</div>
+
 {% endblock %}

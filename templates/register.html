@@ -1,45 +1,393 @@
 {% extends 'layout.html' %}
 
+{% block title %}
+    HMS Royal | Patient Registration
+{% endblock %}
+
+{% block style %}
+
+<style>
+    body {
+        background: #f5f8fc;
+    }
+    .register-page {
+        min-height: calc(100vh - 72px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 20px;
+        background:radial-gradient( circle at 10% 20%, rgba(37, 99, 235, 0.08), transparent 30%),
+            radial-gradient( circle at 90% 80%, rgba(14, 165, 233, 0.08), transparent 30%);
+    }
+    .register-card {
+        width: 100%;
+        max-width: 1050px;
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(15, 23, 42, 0.10);
+    }
+    .register-info {
+        position: relative;
+        padding: 55px 45px;
+        color: white;
+        background: linear-gradient(145deg, #2563eb, #0ea5e9);
+        overflow: hidden;
+    }
+    .register-info::before {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        top: -120px;
+        right: -130px;
+    }
+    .register-info::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+        bottom: -120px;
+        left: -100px;
+    }
+    .info-content {
+        position: relative;
+        z-index: 2;
+    }
+    .hospital-icon {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.25);
+        backdrop-filter: blur(10px);
+        font-size: 34px;
+        margin-bottom: 28px;
+    }
+
+    .info-title {
+        font-size: 34px;
+        line-height: 1.2;
+        font-weight: 800;
+        margin-bottom: 18px;
+    }
+    .info-description {
+        font-size: 15px;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.82);
+        margin-bottom: 35px;
+    }
+    .benefit {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 17px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .benefit-icon {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.13);
+        font-size: 15px;
+    }
+    .register-form-section {
+        padding: 55px 55px;
+    }
+    .form-heading {
+        margin-bottom: 32px;
+    }
+    .form-heading h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+        font-weight: 800;
+        color: #102a43;
+    }
+    .form-heading p {
+        margin: 0;
+        font-size: 14px;
+        color: #64748b;
+    }
+    .register-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+    .form-group {
+        margin: 0;
+    }
+    .full-width {
+        grid-column: 1 / -1;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #334155;
+    }
+    .input-wrapper {
+        position: relative;
+    }
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        z-index: 2;
+    }
+    .register-input {
+        width: 100%;
+        height: 48px;
+        padding: 0 15px 0 43px;
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+        background: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        outline: none;
+        box-sizing: border-box;
+        transition: all 0.25s ease;
+    }
+    .register-input:focus {
+        background: white;
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    }
+    .register-input::placeholder {
+        color: #94a3b8;
+    }
+    .register-submit {
+        grid-column: 1 / -1;
+        width: 100%;
+        height: 50px;
+        margin-top: 8px;
+        border: none;
+        border-radius: 13px;
+        background: linear-gradient( 135deg, #2563eb, #0ea5e9);
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 9px 20px rgba(37,99,235,0.20);
+        transition: all 0.25s ease;
+    }
+    .register-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(37,99,235,0.25);
+    }
+    .register-submit:active {
+        transform: translateY(0);
+    }
+    .form-note {
+        grid-column: 1 / -1;
+        text-align: center;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+    @media (max-width: 850px) {
+        .register-card {
+            grid-template-columns: 1fr;
+        }
+        .register-info {
+            padding: 40px 30px;
+        }
+        .register-form-section {
+            padding: 40px 30px;
+        }
+        .register-form {
+            grid-template-columns: 1fr;
+        }
+        .full-width {
+            grid-column: auto;
+        }
+        .register-submit, .form-note {
+            grid-column: auto;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .register-page {
+            padding: 20px 10px;
+        }
+        .register-info {
+            padding: 35px 25px;
+        }
+        .register-form-section {
+            padding: 35px 22px;
+        }
+        .info-title {
+            font-size: 28px;
+        }
+        .form-heading h1 {
+            font-size: 25px;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
 {% block content %}
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis">Register New Patient</p>
-    </h2>
 
-    <form action="" method="post" class="my-form">
-        <div class="form-group">
-            <label for ="username" class = "form-label"><strong>Username / E-mail</strong></label>
-            <input type="text" name = "username" required class = "form-control">
+<div class="register-page">
+
+    <div class="register-card">
+
+        <div class="register-info">
+
+            <div class="info-content">
+                <div class="hospital-icon">
+                    🏥
+                </div>
+                <div class="info-title">
+                    Welcome to<br>
+                    HMS Royal
+                </div>
+                <p class="info-description">
+                    Create your patient account and get access
+                    to a smarter and simpler healthcare experience.
+                </p>
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        📅
+                    </div>
+                    Easy appointment booking
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        👨‍⚕️
+                    </div>
+                    Connect with doctors
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        🔒
+                    </div>
+                    Secure patient information
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        ❤️
+                    </div>
+                    Better healthcare management
+                </div>
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label for ="password" class = "form-label"><strong>Password</strong></label>
-            <input type="password" name = "password" required class = "form-control">
+        <div class="register-form-section">
+            <div class="form-heading">
+                <h1>
+                    Create Patient Account
+                </h1>
+                <p>
+                    Fill in your details to get started.
+                </p>
+            </div>
+
+            <form action="" method="post" class="register-form">
+                <div class="form-group full-width">
+                    <label for="username" class="form-label">
+                        Username / E-mail
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            ✉️
+                        </span>
+                        <input type="text" id="username" name="username" required class="register-input" placeholder="Enter your email or username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            🔒
+                        </span>
+                        <input type="password" id="password" name="password" required class="register-input" placeholder="Create a password">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">
+                        Confirm Password
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            🔐
+                        </span>
+                        <input type="password" id="confirm_password" name="confirm_password" required class="register-input" placeholder="Confirm your password">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        Full Name
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            👤
+                        </span>
+                        <input type="text" id="name" name="name" required class="register-input" placeholder="Enter your full name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact" class="form-label">
+                        Contact Number
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            📱
+                        </span>
+                        <input type="text" id="contact" name="contact" required class="register-input" placeholder="Enter contact number">
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="address" class="form-label">
+                        Address
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            📍
+                        </span>
+                        <input type="text" id="address" name="address" required class="register-input" placeholder="Enter your address">
+                    </div>
+                </div>
+
+                <button type="submit" class="register-submit">
+                    Create Patient Account
+                    &nbsp; →
+                </button>
+
+                <div class="form-note">
+                    🔒 Your information is securely handled by HMS Royal
+                </div>
+
+            </form>
         </div>
 
-        <div class = "form-group">
-            <label for="confirm_password" class = "form-label"><strong>Confirm Password</strong></label>
-            <input type="password" name="confirm_password" required class = "form-control">
-        </div>
+    </div>
 
-        <div class="form-group">
-            <label for ="name" class = "form-label"><strong>Name</strong></label>
-            <input type="text" name = "name" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="address" class = "form-label"><strong>Address</strong></label>
-            <input type="text" name = "address" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="contact" class = "form-label"><strong>Contact</strong></label>
-            <input type="text" name = "contact" required class = "form-control">
-        </div><br>
-
-        <div class="form-group">
-            <button type = "submit" class = "btn btn-success">
-                Register
-            </button>
-        </div>
-    </form>
+</div>
 {% endblock %}

@@ -1,42 +1,406 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    HMS Royal | Administrator Status
+{% endblock %}
+{% block style %}
+<style>
+.admin-status-page {
+    min-height: calc(100vh - 72px);
+    padding: 55px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(124,58,237,.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(37,99,235,.07),
+            transparent 30%
+        ),
+        #f5f8fc;
+}
+.status-card {
+    width: 100%;
+    max-width: 780px;
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.11);
+    animation: statusAppear .45s ease;
+}
+@keyframes statusAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.status-header {
+    position: relative;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #4f46e5
+        );
+    overflow: hidden;
+}
+.status-header::before {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -150px;
+    right: -90px;
+}
+.status-header::after {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: -130px;
+    left: -70px;
+}
+.status-header-content {
+    position: relative;
+    z-index: 2;
+}
+.status-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    font-size: 31px;
+}
+.status-header h1 {
+    margin: 0 0 7px;
+    font-size: 28px;
+    font-weight: 800;
+}
+.status-header p {
+    margin: 0;
+    color: rgba(255,255,255,.78);
+    font-size: 13px;
+}
+.status-body {
+    padding: 40px;
+}
+.admin-info-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 32px;
+}
+.info-item {
+    padding: 18px;
+    border: 1px solid #e5edf5;
+    border-radius: 15px;
+    background: #f8fafc;
+    transition: all .2s ease;
+}
+.info-item:hover {
+    background: white;
+    border-color: #dbeafe;
+    box-shadow:
+        0 7px 18px rgba(15,23,42,.05);
+}
+.info-label {
+    margin-bottom: 7px;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.info-value {
+    color: #172b4d;
+    font-size: 15px;
+    font-weight: 700;
+}
+.current-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    border-radius: 15px;
+    border: 1px solid #e5edf5;
+    background: #ffffff;
+}
+.current-status-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 800;
+}
+.status-badge.active {
+    color: #059669;
+    background: #ecfdf5;
+}
+.status-badge.inactive {
+    color: #dc2626;
+    background: #fef2f2;
+}
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+.active .status-dot {
+    background: #10b981;
+}
+.inactive .status-dot {
+    background: #ef4444;
+}
+.status-question {
+    margin-bottom: 30px;
+    padding: 25px;
+    text-align: center;
+    border-radius: 17px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+}
+.status-question-icon {
+    font-size: 27px;
+    margin-bottom: 10px;
+}
+.status-question h2 {
+    margin: 0 0 8px;
+    color: #172b4d;
+    font-size: 19px;
+    font-weight: 800;
+}
+.status-question p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+.status-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 25px;
+    border-top: 1px solid #eef2f7;
+}
+.change-status-btn {
+    height: 46px;
+    padding: 0 23px;
+    border: none;
+    border-radius: 11px;
+    background:
+        linear-gradient(
+            135deg,
+            #dc2626,
+            #ef4444
+        );
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 8px 18px rgba(220,38,38,.18);
+    transition: all .25s ease;
+}
+.change-status-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 13px 25px rgba(220,38,38,.24);
+}
+.cancel-btn {
+    height: 46px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 23px;
+    border-radius: 11px;
+    background: #f1f5f9;
+    color: #475569 !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+.cancel-btn:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+}
+.security-warning {
+    margin-top: 20px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 10px;
+}
+@media (max-width: 600px) {
+    .admin-status-page {
+        padding: 25px 12px;
+    }
+    .status-header {
+        padding: 35px 25px;
+    }
+    .status-body {
+        padding: 30px 22px;
+    }
+    .admin-info-card {
+        grid-template-columns: 1fr;
+    }
+    .current-status {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .status-actions {
+        flex-direction: column-reverse;
+    }
+    .change-status-btn,
+    .cancel-btn {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis"> Status Change of Administrator</p>
-    </h2>
-    <hr>
-
-    <table name = "info" class="table" border>
-        <thead>
-            <tr>
-                <th>Details</th>
-                <th></th>
-            </tr>
-            <body>
-                <tr>
-                    <td><strong>Admin Name</strong> : {{admin.name}} </td>
-                    <td><strong>Admin ID</strong> : {{admin.id}} </td>
-                </tr>
-            </body>
-        </thead>
-    </table>
-    
-    {% if admin.status == 'Active' %}
-        <h3 align = 'center' class="display-6">The admin's status is ACTIVE. Do you want to change status to INACTIVE?</h3>
-    {% else %}
-        <h3 align = 'center' class="display-6">The admin's status is INACTIVE. Do you want to change status to ACTIVE?</h3>
-    {% endif %}
-    
-    <div class = "d-flex justify-content-around mt-4">
-        <form action="" method="post" class="my-form">
-            <div class="form-group">
-                <button type = "submit" class = "btn btn-danger">
-                    Change Status
-                </button>
+<div class="admin-status-page">
+    <div class="status-card">
+        <div class="status-header">
+            <div class="status-header-content">
+                <div class="status-icon">
+                    🔐
+                </div>
+                <h1>
+                    Administrator Status
+                </h1>
+                <p>
+                    Review the account status before making a change
+                </p>
             </div>
-        </form>
-        <a href="{{url_for('admin_dashboard')}}" class="btn btn-secondary">Cancel</a>
+        </div>
+        <div class="status-body">
+            <div class="admin-info-card">
+                <div class="info-item">
+                    <div class="info-label">
+                        Administrator Name
+                    </div>
+                    <div class="info-value">
+                        {{admin.name}}
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        Administrator ID
+                    </div>
+                    <div class="info-value">
+                        #{{admin.id}}
+                    </div>
+                </div>
+            </div>
+            <div class="current-status">
+                <div class="current-status-label">
+                    <span>
+                        ●
+                    </span>
+                    Current Account Status
+                </div>
+                {% if admin.status == 'Active' %}
+                    <div class="status-badge active">
+                        <span class="status-dot"></span>
+                        ACTIVE
+                    </div>
+                {% else %}
+                    <div class="status-badge inactive">
+                        <span class="status-dot"></span>
+                        INACTIVE
+                    </div>
+                {% endif %}
+            </div>
+            <div class="status-question">
+                <div class="status-question-icon">
+                    ⚠️
+                </div>
+                {% if admin.status == 'Active' %}
+                    <h2>
+                        Change Administrator Status?
+                    </h2>
+                    <p>
+                        This administrator is currently
+                        <strong>ACTIVE</strong>.
+                        Do you want to change the account
+                        status to <strong>INACTIVE</strong>?
+                    </p>
+                {% else %}
+                    <h2>
+                        Reactivate Administrator?
+                    </h2>
+                    <p>
+                        This administrator is currently
+                        <strong>INACTIVE</strong>.
+                        Do you want to change the account
+                        status to <strong>ACTIVE</strong>?
+                    </p>
+                {% endif %}
+            </div>
+            <div class="status-actions">
+                <form
+                    action=""
+                    method="post"
+                >
+                    <button
+                        type="submit"
+                        class="change-status-btn"
+                    >
+                        {% if admin.status == 'Active' %}
+                            Deactivate Administrator →
+                        {% else %}
+                            Activate Administrator →
+                        {% endif %}
+                    </button>
+                </form>
+                <a
+                    href="{{url_for('admin_dashboard')}}"
+                    class="cancel-btn"
+                >
+                    ← Cancel
+                </a>
+            </div>
+            <div class="security-warning">
+                🔒 Please verify the administrator account
+                before changing its status.
+            </div>
+        </div>
     </div>
-
+</div>
 {% endblock %}

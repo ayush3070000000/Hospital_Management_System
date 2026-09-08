@@ -1,26 +1,385 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    HMS Royal | Add Department
+{% endblock %}
+{% block style %}
+<style>
+.add-department-page {
+    min-height: calc(100vh - 72px);
+    padding: 45px 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(37,99,235,.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 85%,
+            rgba(14,165,233,.07),
+            transparent 30%
+        ),
+        #f5f8fc;
+}
+.department-card {
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    overflow: hidden;
+    background: white;
+    border-radius: 28px;
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.11);
+    animation: cardAppear .45s ease;
+}
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.department-info {
+    position: relative;
+    padding: 50px 40px;
+    color: white;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            145deg,
+            #2563eb,
+            #0ea5e9
+        );
+}
+.department-info::before {
+    content: "";
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -150px;
+    right: -130px;
+}
+.department-info::after {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: -140px;
+    left: -110px;
+}
+.department-info-content {
+    position: relative;
+    z-index: 2;
+}
+.department-icon-large {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    font-size: 32px;
+}
+.department-info h1 {
+    margin: 0 0 15px;
+    font-size: 31px;
+    line-height: 1.2;
+    font-weight: 800;
+}
+.department-description {
+    margin: 0 0 32px;
+    color: rgba(255,255,255,.80);
+    font-size: 13px;
+    line-height: 1.7;
+}
+.department-benefit {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.department-benefit-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(255,255,255,.13);
+    font-size: 15px;
+}
+.department-form-section {
+    padding: 50px 55px;
+}
+.department-form-header {
+    margin-bottom: 30px;
+}
+.department-form-header h2 {
+    margin: 0 0 7px;
+    color: #102a43;
+    font-size: 27px;
+    font-weight: 800;
+}
+.department-form-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+}
+.department-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.department-form-group {
+    margin: 0;
+}
+.department-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+}
+.department-input-wrapper {
+    position: relative;
+}
+.department-input-icon {
+    position: absolute;
+    left: 14px;
+    top: 17px;
+    font-size: 16px;
+    z-index: 2;
+}
+.department-input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 49px;
+    padding: 12px 14px 12px 43px;
+    border: 1px solid #dbe3ec;
+    border-radius: 12px;
+    outline: none;
+    background: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 13px;
+    transition: all .25s ease;
+}
+.department-input:focus {
+    background: white;
+    border-color: #60a5fa;
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.08);
+}
+.department-input::placeholder {
+    color: #94a3b8;
+}
+.department-textarea {
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.6;
+}
+.description-icon {
+    top: 15px;
+}
+.department-submit {
+    width: 100%;
+    height: 50px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 12px;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 9px 20px rgba(37,99,235,.20);
+    transition: all .25s ease;
+}
+.department-submit:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 14px 28px rgba(37,99,235,.27);
+}
+.department-submit:active {
+    transform: translateY(0);
+}
+.department-note {
+    margin-top: 3px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    color: #64748b;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.5;
+}
+@media (max-width: 850px) {
+    .department-card {
+        grid-template-columns: 1fr;
+    }
+    .department-info {
+        padding: 40px 30px;
+    }
+    .department-form-section {
+        padding: 40px 30px;
+    }
+}
+@media (max-width: 550px) {
+    .add-department-page {
+        padding: 20px 10px 40px;
+    }
+    .department-info {
+        padding: 35px 25px;
+    }
+    .department-form-section {
+        padding: 35px 22px;
+    }
+    .department-info h1 {
+        font-size: 27px;
+    }
+    .department-form-header h2 {
+        font-size: 24px;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis"> Add Department </p>
-    </h2>
-
-    <form action="" method="post" class="my-form">
-        <div class="form-group">
-            <label for ="name" class = "form-label">Department Name</label>
-            <input type="text" name = "name" required class = "form-control">
-        </div>
-
-        <div class="form-group">
-            <label for ="description" class = "form-label">Description</label>
-            <input type="text" name = "description" required class = "form-control">
-        </div><p>
-
-        <div class="form-group">
-            <button type = "submit" class="btn btn-success">
-                Add
-            </button>
-            <!-- <input type = "submit" value = "Register" class="btn btn-primary"> -->
-        </div>
-    </form>
+<div class="add-department-page">
+    <div class="department-card">
+        <section class="department-info">
+            <div class="department-info-content">
+                <div class="department-icon-large">
+                    🏢
+                </div>
+                <h1>
+                    Hospital
+                    Department
+                </h1>
+                <p class="department-description">
+                    Create a new department and organize
+                    doctors and healthcare services within
+                    HMS Royal.
+                </p>
+                <div class="department-benefit">
+                    <div class="department-benefit-icon">
+                        🩺
+                    </div>
+                    Organize medical specialists
+                </div>
+                <div class="department-benefit">
+                    <div class="department-benefit-icon">
+                        👨‍⚕️
+                    </div>
+                    Manage department doctors
+                </div>
+                <div class="department-benefit">
+                    <div class="department-benefit-icon">
+                        📋
+                    </div>
+                    Maintain department information
+                </div>
+                <div class="department-benefit">
+                    <div class="department-benefit-icon">
+                        ⚙️
+                    </div>
+                    Simplify hospital management
+                </div>
+            </div>
+        </section>
+        <section class="department-form-section">
+            <div class="department-form-header">
+                <h2>
+                    Add Department
+                </h2>
+                <p>
+                    Enter the department information below
+                    to create a new hospital department.
+                </p>
+            </div>
+            <form
+                action=""
+                method="post"
+                class="department-form"
+            >
+                <div class="department-form-group">
+                    <label
+                        for="name"
+                        class="department-label"
+                    >
+                        Department Name
+                    </label>
+                    <div class="department-input-wrapper">
+                        <span class="department-input-icon">
+                            🏢
+                        </span>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            required
+                            class="department-input"
+                            placeholder="Enter department name"
+                        >
+                    </div>
+                </div>
+                <div class="department-form-group">
+                    <label
+                        for="description"
+                        class="department-label"
+                    >
+                        Department Description
+                    </label>
+                    <div class="department-input-wrapper">
+                        <span class="department-input-icon description-icon">
+                            📝
+                        </span>
+                        <textarea
+                            id="description"
+                            name="description"
+                            required
+                            class="department-input department-textarea"
+                            placeholder="Describe the department and its services..."
+                        ></textarea>
+                    </div>
+                </div>
+                <button
+                    type="submit"
+                    class="department-submit"
+                >
+                    🏢
+                    Create Department
+                    →
+                </button>
+                <div class="department-note">
+                    💡 Make sure the department name and
+                    description are accurate before submitting.
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
 {% endblock %}

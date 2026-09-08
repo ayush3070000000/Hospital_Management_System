@@ -1,48 +1,453 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    HMS Royal | Doctor Status
+{% endblock %}
+{% block style %}
+<style>
+.doctor-status-page {
+    min-height: calc(100vh - 72px);
+    padding: 50px 20px 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(37,99,235,.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 85%,
+            rgba(14,165,233,.07),
+            transparent 30%
+        ),
+        #f5f8fc;
+}
+.doctor-status-card {
+    width: 100%;
+    max-width: 920px;
+    overflow: hidden;
+    background: white;
+    border-radius: 28px;
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.11);
+    animation: doctorStatusAppear .45s ease;
+}
+@keyframes doctorStatusAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.doctor-status-header {
+    position: relative;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #0ea5e9
+        );
+}
+.doctor-status-header::before {
+    content: "";
+    position: absolute;
+    width: 310px;
+    height: 310px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -170px;
+    right: -100px;
+}
+.doctor-status-header::after {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: -140px;
+    left: -80px;
+}
+.doctor-status-header-content {
+    position: relative;
+    z-index: 2;
+}
+.doctor-status-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    font-size: 32px;
+}
+.doctor-status-header h1 {
+    margin: 0 0 7px;
+    font-size: 28px;
+    font-weight: 800;
+}
+.doctor-status-header p {
+    margin: 0;
+    color: rgba(255,255,255,.78);
+    font-size: 12px;
+}
+.doctor-status-body {
+    padding: 40px;
+}
+.doctor-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 27px;
+}
+.doctor-info-item {
+    padding: 17px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    transition: all .2s ease;
+}
+.doctor-info-item:hover {
+    background: white;
+    border-color: #dbeafe;
+    box-shadow:
+        0 7px 18px rgba(15,23,42,.05);
+}
+.doctor-info-label {
+    margin-bottom: 7px;
+    color: #94a3b8;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.doctor-info-value {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.55;
+}
+.doctor-id-value {
+    color: #2563eb;
+}
+.doctor-name-value {
+    color: #172b4d;
+    font-size: 15px;
+}
+.description-item {
+    grid-column: 1 / -1;
+}
+.doctor-description {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.65;
+    font-weight: 500;
+}
+.doctor-current-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 24px;
+    padding: 17px 19px;
+    border: 1px solid #e5edf5;
+    border-radius: 14px;
+    background: white;
+}
+.current-status-label {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+}
+.doctor-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+}
+.doctor-status-pill.active {
+    color: #059669;
+    background: #ecfdf5;
+}
+.doctor-status-pill.inactive {
+    color: #dc2626;
+    background: #fef2f2;
+}
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+.active .status-dot {
+    background: #10b981;
+}
+.inactive .status-dot {
+    background: #ef4444;
+}
+.doctor-confirmation {
+    margin-bottom: 27px;
+    padding: 24px;
+    text-align: center;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+}
+.confirmation-icon {
+    margin-bottom: 9px;
+    font-size: 28px;
+}
+.doctor-confirmation h2 {
+    margin: 0 0 8px;
+    color: #172b4d;
+    font-size: 19px;
+    font-weight: 800;
+}
+.doctor-confirmation p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.65;
+}
+.doctor-status-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #eef2f7;
+}
+.change-doctor-status-btn {
+    min-width: 190px;
+    height: 47px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 11px;
+    background:
+        linear-gradient(
+            135deg,
+            #dc2626,
+            #ef4444
+        );
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+        0 8px 18px rgba(220,38,38,.18);
+    transition: all .25s ease;
+}
+.change-doctor-status-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 13px 25px rgba(220,38,38,.24);
+}
+.cancel-doctor-status-btn {
+    height: 47px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    border-radius: 11px;
+    background: #f1f5f9;
+    color: #475569 !important;
+    text-decoration: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+.cancel-doctor-status-btn:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+}
+.doctor-status-note {
+    margin-top: 18px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 10px;
+}
+@media (max-width: 650px) {
+    .doctor-status-page {
+        padding: 25px 12px 50px;
+    }
+    .doctor-status-header {
+        padding: 35px 22px;
+    }
+    .doctor-status-body {
+        padding: 28px 20px;
+    }
+    .doctor-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .description-item {
+        grid-column: auto;
+    }
+    .doctor-current-status {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .doctor-status-actions {
+        flex-direction: column-reverse;
+    }
+    .change-doctor-status-btn,
+    .cancel-doctor-status-btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    <h2 align = 'center' class="display-5 fw-medium">
-        <p class="text-primary-emphasis"> Status Change of Doctor</p>
-    </h2>
-
-    <hr>
-
-    <table name = "info" class="table" border>
-        <thead>
-            <tr>
-                <th>Details</th>
-                <th></th>
-            </tr>
-            <body>
-                <tr>
-                    <td><strong>Doctor ID</strong> : {{doctor.id}} </td>
-                    <td><strong>Department</strong> : {{doctor.department.name}}</td>
-                </tr>
-                <tr>
-                    <td><strong>Doctor Name</strong> : {{doctor.name}} </td>
-                    <td><strong>Description</strong> : {{doctor.description}} </td>
-                </tr>
-            </body>
-        </thead>
-    </table>
-
-    <div>
-        {% if doctor.status == 'Active' %}
-            <h3 align = 'center' class="display-6">The doctor's status is ACTIVE. Do you want to change status to INACTIVE?</h3>
-        {% else %}
-            <h3 align = 'center' class="display-6">The doctor's status is INACTIVE. Do you want to change status to ACTIVE?</h3>
-        {% endif %}
-        
-        <div class = "d-flex justify-content-around mt-4">
-            <form action="" method="post" class="my-form">
-                <div class="form-group">
-                    <button type = "submit" class = "btn btn-danger">
-                        Change Status
-                    </button>
+<div class="doctor-status-page">
+    <div class="doctor-status-card">
+        <div class="doctor-status-header">
+            <div class="doctor-status-header-content">
+                <div class="doctor-status-icon">
+                    🩺
                 </div>
-            </form>
-            <a href="{{url_for('admin_dashboard')}}" class="btn btn-secondary">Cancel</a>
+                <h1>
+                    Doctor Status
+                </h1>
+                <p>
+                    Review doctor information before changing account status
+                </p>
+            </div>
+        </div>
+        <div class="doctor-status-body">
+            <div class="doctor-info-grid">
+                <div class="doctor-info-item">
+                    <div class="doctor-info-label">
+                        Doctor ID
+                    </div>
+                    <div class="doctor-info-value doctor-id-value">
+                        #{{doctor.id}}
+                    </div>
+                </div>
+                <div class="doctor-info-item">
+                    <div class="doctor-info-label">
+                        Department
+                    </div>
+                    <div class="doctor-info-value">
+                        {{doctor.department.name}}
+                    </div>
+                </div>
+                <div class="doctor-info-item">
+                    <div class="doctor-info-label">
+                        Doctor Name
+                    </div>
+                    <div class="doctor-info-value doctor-name-value">
+                        Dr. {{doctor.name}}
+                    </div>
+                </div>
+                <div class="doctor-info-item">
+                    <div class="doctor-info-label">
+                        Professional Description
+                    </div>
+                    <div class="doctor-info-value doctor-description">
+                        {{doctor.description}}
+                    </div>
+                </div>
+            </div>
+            <div class="doctor-current-status">
+                <div class="current-status-label">
+                    ● &nbsp; Current Doctor Status
+                </div>
+                {% if doctor.status == 'Active'
+                      and doctor.department.status == 'Active' %}
+                    <span class="doctor-status-pill active">
+                        <span class="status-dot"></span>
+                        ACTIVE
+                    </span>
+                {% else %}
+                    <span class="doctor-status-pill inactive">
+                        <span class="status-dot"></span>
+                        INACTIVE
+                    </span>
+                {% endif %}
+            </div>
+            <div class="doctor-confirmation">
+                <div class="confirmation-icon">
+                    ⚠️
+                </div>
+                {% if doctor.department.status != 'Active' %}
+                    <h2>
+                        Department Inactive
+                    </h2>
+                    <p>
+                        This doctor's individual account status is
+                        <strong>ACTIVE</strong>,
+                        but the doctor is currently
+                        <strong>INACTIVE</strong>
+                        because the department
+                        <strong>{{doctor.department.name}}</strong>
+                        is inactive.
+                    </p>
+                {% elif doctor.status == 'Active' %}
+                    <h2>
+                        Deactivate Doctor?
+                    </h2>
+                    <p>
+                        This doctor's account is currently
+                        <strong>ACTIVE</strong>.
+                        Do you want to change the individual doctor
+                        status to
+                        <strong>INACTIVE</strong>?
+                    </p>
+                {% else %}
+                    <h2>
+                        Activate Doctor?
+                    </h2>
+                    <p>
+                        This doctor's account is currently
+                        <strong>INACTIVE</strong>.
+                        Do you want to change the individual doctor
+                        status to
+                        <strong>ACTIVE</strong>?
+                    </p>
+                {% endif %}
+            </div>
+            <div class="doctor-status-actions">
+                <form
+                    action=""
+                    method="post"
+                >
+                    <button
+                        type="submit"
+                        class="change-doctor-status-btn"
+                    >
+                        {% if doctor.status == 'Active'
+                              and doctor.department.status == 'Active' %}
+                            Deactivate Doctor →
+                        {% else %}
+                            Activate Doctor →
+                        {% endif %}
+                    </button>
+                </form>
+                <a
+                    href="{{url_for('admin_dashboard')}}"
+                    class="cancel-doctor-status-btn"
+                >
+                    ← Cancel
+                </a>
+            </div>
+            <div class="doctor-status-note">
+                🔒 Please verify the doctor details before
+                changing their account status.
+            </div>
         </div>
     </div>
-
+</div>
 {% endblock %}

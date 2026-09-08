@@ -1,35 +1,370 @@
 {% extends 'layout.html' %}
-
 {% block title %}
-    HMS - Admins
+    HMS Royal | Administrators
 {% endblock %}
-
+{% block style %}
+<style>
+.admins-page {
+    min-height: calc(100vh - 72px);
+    padding: 45px 28px 65px;
+    max-width: 1250px;
+    margin: auto;
+    background:
+        radial-gradient(
+            circle at 8% 10%,
+            rgba(124,58,237,.06),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 92% 85%,
+            rgba(37,99,235,.06),
+            transparent 28%
+        );
+}
+.admins-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding: 28px 30px;
+    border-radius: 22px;
+    background: white;
+    border: 1px solid #e5edf5;
+    box-shadow:
+        0 12px 35px rgba(15,23,42,.06);
+}
+.admins-title-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.admins-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 17px;
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #4f46e5
+        );
+    color: white;
+    font-size: 26px;
+    box-shadow:
+        0 9px 22px rgba(124,58,237,.20);
+}
+.admins-title {
+    margin: 0 0 5px;
+    color: #102a43;
+    font-size: 27px;
+    font-weight: 800;
+}
+.admins-subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+.admin-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 13px;
+    border-radius: 50px;
+    background: #f5f3ff;
+    color: #7c3aed;
+    font-size: 11px;
+    font-weight: 800;
+}
+.admins-table-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 20px;
+    box-shadow:
+        0 12px 35px rgba(15,23,42,.06);
+}
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+.admins-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    margin: 0;
+}
+.admins-table thead {
+    background: #f8fafc;
+}
+.admins-table th {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e8eef5;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+.admins-table td {
+    padding: 17px 20px;
+    border-bottom: 1px solid #eef2f7;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 500;
+    vertical-align: middle;
+}
+.admins-table tbody tr {
+    transition: all .2s ease;
+}
+.admins-table tbody tr:hover {
+    background: #fafcff;
+}
+.admins-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.admin-id {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 10px;
+    font-weight: 800;
+}
+.admin-name {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #172b4d;
+    font-size: 13px;
+    font-weight: 700;
+}
+.admin-avatar {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: #f5f3ff;
+    color: #7c3aed;
+    font-size: 17px;
+}
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 11px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+}
+.status-pill.active {
+    background: #ecfdf5;
+    color: #059669;
+}
+.status-pill.inactive {
+    background: #fef2f2;
+    color: #dc2626;
+}
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+.active .status-dot {
+    background: #10b981;
+}
+.inactive .status-dot {
+    background: #ef4444;
+}
+.admin-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.admin-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 9px;
+    text-decoration: none !important;
+    font-size: 10px;
+    font-weight: 700;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+.admin-action:hover {
+    transform: translateY(-2px);
+}
+.details-btn {
+    background: #eff6ff;
+    color: #2563eb !important;
+}
+.status-btn {
+    background: #fef2f2;
+    color: #dc2626 !important;
+}
+.empty-state {
+    padding: 55px 20px !important;
+    text-align: center;
+    color: #94a3b8 !important;
+}
+.empty-icon {
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+.empty-title {
+    margin-bottom: 4px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+}
+.empty-text {
+    color: #94a3b8;
+    font-size: 11px;
+}
+@media (max-width: 700px) {
+    .admins-page {
+        padding: 25px 14px 50px;
+    }
+    .admins-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 23px;
+    }
+    .admins-title {
+        font-size: 23px;
+    }
+    .admin-count {
+        align-self: flex-start;
+    }
+}
+</style>
+{% endblock %}
 {% block content %}
-    <h2 align = 'center' class ='display-5 fw-semibold'>
-        <p class="text-primary-emphasis">Administrators at HMS </p>
-    </h2>
-
-    <table name = "department" class="table" border>
-         <thead>
-            <tr>
-                <th>Admin ID</th>
-                <th>Admin Name</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for admin in admins %}
+<div class="admins-page">
+    <div class="admins-header">
+        <div class="admins-title-area">
+            <div class="admins-icon">
+                🔐
+            </div>
+            <div>
+                <h1 class="admins-title">
+                    Administrators
+                </h1>
+                <p class="admins-subtitle">
+                    Manage administrator accounts and access status
+                    across HMS Royal.
+                </p>
+            </div>
+        </div>
+        <div class="admin-count">
+            👥
+            {{ admins|length }}
+            Administrators
+        </div>
+    </div>
+    <div class="admins-table-card">
+        <div class="table-scroll">
+            <table class="admins-table">
+                <thead>
                     <tr>
-                        <td>{{admin.id}}</td>
-                        <td>{{admin.name}}</td>
-                        <td>{{admin.status}}</td>
+                        <th>
+                            Admin ID
+                        </th>
+                        <th>
+                            Administrator
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admin in admins %}
+                    <tr>
                         <td>
-                            <a href = "{{url_for('profile', id = admin.id, role = 'admin')}}" class="btn btn-info"> Details </a>
-                            <a href = "{{url_for('change_admin_status', id = admin.id)}}" class="btn btn-danger">Change Status</a>
+                            <span class="admin-id">
+                                #{{admin.id}}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="admin-name">
+                                <div class="admin-avatar">
+                                    🔐
+                                </div>
+                                {{admin.name}}
+                            </div>
+                        </td>
+                        <td>
+                            {% if admin.status == 'Active' %}
+                                <span class="status-pill active">
+                                    <span class="status-dot"></span>
+                                    ACTIVE
+                                </span>
+                            {% else %}
+                                <span class="status-pill inactive">
+                                    <span class="status-dot"></span>
+                                    INACTIVE
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="admin-actions">
+                                <a
+                                    href="{{url_for('profile', id=admin.id, role='admin')}}"
+                                    class="admin-action details-btn"
+                                >
+                                    👁️
+                                    Details
+                                </a>
+                                <a
+                                    href="{{url_for('change_admin_status', id=admin.id)}}"
+                                    class="admin-action status-btn"
+                                >
+                                    ⚡
+                                    Change Status
+                                </a>
+                            </div>
                         </td>
                     </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
+                    {% else %}
+                    <tr>
+                        <td
+                            colspan="4"
+                            class="empty-state"
+                        >
+                            <div class="empty-icon">
+                                👥
+                            </div>
+                            <div class="empty-title">
+                                No administrators found
+                            </div>
+                            <div class="empty-text">
+                                There are currently no administrator
+                                accounts to display.
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

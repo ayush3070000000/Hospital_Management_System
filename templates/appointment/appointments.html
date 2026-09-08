@@ -1,58 +1,550 @@
 {% extends 'layout.html' %}
+{% block title %}
+    HMS Royal | Appointments
+{% endblock %}
+{% block style %}
 
-This is the view appointments page.
+<style>
+.appointments-page {
+    min-height: calc(100vh - 72px);
+    padding: 40px 28px 65px;
+    max-width: 1450px;
+    margin: auto;
+    background:radial-gradient( circle at 5% 10%, rgba(37,99,235,.06),transparent 28%),
+        radial-gradient( circle at 95% 90%, rgba(14,165,233,.06), transparent 28%);
+}
+.appointments-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 25px;
+    padding: 27px 30px;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 22px;
+    box-shadow:0 12px 35px rgba(15,23,42,.06);
+}
+.title-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.title-icon {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 17px;
+    background:linear-gradient(135deg, #2563eb, #0ea5e9);
+    color: white;
+    font-size: 27px;
+    box-shadow: 0 9px 22px rgba(37,99,235,.20);
+}
+.page-title {
+    margin: 0 0 5px;
+    color: #102a43;
+    font-size: 28px;
+    font-weight: 800;
+}
+.page-subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+.appointment-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 13px;
+}
+.date-input {
+    width: 170px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    outline: none;
+    background: white;
+    color: #475569;
+    font-size: 12px;
+    transition: all .2s ease;
+}
+.date-input:focus {
+    border-color: #bfdbfe;
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,.08);
+}
+.search-button {
+    height: 40px;
+    padding: 0 17px;
+    border: none;
+    border-radius: 9px;
+    background:linear-gradient(135deg, #2563eb, #0ea5e9);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+.search-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(37,99,235,.18);
+}
+.appointments-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #e5edf5;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px rgba(15,23,42,.06);
+}
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+.appointments-table {
+    width: 100%;
+    min-width: 1050px;
+    border-collapse: collapse;
+    margin: 0;
+}
+.appointments-table thead {
+    background: #f8fafc;
+}
+.appointments-table th {
+    padding: 16px 18px;
+    border-bottom: 1px solid #e8eef5;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+.appointments-table td {
+    padding: 17px 18px;
+    border-bottom: 1px solid #eef2f7;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 500;
+    vertical-align: middle;
+}
+.appointments-table tbody tr {
+    transition: background .2s ease;
+}
+.appointments-table tbody tr:hover {
+    background: #fafcff;
+}
+.appointments-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.person-name {
+    color: #172b4d;
+    font-weight: 700;
+}
+.doctor-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.doctor-avatar {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #ecfdf5;
+    font-size: 16px;
+}
+.patient-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.patient-avatar {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #eff6ff;
+    font-size: 16px;
+}
+.department-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #f5f3ff;
+    color: #7c3aed;
+    font-size: 10px;
+    font-weight: 700;
+}
+.appointment-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #2563eb;
+    font-weight: 700;
+}
+.slot-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 10px;
+    font-weight: 700;
+}
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+}
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+.status-booked {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.status-booked .status-dot {
+    background: #2563eb;
+}
+.status-completed {
+    background: #ecfdf5;
+    color: #059669;
+}
+.status-completed .status-dot {
+    background: #10b981;
+}
+.status-cancelled {
+    background: #fef2f2;
+    color: #dc2626;
+}
+.status-cancelled .status-dot {
+    background: #ef4444;
+}
+.appointment-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.appointment-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 11px;
+    border-radius: 8px;
+    text-decoration: none !important;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all .2s ease;
+}
+.appointment-action:hover {
+    transform: translateY(-2px);
+}
+.diagnose-btn {
+    background: #ecfdf5;
+    color: #059669 !important;
+}
+.view-btn {
+    background: #eff6ff;
+    color: #2563eb !important;
+}
+.reschedule-btn {
+    background: #fff7ed;
+    color: #ea580c !important;
+}
+.cancel-btn {
+    background: #fef2f2;
+    color: #dc2626 !important;
+}
+.empty-state {
+    padding: 65px 20px !important;
+    text-align: center;
+    color: #94a3b8 !important;
+}
+.empty-icon {
+    margin-bottom: 12px;
+    font-size: 35px;
+}
+.empty-title {
+    margin-bottom: 5px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+}
+.empty-description {
+    color: #94a3b8;
+    font-size: 11px;
+}
+@media (max-width: 850px) {
+    .appointments-page {
+        padding: 25px 15px 50px;
+    }
+    .appointments-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 23px;
+    }
+    .appointment-search {
+        width: 100%;
+    }
+    .date-input {
+        flex: 1;
+        width: auto;
+    }
+    .search-button {
+        padding: 0 20px;
+    }
+}
+@media (max-width: 600px) {
+    .title-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 23px;
+    }
+    .page-title {
+        font-size: 23px;
+    }
+    .page-subtitle {
+        font-size: 11px;
+    }
+    .appointment-search {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 8px;
+    }
+    .date-input {
+        width: 100%;
+        flex: none;
+    }
+    .search-button {
+        width: 100%;
+    }
+}
+
+</style>
+
+{% endblock %}
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class ="display-5">All Appointments</h2>    
-        <div>
-            <form action = "{{url_for('appointments', role = role, id = id)}}" class="d-flex" role="search">                                
-                <div class="form-group">
-                    <div class="d-flex ms-2">
-                        <input class="form-control me-2" name = "date" type="date">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </div>
-                </div>                
-            </form>
+<div class="appointments-page">
+    <div class="appointments-header">
+
+        <div class="title-area">
+            <div class="title-icon">
+                📅
+            </div>
+            <div>
+                <h1 class="page-title">
+                    All Appointments
+                </h1>
+                <p class="page-subtitle">
+                    View, manage and track hospital appointments
+                </p>
+            </div>
         </div>
+
+        <form action="{{url_for('appointments', role=role, id=id)}}" class="appointment-search" role="search">
+            <input class="date-input" name="date" type="date">
+            <button class="search-button" type="submit">
+                🔍
+                Search
+            </button>
+        </form>
+
     </div>
-    
-    <table name = "appointments" class="table" border>
-         <thead>
-            <tr>
-                <th>Department</th>
-                <th>Doctor Name</th>
-                <th>Patient Name</th>
-                <th>Date</th>
-                <th>Slot</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            <body>
-                {% for appointment in appointments %}
+
+    <div class="appointments-card">
+        <div class="table-scroll">
+            <table class="appointments-table">
+
+                <thead>
                     <tr>
-                        <td>{{appointment.doctor.department.name}}</td>
-                        <td>{{appointment.doctor.name}}</td>
-                        <td>{{appointment.patient.name}}</td>
-                        <td>{{appointment.date}}</td>
-                        <td>Slot {{appointment.slot}}</td>
-                        <td>{{appointment.status}}</td>
+                        <th>
+                            Department
+                        </th>
+                        <th>
+                            Doctor
+                        </th>
+                        <th>
+                            Patient
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Slot
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        \
                         <td>
-                            {% if role == 'doctor' %}
-                                {% if appointment.status == 'Booked' %}
-                                    <a href = "{{url_for('add_treatment', appointment_id = appointment.id)}}" class="btn btn-success">Diagnos</a>    
-                                {% endif %}
-                                {% if appointment.status == 'Completed' %}
-                                    <a href = "{{url_for('view_treatment', id = appointment.treatment[0].id)}}" class="btn btn-info">View Treatment</a>
-                                {% endif %}
-                            {% endif %}
+                            <span class="department-badge">
+                                🏢
+                                {{appointment.doctor.department.name}}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="doctor-name">
+                                <div class="doctor-avatar">
+                                    🩺
+                                </div>
+                                <span class="person-name">
+                                    {{appointment.doctor.name}}
+                                </span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="patient-name">
+                                <div class="patient-avatar">
+                                    👤
+                                </div>
+                                <span class="person-name">
+                                    {{appointment.patient.name}}
+                                </span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="appointment-date">
+                                📅
+                                {{appointment.date}}
+                            </span>
+                        </td>
+
+                        <td>
+                            {% set slot_info = {
+                                1:  ('Slot 1A',  '08:00 AM'),
+                                2:  ('Slot 2A',  '08:30 AM'),
+                                3:  ('Slot 3A',  '09:00 AM'),
+                                4:  ('Slot 4A',  '09:30 AM'),
+                                5:  ('Slot 5A',  '10:00 AM'),
+                                6:  ('Slot 6A',  '10:30 AM'),
+                                7:  ('Slot 7A',  '11:00 AM'),
+                                8:  ('Slot 8A',  '11:30 AM'),
+                                9:  ('Slot 9A',  '12:00 PM'),
+                                10: ('Slot 10A', '12:30 PM'),
+                                11: ('Slot 11A', '01:00 PM'),
+                                12: ('Slot 12A', '01:30 PM'),
+                                13: ('Slot 1B',  '04:00 PM'),
+                                14: ('Slot 2B',  '04:30 PM'),
+                                15: ('Slot 3B',  '05:00 PM'),
+                                16: ('Slot 4B',  '05:30 PM'),
+                                17: ('Slot 5B',  '06:00 PM'),
+                                18: ('Slot 6B',  '06:30 PM'),
+                                19: ('Slot 7B',  '07:00 PM'),
+                                20: ('Slot 8B',  '07:30 PM')
+                            } %}
+                            <span class="slot-badge">
+                                🕐
+                                {{ slot_info[appointment.slot][0] }}
+                                ·
+                                {{ slot_info[appointment.slot][1] }}
+                            </span>
+                        </td>
+
+                        <td>
                             {% if appointment.status == 'Booked' %}
-                                <a href = "{{url_for('reschedule_appointment', id = appointment.id)}}" class="btn btn-warning">Reschedule</a>
-                                <a href = "{{url_for('cancel_appointment', id = appointment.id)}}" class="btn btn-danger">Cancel</a>
+                                <span class="status-badge status-booked">
+                                    <span class="status-dot"></span>
+                                    BOOKED
+                                </span>
+                            {% elif appointment.status == 'Completed' %}
+                                <span class="status-badge status-completed">
+                                    <span class="status-dot"></span>
+                                    COMPLETED
+                                </span>
+                            {% else %}
+                                <span class="status-badge status-cancelled">
+                                    <span class="status-dot"></span>
+                                    {{appointment.status|upper}}
+                                </span>
                             {% endif %}
                         </td>
+
+                        <td>
+                            <div class="appointment-actions">
+                                {% if role == 'doctor' %}
+                                    {% if appointment.status == 'Booked' %}
+                                        <a href="{{url_for('add_treatment', appointment_id=appointment.id)}}" class="appointment-action diagnose-btn">
+                                            🩺
+                                            Diagnose
+                                        </a>
+                                    {% endif %}
+                                    {% if appointment.status == 'Completed' %}
+
+                                        <a href="{{url_for('view_treatment', id=appointment.treatment[0].id)}}" class="appointment-action view-btn">
+                                            👁️
+                                            View Treatment
+                                        </a>
+
+                                    {% endif %}
+                                {% endif %}
+                                {% if appointment.status == 'Booked' %}
+
+                                    <a href="{{url_for('reschedule_appointment', id=appointment.id)}}" class="appointment-action reschedule-btn">
+                                        🔄
+                                        Reschedule
+                                    </a>
+                                    <a href="{{url_for('cancel_appointment', id=appointment.id)}}" class="appointment-action cancel-btn">
+                                        ✕
+                                        Cancel
+                                    </a>
+
+                                {% endif %}
+                            </div>
+                        </td>
                     </tr>
-                {% endfor %}
-            </body>
-         </thead>
-    </table>
+                    {% else %}
+
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            <div class="empty-icon">
+                                📅
+                            </div>
+                            <div class="empty-title">
+                                No appointments found
+                            </div>
+                            <div class="empty-description">
+                                There are no appointments matching your current search.
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
