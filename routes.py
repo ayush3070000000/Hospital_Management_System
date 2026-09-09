@@ -158,7 +158,7 @@ def logout():
 @app.route('/profile/<role>/<id>')
 @login_auth
 def profile(id, role):
-    if session.get('role') != 'admin' and session.get('role') != role:
+    if session.get('role') != 'admin' and session.get('role') != role and not (session.get('role') == 'patient' and role == 'doctor'):
         flash('Access Denied.')
         return redirect(url_for(f"{session['role']}_dashboard"))
     user = fetch_user_by_id(id, role)
