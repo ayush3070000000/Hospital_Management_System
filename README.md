@@ -315,4 +315,4 @@ This project is intended for educational and development purposes. Add an approp
 
 ## Live Link
 
-https://hospital-management-system-h6jy.onrender.com/(Initial loading may take 2–3 minutes due to Render cold starts.)
+https://hospital-management-system-h6jy.onrender.com/ (Initial loading may take 2–3 minutes due to Render cold starts.)
