@@ -312,3 +312,5 @@ Built as a Flask-based healthcare management application with separate Admin, Do
 ## License
 
 This project is intended for educational and development purposes. Add an appropriate open-source license if the project is distributed publicly.
+
+Live Link : https://hospital-management-system-h6jy.onrender.com/
